@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/lukeg/code/Capstone/CHESS/game/main.cpp" "CMakeFiles/main.dir/main.cpp.obj" "gcc" "CMakeFiles/main.dir/main.cpp.obj.d"
+  "C:/Users/lukeg/code/Capstone/CHESS/Chess/main.cpp" "CMakeFiles/main.dir/main.cpp.obj" "gcc" "CMakeFiles/main.dir/main.cpp.obj.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "C:/Users/lukeg/code/Capstone/CHESS/game/build/CMakeFiles/gamelib.dir/DependInfo.cmake"
+  "C:/Users/lukeg/code/Capstone/CHESS/Chess/build/CMakeFiles/gamelib.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

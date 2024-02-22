@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/lukeg/code/Capstone/CHESS/game/build"
+			"value" : "c:/Users/lukeg/code/Capstone/CHESS/Chess/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -587,7 +587,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/lukeg/code/Capstone/CHESS/game/build/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/lukeg/code/Capstone/CHESS/Chess/build/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -659,7 +659,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/lukeg/code/Capstone/CHESS/game"
+			"value" : "C:/Users/lukeg/code/Capstone/CHESS/Chess"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1315,7 +1315,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/lukeg/code/Capstone/CHESS/game/build"
+			"value" : "C:/Users/lukeg/code/Capstone/CHESS/Chess/build"
 		},
 		{
 			"name" : "chess_IS_TOP_LEVEL",
@@ -1339,7 +1339,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/lukeg/code/Capstone/CHESS/game"
+			"value" : "C:/Users/lukeg/code/Capstone/CHESS/Chess"
 		}
 	],
 	"kind" : "cache",

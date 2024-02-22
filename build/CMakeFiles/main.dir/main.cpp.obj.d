@@ -1,5 +1,5 @@
 CMakeFiles/main.dir/main.cpp.obj: \
- C:\Users\lukeg\code\Capstone\CHESS\game\main.cpp \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\main.cpp \
  C:/msys64/mingw64/include/SDL2/SDL.h \
  C:/msys64/mingw64/include/SDL2/SDL_main.h \
  C:/msys64/mingw64/include/SDL2/SDL_stdinc.h \
@@ -313,7 +313,7 @@ CMakeFiles/main.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc \
- C:\Users\lukeg\code\Capstone\CHESS\game\chessboard.h \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\chessboard.h \
  C:/msys64/mingw64/include/c++/12.2.0/memory \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_raw_storage_iter.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/align.h \
@@ -333,19 +333,19 @@ CMakeFiles/main.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/pstl/glue_memory_defs.h \
  C:/msys64/mingw64/include/c++/12.2.0/optional \
  C:/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
- C:\Users\lukeg\code\Capstone\CHESS\game\piece.h \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\piece.h \
  C:/msys64/mingw64/include/SDL2/SDL.h \
  C:/msys64/mingw64/include/SDL2/SDL_image.h \
  C:/msys64/mingw64/include/SDL2/SDL.h \
- C:\Users\lukeg\code\Capstone\CHESS\game\graphics.h \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\graphics.h \
  C:/msys64/mingw64/include/c++/12.2.0/unordered_map \
  C:/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
- C:\Users\lukeg\code\Capstone\CHESS\game\sprite.h \
- C:\Users\lukeg\code\Capstone\CHESS\game\vec.h \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\sprite.h \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\vec.h \
  C:/msys64/mingw64/include/c++/12.2.0/functional \
  C:/msys64/mingw64/include/c++/12.2.0/bits/std_function.h \
  C:/msys64/mingw64/include/c++/12.2.0/array \

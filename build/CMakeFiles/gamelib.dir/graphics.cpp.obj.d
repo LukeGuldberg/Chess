@@ -1,6 +1,6 @@
 CMakeFiles/gamelib.dir/graphics.cpp.obj: \
- C:\Users\lukeg\code\Capstone\CHESS\game\graphics.cpp \
- C:\Users\lukeg\code\Capstone\CHESS\game\graphics.h \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\graphics.cpp \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\graphics.h \
  C:/msys64/mingw64/include/SDL2/SDL.h \
  C:/msys64/mingw64/include/SDL2/SDL_main.h \
  C:/msys64/mingw64/include/SDL2/SDL_stdinc.h \
@@ -276,8 +276,8 @@ CMakeFiles/gamelib.dir/graphics.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc \
- C:\Users\lukeg\code\Capstone\CHESS\game\sprite.h \
- C:\Users\lukeg\code\Capstone\CHESS\game\vec.h \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\sprite.h \
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\vec.h \
  C:/msys64/mingw64/include/c++/12.2.0/functional \
  C:/msys64/mingw64/include/c++/12.2.0/bits/std_function.h \
  C:/msys64/mingw64/include/c++/12.2.0/typeinfo \

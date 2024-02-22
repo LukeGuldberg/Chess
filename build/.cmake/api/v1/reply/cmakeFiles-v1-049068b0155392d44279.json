@@ -212,8 +212,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/Users/lukeg/code/Capstone/CHESS/game/build",
-		"source" : "C:/Users/lukeg/code/Capstone/CHESS/game"
+		"build" : "C:/Users/lukeg/code/Capstone/CHESS/Chess/build",
+		"source" : "C:/Users/lukeg/code/Capstone/CHESS/Chess"
 	},
 	"version" : 
 	{

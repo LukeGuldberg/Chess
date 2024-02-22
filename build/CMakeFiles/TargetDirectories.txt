@@ -1,0 +1,4 @@
+C:/Users/lukeg/code/Capstone/CHESS/game/build/CMakeFiles/gamelib.dir
+C:/Users/lukeg/code/Capstone/CHESS/game/build/CMakeFiles/main.dir
+C:/Users/lukeg/code/Capstone/CHESS/game/build/CMakeFiles/edit_cache.dir
+C:/Users/lukeg/code/Capstone/CHESS/game/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,17 @@
+[
+{
+  "directory": "C:/Users/lukeg/code/Capstone/CHESS/game/build",
+  "command": "C:\\msys64\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/gamelib.dir/includes_CXX.rsp -g -std=c++17 -g -Wall -Wextra -o CMakeFiles\\gamelib.dir\\chessboard.cpp.obj -c C:\\Users\\lukeg\\code\\Capstone\\CHESS\\game\\chessboard.cpp",
+  "file": "C:/Users/lukeg/code/Capstone/CHESS/game/chessboard.cpp"
+},
+{
+  "directory": "C:/Users/lukeg/code/Capstone/CHESS/game/build",
+  "command": "C:\\msys64\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/gamelib.dir/includes_CXX.rsp -g -std=c++17 -g -Wall -Wextra -o CMakeFiles\\gamelib.dir\\graphics.cpp.obj -c C:\\Users\\lukeg\\code\\Capstone\\CHESS\\game\\graphics.cpp",
+  "file": "C:/Users/lukeg/code/Capstone/CHESS/game/graphics.cpp"
+},
+{
+  "directory": "C:/Users/lukeg/code/Capstone/CHESS/game/build",
+  "command": "C:\\msys64\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/main.dir/includes_CXX.rsp -g -std=c++17 -g -Wall -Wextra -o CMakeFiles\\main.dir\\main.cpp.obj -c C:\\Users\\lukeg\\code\\Capstone\\CHESS\\game\\main.cpp",
+  "file": "C:/Users/lukeg/code/Capstone/CHESS/game/main.cpp"
+}
+]

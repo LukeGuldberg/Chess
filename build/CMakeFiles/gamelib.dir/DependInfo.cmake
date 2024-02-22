@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/lukeg/code/Capstone/CHESS/Chess/chessboard.cpp" "CMakeFiles/gamelib.dir/chessboard.cpp.obj" "gcc" "CMakeFiles/gamelib.dir/chessboard.cpp.obj.d"
   "C:/Users/lukeg/code/Capstone/CHESS/Chess/graphics.cpp" "CMakeFiles/gamelib.dir/graphics.cpp.obj" "gcc" "CMakeFiles/gamelib.dir/graphics.cpp.obj.d"
+  "C:/Users/lukeg/code/Capstone/CHESS/Chess/piece.cpp" "CMakeFiles/gamelib.dir/piece.cpp.obj" "gcc" "CMakeFiles/gamelib.dir/piece.cpp.obj.d"
   )
 
 # Targets to which this target links.

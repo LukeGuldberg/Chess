@@ -261,39 +261,15 @@ CMakeFiles/gamelib.dir/graphics.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/cerrno \
  C:/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
- C:/msys64/mingw64/include/c++/12.2.0/unordered_map \
- C:/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
- C:/msys64/mingw64/include/c++/12.2.0/tuple \
- C:/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
- C:/msys64/mingw64/include/c++/12.2.0/vector \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_uninitialized.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc \
- C:\Users\lukeg\code\Capstone\CHESS\Chess\sprite.h \
- C:\Users\lukeg\code\Capstone\CHESS\Chess\vec.h \
- C:/msys64/mingw64/include/c++/12.2.0/functional \
- C:/msys64/mingw64/include/c++/12.2.0/bits/std_function.h \
- C:/msys64/mingw64/include/c++/12.2.0/typeinfo \
- C:/msys64/mingw64/include/c++/12.2.0/array \
- C:/msys64/mingw64/include/c++/12.2.0/compare \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_algo.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/algorithmfwd.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_heap.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/stl_tempbuf.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/uniform_int_dist.h \
- C:/msys64/mingw64/include/c++/12.2.0/sstream \
+ C:/msys64/mingw64/include/SDL2/SDL_image.h \
+ C:/msys64/mingw64/include/SDL2/SDL.h \
+ C:/msys64/mingw64/include/c++/12.2.0/fstream \
  C:/msys64/mingw64/include/c++/12.2.0/istream \
  C:/msys64/mingw64/include/c++/12.2.0/ios \
  C:/msys64/mingw64/include/c++/12.2.0/exception \
  C:/msys64/mingw64/include/c++/12.2.0/bits/exception_ptr.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/cxxabi_init_exception.h \
+ C:/msys64/mingw64/include/c++/12.2.0/typeinfo \
  C:/msys64/mingw64/include/c++/12.2.0/bits/nested_exception.h \
  C:/msys64/mingw64/include/c++/12.2.0/bits/ios_base.h \
  C:/msys64/mingw64/include/c++/12.2.0/ext/atomicity.h \
@@ -327,10 +303,6 @@ CMakeFiles/gamelib.dir/graphics.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/ostream \
  C:/msys64/mingw64/include/c++/12.2.0/bits/ostream.tcc \
  C:/msys64/mingw64/include/c++/12.2.0/bits/istream.tcc \
- C:/msys64/mingw64/include/c++/12.2.0/bits/sstream.tcc \
- C:/msys64/mingw64/include/SDL2/SDL_image.h \
- C:/msys64/mingw64/include/SDL2/SDL.h \
- C:/msys64/mingw64/include/c++/12.2.0/fstream \
  C:/msys64/mingw64/include/c++/12.2.0/bits/codecvt.h \
  C:/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/basic_file.h \
  C:/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/c++io.h \

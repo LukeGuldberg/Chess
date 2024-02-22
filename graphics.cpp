@@ -1,7 +1,5 @@
 #include "graphics.h"
-// #include "randomness.h"
 
-#include <SDL2/SDL.h>
 #include <SDL_image.h>
 
 #include <fstream>
@@ -72,7 +70,19 @@ void Graphics::initialize_graphics(const std::string title)
 }
 void Graphics::draw_board()
 {
+    // SDL_Texture *darkSquareTexture = loadTexture(renderer, "dark_square.xcf");
+    // SDL_Texture *lightSquareTexture = loadTexture(renderer, "light_square.xcf");
+    // if (!darkSquareTexture || !lightSquareTexture)
+    // {
+    //     // Handle loading error
+    //     std::cerr << "Failed to load texture(s) for board squares!" << std::endl;
+    //     return;
+    // }
 }
+void Graphics::draw_pieces()
+{
+}
+
 SDL_Texture *Graphics::loadTexture(SDL_Renderer *renderer, const std::string &path)
 {
     SDL_Surface *surface = IMG_Load(path.c_str());

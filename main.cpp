@@ -24,20 +24,7 @@ int main()
 {
     Graphics graphics{"Chess", 1600, 900};
     Chessboard board{};
-    // int result = SDL_Init(SDL_INIT_VIDEO);
-    // if (result < 0)
-    // {
-    //     std::cout << SDL_GetError() << "\n";
-    // }
-    // SDL_Window *window =
-    //     SDL_CreateWindow("Cool Game Title", SDL_WINDOWPOS_CENTERED,
-    //                      SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-    // if (!window)
-    // {
-    //     std::cout << SDL_GetError() << "\n";
-    // }
-    // SDL_Renderer *renderer = SDL_CreateRenderer(
-    //     window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
     bool running = true;
     while (running)
     {
@@ -68,11 +55,7 @@ int main()
         drawGrid(graphics.renderer);
         drawPieces(graphics.renderer);
         graphics.update();
-        // SDL_RenderPresent(renderer);
     }
-    // SDL_DestroyRenderer(renderer);
-    // SDL_DestroyWindow(window);
-    // SDL_Quit();
 }
 
 void drawGrid(SDL_Renderer *renderer)

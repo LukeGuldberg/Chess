@@ -2,15 +2,6 @@
 
 #include <SDL2/SDL.h>
 #include <string>
-#include <unordered_map>
-#include <vector>
-
-#include "sprite.h"
-class Color
-{
-public:
-    int red{255}, green{0}, blue{255}, alpha{255};
-};
 
 class Graphics
 {

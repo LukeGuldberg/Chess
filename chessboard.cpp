@@ -9,11 +9,24 @@ Chessboard::Chessboard()
     // create all tiles
 }
 
+bool Chessboard::check_bounds(int x, int y)
+{
+    if (x < 436 || y < 86 || x > 1164 || y > 814)
+    {
+        return false;
+    }
+    return true;
+}
+
 int Chessboard::pixel_to_board(int x, int y)
 {
-    int index_y = ((y - 86) / 91) * 8;
-    int index_x = (x - 436) / 91;
-    return index_x + index_y;
+    if (check_bounds(x, y))
+    {
+        int index_y = ((y - 86) / 91) * 8;
+        int index_x = (x - 436) / 91;
+        return index_x + index_y;
+    }
+    return -1;
 }
 
 std::pair<int, int> Chessboard::board_to_pixel(int i)

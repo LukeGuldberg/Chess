@@ -11,6 +11,8 @@ add_library(gamelib
     chessboard.cpp
     graphics.cpp
     piece.cpp  
+    engine.cpp
+    camera.cpp
 ) 
 
 target_include_directories(gamelib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})

@@ -1,0 +1,38 @@
+[
+{
+  "directory": "C:/Users/lukeg/code/Capstone/CHESS/Chess/cmake-build-debug",
+  "command": "C:\\PROGRA~1\\JETBRA~1\\CLION2~1.1\\bin\\mingw\\bin\\G__~1.EXE -IC:/Users/lukeg/code/Capstone/CHESS/Chess -isystem C:/msys64/mingw64/include -isystem C:/msys64/mingw64/include/SDL2 -g -fdiagnostics-color=always -std=c++17 -g -Wall -Wextra -o CMakeFiles\\gamelib.dir\\chessboard.cpp.obj -c C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\chessboard.cpp",
+  "file": "C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\chessboard.cpp",
+  "output": "CMakeFiles\\gamelib.dir\\chessboard.cpp.obj"
+},
+{
+  "directory": "C:/Users/lukeg/code/Capstone/CHESS/Chess/cmake-build-debug",
+  "command": "C:\\PROGRA~1\\JETBRA~1\\CLION2~1.1\\bin\\mingw\\bin\\G__~1.EXE -IC:/Users/lukeg/code/Capstone/CHESS/Chess -isystem C:/msys64/mingw64/include -isystem C:/msys64/mingw64/include/SDL2 -g -fdiagnostics-color=always -std=c++17 -g -Wall -Wextra -o CMakeFiles\\gamelib.dir\\graphics.cpp.obj -c C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\graphics.cpp",
+  "file": "C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\graphics.cpp",
+  "output": "CMakeFiles\\gamelib.dir\\graphics.cpp.obj"
+},
+{
+  "directory": "C:/Users/lukeg/code/Capstone/CHESS/Chess/cmake-build-debug",
+  "command": "C:\\PROGRA~1\\JETBRA~1\\CLION2~1.1\\bin\\mingw\\bin\\G__~1.EXE -IC:/Users/lukeg/code/Capstone/CHESS/Chess -isystem C:/msys64/mingw64/include -isystem C:/msys64/mingw64/include/SDL2 -g -fdiagnostics-color=always -std=c++17 -g -Wall -Wextra -o CMakeFiles\\gamelib.dir\\piece.cpp.obj -c C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\piece.cpp",
+  "file": "C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\piece.cpp",
+  "output": "CMakeFiles\\gamelib.dir\\piece.cpp.obj"
+},
+{
+  "directory": "C:/Users/lukeg/code/Capstone/CHESS/Chess/cmake-build-debug",
+  "command": "C:\\PROGRA~1\\JETBRA~1\\CLION2~1.1\\bin\\mingw\\bin\\G__~1.EXE -IC:/Users/lukeg/code/Capstone/CHESS/Chess -isystem C:/msys64/mingw64/include -isystem C:/msys64/mingw64/include/SDL2 -g -fdiagnostics-color=always -std=c++17 -g -Wall -Wextra -o CMakeFiles\\gamelib.dir\\engine.cpp.obj -c C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\engine.cpp",
+  "file": "C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\engine.cpp",
+  "output": "CMakeFiles\\gamelib.dir\\engine.cpp.obj"
+},
+{
+  "directory": "C:/Users/lukeg/code/Capstone/CHESS/Chess/cmake-build-debug",
+  "command": "C:\\PROGRA~1\\JETBRA~1\\CLION2~1.1\\bin\\mingw\\bin\\G__~1.EXE -IC:/Users/lukeg/code/Capstone/CHESS/Chess -isystem C:/msys64/mingw64/include -isystem C:/msys64/mingw64/include/SDL2 -g -fdiagnostics-color=always -std=c++17 -g -Wall -Wextra -o CMakeFiles\\gamelib.dir\\camera.cpp.obj -c C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\camera.cpp",
+  "file": "C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\camera.cpp",
+  "output": "CMakeFiles\\gamelib.dir\\camera.cpp.obj"
+},
+{
+  "directory": "C:/Users/lukeg/code/Capstone/CHESS/Chess/cmake-build-debug",
+  "command": "C:\\PROGRA~1\\JETBRA~1\\CLION2~1.1\\bin\\mingw\\bin\\G__~1.EXE -IC:/Users/lukeg/code/Capstone/CHESS/Chess -isystem C:/msys64/mingw64/include -isystem C:/msys64/mingw64/include/SDL2 -g -fdiagnostics-color=always -std=c++17 -g -Wall -Wextra -o CMakeFiles\\main.dir\\main.cpp.obj -c C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\main.cpp",
+  "file": "C:\\Users\\lukeg\\code\\Capstone\\CHESS\\Chess\\main.cpp",
+  "output": "CMakeFiles\\main.dir\\main.cpp.obj"
+}
+]

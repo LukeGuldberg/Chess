@@ -1,0 +1,13 @@
+# ninja log v5
+33	3974	7308440233410324	CMakeFiles/gamelib.dir/piece.cpp.obj	559e61fc0c5ca987
+25	3995	7308440233455496	CMakeFiles/gamelib.dir/camera.cpp.obj	42f7835ca9e701cb
+42	4060	7308440234607460	CMakeFiles/gamelib.dir/engine.cpp.obj	873954d3a25b87f1
+13	4149	7308440235493269	CMakeFiles/gamelib.dir/chessboard.cpp.obj	94b1ff80d9f2ae5a
+53	4162	7308440235598426	CMakeFiles/main.dir/main.cpp.obj	b2a9c04730f558ee
+4	4287	7308440236927783	CMakeFiles/gamelib.dir/graphics.cpp.obj	efd5654db1d1e61b
+4287	4525	7308440239306070	libgamelib.a	205c19bbde6c2125
+4525	4781	7308440241834946	main.exe	90897a57589e06ae
+7	1514	7308464596029504	CMakeFiles/gamelib.dir/engine.cpp.obj	873954d3a25b87f1
+13	1525	7308464596029504	CMakeFiles/main.dir/main.cpp.obj	b2a9c04730f558ee
+1515	1708	7308464597988241	libgamelib.a	205c19bbde6c2125
+1708	2002	7308464600883723	main.exe	90897a57589e06ae

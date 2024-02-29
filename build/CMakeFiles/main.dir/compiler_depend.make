@@ -321,6 +321,7 @@ CMakeFiles/main.dir/main.cpp.obj: C:/Users/lukeg/code/Capstone/CHESS/Chess/main.
   C:/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h \
   C:/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h \
   C:/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc \
+  C:/Users/lukeg/code/Capstone/CHESS/Chess/engine.h \
   C:/Users/lukeg/code/Capstone/CHESS/Chess/chessboard.h \
   C:/msys64/mingw64/include/c++/12.2.0/memory \
   C:/msys64/mingw64/include/c++/12.2.0/bits/stl_raw_storage_iter.h \
@@ -345,8 +346,11 @@ CMakeFiles/main.dir/main.cpp.obj: C:/Users/lukeg/code/Capstone/CHESS/Chess/main.
   C:/msys64/mingw64/include/SDL2/SDL.h \
   C:/msys64/mingw64/include/SDL2/SDL_image.h \
   C:/msys64/mingw64/include/SDL2/SDL.h \
-  C:/Users/lukeg/code/Capstone/CHESS/Chess/graphics.h
+  C:/Users/lukeg/code/Capstone/CHESS/Chess/graphics.h \
+  C:/Users/lukeg/code/Capstone/CHESS/Chess/camera.h
 
+
+C:/Users/lukeg/code/Capstone/CHESS/Chess/camera.h:
 
 C:/msys64/mingw64/include/SDL2/SDL_image.h:
 
@@ -369,6 +373,8 @@ C:/msys64/mingw64/include/c++/12.2.0/bits/shared_ptr.h:
 C:/msys64/mingw64/include/c++/12.2.0/bit:
 
 C:/msys64/mingw64/include/c++/12.2.0/bits/stl_raw_storage_iter.h:
+
+C:/Users/lukeg/code/Capstone/CHESS/Chess/engine.h:
 
 C:/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc:
 

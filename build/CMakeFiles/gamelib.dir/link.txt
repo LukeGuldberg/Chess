@@ -1,2 +1,2 @@
-C:\msys64\mingw64\bin\ar.exe qc libgamelib.a CMakeFiles/gamelib.dir/chessboard.cpp.obj CMakeFiles/gamelib.dir/graphics.cpp.obj CMakeFiles/gamelib.dir/piece.cpp.obj
+C:\msys64\mingw64\bin\ar.exe qc libgamelib.a CMakeFiles/gamelib.dir/chessboard.cpp.obj CMakeFiles/gamelib.dir/graphics.cpp.obj CMakeFiles/gamelib.dir/piece.cpp.obj CMakeFiles/gamelib.dir/engine.cpp.obj CMakeFiles/gamelib.dir/camera.cpp.obj
 C:\msys64\mingw64\bin\ranlib.exe libgamelib.a

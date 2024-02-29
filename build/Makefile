@@ -141,6 +141,30 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+camera.obj: camera.cpp.obj
+.PHONY : camera.obj
+
+# target to build an object file
+camera.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/camera.cpp.obj
+.PHONY : camera.cpp.obj
+
+camera.i: camera.cpp.i
+.PHONY : camera.i
+
+# target to preprocess a source file
+camera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/camera.cpp.i
+.PHONY : camera.cpp.i
+
+camera.s: camera.cpp.s
+.PHONY : camera.s
+
+# target to generate assembly for a file
+camera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/camera.cpp.s
+.PHONY : camera.cpp.s
+
 chessboard.obj: chessboard.cpp.obj
 .PHONY : chessboard.obj
 
@@ -164,6 +188,30 @@ chessboard.s: chessboard.cpp.s
 chessboard.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/chessboard.cpp.s
 .PHONY : chessboard.cpp.s
+
+engine.obj: engine.cpp.obj
+.PHONY : engine.obj
+
+# target to build an object file
+engine.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/engine.cpp.obj
+.PHONY : engine.cpp.obj
+
+engine.i: engine.cpp.i
+.PHONY : engine.i
+
+# target to preprocess a source file
+engine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/engine.cpp.i
+.PHONY : engine.cpp.i
+
+engine.s: engine.cpp.s
+.PHONY : engine.s
+
+# target to generate assembly for a file
+engine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/engine.cpp.s
+.PHONY : engine.cpp.s
 
 graphics.obj: graphics.cpp.obj
 .PHONY : graphics.obj
@@ -247,9 +295,15 @@ help:
 	@echo ... rebuild_cache
 	@echo ... gamelib
 	@echo ... main
+	@echo ... camera.obj
+	@echo ... camera.i
+	@echo ... camera.s
 	@echo ... chessboard.obj
 	@echo ... chessboard.i
 	@echo ... chessboard.s
+	@echo ... engine.obj
+	@echo ... engine.i
+	@echo ... engine.s
 	@echo ... graphics.obj
 	@echo ... graphics.i
 	@echo ... graphics.s

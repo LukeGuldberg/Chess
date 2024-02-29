@@ -24,11 +24,4 @@ public:
     std::pair<int, int> board_to_pixel(int i);
 
     bool check_bounds(int x, int y);
-
-    // getter and setter -> see tilemap
-    // const int board_tile_length = 8;
-    // const int board_pixel_length = 728;
-    // const int pixels_per_tile = 91;
-    // const int starting_x_pixel = 436;
-    // const int starting_y_pixel = 86;
 };

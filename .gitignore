@@ -3,3 +3,4 @@ notes.txt
 .vscode
 *.zip
 .idea
+cmake-build-debug

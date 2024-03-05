@@ -1,6 +1,5 @@
 #pragma once
 #include "chessboard.h"
-#include "camera.h"
 
 class Graphics;
 
@@ -11,10 +10,10 @@ public:
 
     void run();
     void stop();
+    void input();
 
     SDL_Renderer *renderer;
     Graphics graphics;
-    Camera camera;
     Chessboard chessboard;
     bool running;
 };

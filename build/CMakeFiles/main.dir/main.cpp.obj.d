@@ -338,5 +338,4 @@ CMakeFiles/main.dir/main.cpp.obj: \
  C:/msys64/mingw64/include/SDL2/SDL.h \
  C:/msys64/mingw64/include/SDL2/SDL_image.h \
  C:/msys64/mingw64/include/SDL2/SDL.h \
- C:\Users\lukeg\code\Capstone\CHESS\Chess\graphics.h \
- C:\Users\lukeg\code\Capstone\CHESS\Chess\camera.h
+ C:\Users\lukeg\code\Capstone\CHESS\Chess\graphics.h

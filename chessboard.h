@@ -20,8 +20,10 @@ public:
     void place_starting_b_pieces();
     void place_starting_w_pieces();
 
-    int pixel_to_board(int x, int y);
-    std::pair<int, int> board_to_pixel(int i);
+    int  pixel_to_board(const int &x, const int &y, const Graphics &graphics) const;
+    std::pair<int, int> board_to_pixel(const int &i, const Graphics &graphics) const;
 
-    bool check_bounds(int x, int y);
+    bool has_piece(int pos) const;
+
+    bool check_bounds(int x, int y) const;
 };

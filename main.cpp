@@ -9,11 +9,6 @@
 #include "engine.h"
 #include "chessboard.h"
 
-
-
-void drawGrid(SDL_Renderer *renderer);
-void drawPieces(SDL_Renderer *renderer);
-
 int main()
 {
     Engine engine{"Chess"};

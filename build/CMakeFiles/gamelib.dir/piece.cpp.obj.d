@@ -262,4 +262,9 @@ CMakeFiles/gamelib.dir/piece.cpp.obj: \
  C:/msys64/mingw64/include/c++/12.2.0/cstdio \
  C:/msys64/mingw64/include/c++/12.2.0/cerrno \
  C:/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
- C:/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc
+ C:/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
+ C:/msys64/mingw64/include/c++/12.2.0/vector \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/stl_uninitialized.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h \
+ C:/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc

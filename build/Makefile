@@ -141,30 +141,6 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-camera.obj: camera.cpp.obj
-.PHONY : camera.obj
-
-# target to build an object file
-camera.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/camera.cpp.obj
-.PHONY : camera.cpp.obj
-
-camera.i: camera.cpp.i
-.PHONY : camera.i
-
-# target to preprocess a source file
-camera.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/camera.cpp.i
-.PHONY : camera.cpp.i
-
-camera.s: camera.cpp.s
-.PHONY : camera.s
-
-# target to generate assembly for a file
-camera.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\gamelib.dir\build.make CMakeFiles/gamelib.dir/camera.cpp.s
-.PHONY : camera.cpp.s
-
 chessboard.obj: chessboard.cpp.obj
 .PHONY : chessboard.obj
 
@@ -295,9 +271,6 @@ help:
 	@echo ... rebuild_cache
 	@echo ... gamelib
 	@echo ... main
-	@echo ... camera.obj
-	@echo ... camera.i
-	@echo ... camera.s
 	@echo ... chessboard.obj
 	@echo ... chessboard.i
 	@echo ... chessboard.s

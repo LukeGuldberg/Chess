@@ -128,28 +128,12 @@ CMakeFiles/gamelib.dir/engine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gamelib.dir/engine.cpp.s"
 	C:\msys64\mingw64\bin\x86_64-w64-mingw32-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\lukeg\code\Capstone\CHESS\Chess\engine.cpp -o CMakeFiles\gamelib.dir\engine.cpp.s
 
-CMakeFiles/gamelib.dir/camera.cpp.obj: CMakeFiles/gamelib.dir/flags.make
-CMakeFiles/gamelib.dir/camera.cpp.obj: CMakeFiles/gamelib.dir/includes_CXX.rsp
-CMakeFiles/gamelib.dir/camera.cpp.obj: C:/Users/lukeg/code/Capstone/CHESS/Chess/camera.cpp
-CMakeFiles/gamelib.dir/camera.cpp.obj: CMakeFiles/gamelib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/gamelib.dir/camera.cpp.obj"
-	C:\msys64\mingw64\bin\x86_64-w64-mingw32-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/gamelib.dir/camera.cpp.obj -MF CMakeFiles\gamelib.dir\camera.cpp.obj.d -o CMakeFiles\gamelib.dir\camera.cpp.obj -c C:\Users\lukeg\code\Capstone\CHESS\Chess\camera.cpp
-
-CMakeFiles/gamelib.dir/camera.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/gamelib.dir/camera.cpp.i"
-	C:\msys64\mingw64\bin\x86_64-w64-mingw32-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\lukeg\code\Capstone\CHESS\Chess\camera.cpp > CMakeFiles\gamelib.dir\camera.cpp.i
-
-CMakeFiles/gamelib.dir/camera.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gamelib.dir/camera.cpp.s"
-	C:\msys64\mingw64\bin\x86_64-w64-mingw32-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\lukeg\code\Capstone\CHESS\Chess\camera.cpp -o CMakeFiles\gamelib.dir\camera.cpp.s
-
 # Object files for target gamelib
 gamelib_OBJECTS = \
 "CMakeFiles/gamelib.dir/chessboard.cpp.obj" \
 "CMakeFiles/gamelib.dir/graphics.cpp.obj" \
 "CMakeFiles/gamelib.dir/piece.cpp.obj" \
-"CMakeFiles/gamelib.dir/engine.cpp.obj" \
-"CMakeFiles/gamelib.dir/camera.cpp.obj"
+"CMakeFiles/gamelib.dir/engine.cpp.obj"
 
 # External object files for target gamelib
 gamelib_EXTERNAL_OBJECTS =
@@ -158,10 +142,9 @@ libgamelib.a: CMakeFiles/gamelib.dir/chessboard.cpp.obj
 libgamelib.a: CMakeFiles/gamelib.dir/graphics.cpp.obj
 libgamelib.a: CMakeFiles/gamelib.dir/piece.cpp.obj
 libgamelib.a: CMakeFiles/gamelib.dir/engine.cpp.obj
-libgamelib.a: CMakeFiles/gamelib.dir/camera.cpp.obj
 libgamelib.a: CMakeFiles/gamelib.dir/build.make
 libgamelib.a: CMakeFiles/gamelib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX static library libgamelib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX static library libgamelib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles\gamelib.dir\cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\gamelib.dir\link.txt --verbose=$(VERBOSE)
 

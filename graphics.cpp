@@ -97,7 +97,7 @@ void Graphics::draw_pieces(Chessboard &chessboard)
     {
         if (t.piece)
         {
-            std::pair<int, int> pos = chessboard.board_to_pixel(t.piece->pos);
+            std::pair<int, int> pos = chessboard.board_to_pixel(t.piece->pos, *this);
             SDL_Rect rectPos = {pos.first, pos.second, TILE_SIZE, TILE_SIZE};
             SDL_Texture *texture = loadTexture(renderer, t.piece->file_name);
             draw_sprite(texture, rectPos);
@@ -121,4 +121,18 @@ SDL_Texture *Graphics::loadTexture(SDL_Renderer *renderer, const std::string &pa
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
     return texture;
+}
+
+void Graphics::highlight_tiles(const Chessboard &chessboard, const Graphics &graphics)
+{
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 100);
+    for (const int &pos : tiles_to_highlight)
+    {
+        std::cout << pos << "\n";
+        auto position = chessboard.board_to_pixel(pos, graphics);
+        SDL_Rect rectPos = {position.first, position.second, TILE_SIZE, TILE_SIZE};
+        SDL_RenderFillRect(renderer, &rectPos);
+    }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }

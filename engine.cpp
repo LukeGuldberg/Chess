@@ -46,7 +46,10 @@ void Engine::input()
                 int a, b;
                 SDL_GetMouseState(&a, &b);
                 int pos = chessboard.pixel_to_board(a, b, graphics);
-
+                if (pos == -1)
+                {
+                    continue;
+                }
                 if (chessboard.chessboard.at(pos).piece)
                 {
                     graphics.tiles_to_highlight = chessboard.chessboard.at(pos).piece->get_possible_moves(chessboard);
@@ -55,7 +58,6 @@ void Engine::input()
                 {
                     graphics.tiles_to_highlight = {pos};
                 }
-                // graphics.tiles_to_highlight = {0, 1, 2, 3, 4};
             }
         }
     }

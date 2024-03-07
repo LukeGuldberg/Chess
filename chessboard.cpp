@@ -1,5 +1,6 @@
 #include "chessboard.h"
 #include <string>
+#include <iostream>
 
 Chessboard::Chessboard()
 {
@@ -7,21 +8,22 @@ Chessboard::Chessboard()
     // create all tiles
 }
 
-bool Chessboard::check_bounds(int x, int y) const
+bool Chessboard::check_pixel_bounds(int x, int y, const Graphics &graphics) const
 {
-    if (x < 436 || y < 86 || x > 1164 || y > 814)
+    if (x < graphics.left_bound || y < graphics.upper_bound || x > graphics.right_bound || y > graphics.bottom_bound)
     {
         return false;
     }
     return true;
 }
 
+
 int Chessboard::pixel_to_board(const int &x, const int &y, const Graphics &graphics) const
 {
-    if (check_bounds(x, y))
+    if (check_pixel_bounds(x, y, graphics))
     {
-        int index_y = ((y - graphics.V_PADDING) / graphics.TILE_SIZE) * graphics.GRID_SIZE;
-        int index_x = (x - graphics.H_PADDING) / graphics.TILE_SIZE;
+        int index_y = ((y - graphics.upper_bound) / graphics.tile_size) * graphics.grid_size;
+        int index_x = (x - graphics.left_bound) / graphics.tile_size;
         return index_x + index_y;
     }
     return -1;
@@ -29,8 +31,8 @@ int Chessboard::pixel_to_board(const int &x, const int &y, const Graphics &graph
 
 std::pair<int, int> Chessboard::board_to_pixel(const int &i, const Graphics &graphics) const
 {
-    int x = ((i % graphics.GRID_SIZE) * graphics.TILE_SIZE) + graphics.H_PADDING;
-    int y = ((i / graphics.GRID_SIZE) * graphics.TILE_SIZE) + graphics.V_PADDING;
+    int x = ((i % graphics.grid_size) * graphics.tile_size) + graphics.left_bound;
+    int y = ((i / graphics.grid_size) * graphics.tile_size) + graphics.upper_bound;
 
     std::pair<int, int> coordinate = {x, y};
     return coordinate;
@@ -78,13 +80,12 @@ void Chessboard::place_starting_w_pieces()
     chessboard.push_back(Tile{Piece{"../assets/w_bishop.xcf", 61, BISHOP, true}});
     chessboard.push_back(Tile{Piece{"../assets/w_knight.xcf", 62, KNIGHT, true}});
     chessboard.push_back(Tile{Piece{"../assets/w_rook.xcf", 63, ROOK, true}});
-
-    
 }
 
-bool Chessboard::has_piece(int pos) const
+bool Tile::has_piece() const
 {
-    if (chessboard.at(pos).piece)
+
+    if (piece)
     {
         return true;
     }
@@ -92,5 +93,5 @@ bool Chessboard::has_piece(int pos) const
     {
         return false;
     }
-    // return true ? chessboard.at(pos).piece: false;
+    // return true ? piece: false;
 }

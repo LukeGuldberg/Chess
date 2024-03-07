@@ -24,13 +24,15 @@ public:
     SDL_Renderer *renderer;
     std::vector<int> tiles_to_highlight;
 
-    const int SCREEN_WIDTH = 1600;
-    const int SCREEN_HEIGHT = 900;
-    const int BOARD_WIDTH = 728;
-    const int GRID_SIZE = 8;
-    const int V_PADDING = 86;
-    const int H_PADDING = 436;
-    const int TILE_SIZE = BOARD_WIDTH / GRID_SIZE;
+    const int screen_width = 1600;
+    const int screen_height = 900;
+    const int board_width = 728;
+    const int grid_size = 8;
+    const int upper_bound = 86; // upper bound
+    const int left_bound = 436; // left bound
+    const int bottom_bound = 814;
+    const int right_bound = 1164;
+    const int tile_size = board_width / grid_size;
 
 private:
     SDL_Window *window;

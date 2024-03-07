@@ -7,6 +7,7 @@
 
 struct Tile
 {
+    bool has_piece() const;
     std::optional<Piece> piece; // std::optional
 };
 
@@ -23,7 +24,7 @@ public:
     int  pixel_to_board(const int &x, const int &y, const Graphics &graphics) const;
     std::pair<int, int> board_to_pixel(const int &i, const Graphics &graphics) const;
 
-    bool has_piece(int pos) const;
+    // bool has_piece(int pos) const;
 
-    bool check_bounds(int x, int y) const;
+    bool check_pixel_bounds(int x, int y, const Graphics &graphics) const;
 };

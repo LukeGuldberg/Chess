@@ -44,7 +44,8 @@ void Graphics::initialize_graphics(const std::string title)
         std::cout << SDL_GetError() << "\n";
     }
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+                              SDL_WINDOWPOS_CENTERED, screen_width, screen_height
+, 0);
     if (!window)
     {
         std::cout << SDL_GetError() << "\n";
@@ -82,7 +83,7 @@ void Graphics::draw_board()
     {
         for (int col = 0; col < 8; ++col)
         {
-            SDL_Rect rectPos = {col * TILE_SIZE + H_PADDING, row * TILE_SIZE + V_PADDING, TILE_SIZE, TILE_SIZE};
+            SDL_Rect rectPos = {col * tile_size + left_bound, row * tile_size + upper_bound, tile_size, tile_size};
             SDL_Texture *texture = (row + col) % 2 == 0 ? lightSquareTexture : darkSquareTexture;
             draw_sprite(texture, rectPos);
         }
@@ -98,7 +99,7 @@ void Graphics::draw_pieces(Chessboard &chessboard)
         if (t.piece)
         {
             std::pair<int, int> pos = chessboard.board_to_pixel(t.piece->pos, *this);
-            SDL_Rect rectPos = {pos.first, pos.second, TILE_SIZE, TILE_SIZE};
+            SDL_Rect rectPos = {pos.first, pos.second, tile_size, tile_size};
             SDL_Texture *texture = loadTexture(renderer, t.piece->file_name);
             draw_sprite(texture, rectPos);
         }
@@ -129,9 +130,11 @@ void Graphics::highlight_tiles(const Chessboard &chessboard, const Graphics &gra
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 100);
     for (const int &pos : tiles_to_highlight)
     {
-        std::cout << pos << "\n";
+        if(pos == -1) {
+            break;
+        }
         auto position = chessboard.board_to_pixel(pos, graphics);
-        SDL_Rect rectPos = {position.first, position.second, TILE_SIZE, TILE_SIZE};
+        SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};
         SDL_RenderFillRect(renderer, &rectPos);
     }
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

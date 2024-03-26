@@ -148,6 +148,7 @@ SDL_Texture *Graphics::loadTexture(SDL_Renderer *renderer, const std::string &pa
 
 void Graphics::highlight_tiles(const Chessboard &chessboard, const Graphics &graphics)
 {
+    //change to highlight previous move and currect selected tile, do not highlight all possible moves but keep that feature for testing
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 100);
     for (const int &pos : tiles_to_highlight)

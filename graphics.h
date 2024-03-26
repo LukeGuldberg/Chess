@@ -26,6 +26,7 @@ public:
 
     SDL_Renderer *renderer;
     std::vector<int> tiles_to_highlight;
+    std::vector<int> previous_move;
 
     const int screen_width = 1600;
     const int screen_height = 900;

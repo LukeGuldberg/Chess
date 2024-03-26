@@ -55,42 +55,40 @@ bool Engine::input()
                 int a, b;
                 SDL_GetMouseState(&a, &b);
                 int pos = chessboard.pixel_to_board(a, b, graphics);
+
                 if (pos == -1)
-                {
+                { // if mouse click is off of the board
+                    chessboard.selected_piece_index = -1;
                     continue;
                 }
-                if (chessboard.chessboard.at(pos).piece)
-                {
-                    graphics.tiles_to_highlight = chessboard.chessboard.at(pos).piece->get_possible_moves(chessboard);
+                if (chessboard.selected_piece_index != -1) 
+                { // if there is a piece selected
+
                 }
-                else
-                {
+                if (chessboard.chessboard.at(pos).piece && chessboard.chessboard.at(pos).piece->team_white)
+                { // if piece exists and piece is on team white
+                    chessboard.selected_piece_index = pos;
                     graphics.tiles_to_highlight = {pos};
                 }
+                else if (chessboard.chessboard.at(chessboard.selected_piece_index).piece && chessboard.is_valid_move(pos))
+                { // if a white piece is selected, and the next spot clicked is a valid move
+                    chessboard.chessboard.at(pos).piece.reset();
+                    chessboard.chessboard.at(chessboard.selected_piece_index).piece.swap(chessboard.chessboard.at(pos).piece);
+
+                    graphics.previous_move = {chessboard.selected_piece_index, pos}; // set previous move to be highlighted
+                }
+
+
+                //if (chessboard.chessboard.at(pos).piece)
+                //{
+                //    graphics.tiles_to_highlight = chessboard.chessboard.at(pos).piece->get_possible_moves(chessboard);
+                //}
+                //else
+                //{
+                //    graphics.tiles_to_highlight = {pos};
+                //}
             }
             return true;
-        }
-        if (event.type == SDL_MOUSEBUTTONUP)
-        {
-            if (SDL_BUTTON_LEFT == event.button.button)
-            {
-                graphics.tiles_to_highlight = {};
-                int a, b;
-                SDL_GetMouseState(&a, &b);
-                int pos = chessboard.pixel_to_board(a, b, graphics);
-                if (pos == -1)
-                {
-                    continue;
-                }
-                if (chessboard.chessboard.at(pos).piece)
-                {
-                    graphics.tiles_to_highlight = chessboard.chessboard.at(pos).piece->get_possible_moves(chessboard);
-                }
-                else
-                {
-                    graphics.tiles_to_highlight = {pos};
-                }
-            }
         }
     }
     return false;

@@ -17,6 +17,7 @@ public:
     Graphics graphics;
     Chessboard chessboard;
     bool running;
+    
 private:
     Engine(const Engine &other); // copy constructor
     Engine &operator=(const Engine &rhs); // copy assignment

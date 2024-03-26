@@ -7,6 +7,22 @@ Chessboard::Chessboard()
     fill_starting_tiles();
     // create all tiles
 }
+Chessboard::~Chessboard()
+{
+}
+
+bool Chessboard::is_valid_move(int pos)
+{
+    std::vector<int> possible_moves = chessboard.at(selected_piece_index).piece->get_possible_moves(*this);
+    for (int move : possible_moves)
+    {
+        if (pos == move)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
 bool Chessboard::check_pixel_bounds(int x, int y, const Graphics &graphics) const
 {
@@ -16,7 +32,6 @@ bool Chessboard::check_pixel_bounds(int x, int y, const Graphics &graphics) cons
     }
     return true;
 }
-
 
 int Chessboard::pixel_to_board(const int &x, const int &y, const Graphics &graphics) const
 {
@@ -60,6 +75,14 @@ void Chessboard::place_starting_b_pieces()
     chessboard.push_back(Tile{Piece{"../assets/b_knight.xcf", 6, KNIGHT, false}});
     chessboard.push_back(Tile{Piece{"../assets/b_rook.xcf", 7, ROOK, false}});
 
+    // chessboard.push_back(Tile{Piece{"../assets/b_rook.xcf", 8, ROOK, false}});
+    // chessboard.push_back(Tile{Piece{"../assets/b_knight.xcf", 9, KNIGHT, false}});
+    // chessboard.push_back(Tile{Piece{"../assets/b_bishop.xcf", 10, BISHOP, false}});
+    // chessboard.push_back(Tile{Piece{"../assets/b_queen.xcf", 11, QUEEN, false}});
+    // chessboard.push_back(Tile{Piece{"../assets/b_king.xcf", 12, KING, false}});
+    // chessboard.push_back(Tile{Piece{"../assets/b_bishop.xcf", 13, BISHOP, false}});
+    // chessboard.push_back(Tile{Piece{"../assets/b_knight.xcf", 14, KNIGHT, false}});
+    // chessboard.push_back(Tile{Piece{"../assets/b_rook.xcf", 15, ROOK, false}});
     for (int i = 8; i < 16; ++i)
     {
         chessboard.push_back(Tile{Piece{"../assets/b_pawn.xcf", i, PAWN, false}});

@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <string>
 #include <vector>
+#include <optional>
 
 class Chessboard;
 
@@ -20,14 +21,14 @@ class Piece
 {
 public:
     Piece(std::string file_name, int pos, Type type, bool team_white);
-
     std::vector<int> get_possible_moves(const Chessboard &chessboard);
-    bool is_opposing_team(const bool other);
-    
+    bool is_opposing_team(const std::optional<Piece> other);
+
     const std::string file_name;
     int pos;
     Type type;
     bool team_white;
+
 private:
     void test_white_pawn(std::vector<int> &possible_moves, const Chessboard &chessboard);
     void test_black_pawn(std::vector<int> &possible_moves, const Chessboard &chessboard);

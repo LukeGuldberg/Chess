@@ -43,6 +43,6 @@ private:
     SDL_Texture *darkSquareTexture;
     SDL_Texture *lightSquareTexture;
 
-    Graphics(const Graphics &other); // copy constructor
-    Graphics &operator=(const Graphics &rhs); // copy assignment operator
+    Graphics(const Graphics &other) = delete; // copy constructor
+    Graphics &operator=(const Graphics &rhs) = delete; // copy assignment operator
 };

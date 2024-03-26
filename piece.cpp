@@ -5,6 +5,30 @@
 Piece::Piece(std::string file_name, int pos, Type type, bool team_white)
     : file_name{file_name}, pos{pos}, type{type}, team_white{team_white} {}
 
+Piece::Piece(const Piece &other)
+    : file_name(other.file_name), pos(other.pos), type(other.type), team_white(other.team_white) {}
+
+Piece &Piece::operator=(const Piece &other)
+{
+    file_name = other.file_name;
+    pos = other.pos;
+    type = other.type;
+    team_white = other.team_white;
+    return *this;
+}
+
+Piece::Piece(Piece &&other) noexcept
+    : file_name(std::move(other.file_name)), pos(other.pos), type(other.type), team_white(other.team_white) {}
+
+Piece &Piece::operator=(Piece &&other) noexcept
+{
+    std::swap(file_name, other.file_name);
+    pos = other.pos;
+    type = other.type;
+    team_white = other.team_white;
+    return *this;
+}
+
 std::vector<int> Piece::get_possible_moves(const Chessboard &chessboard)
 {
     std::vector<int> possible_moves;

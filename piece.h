@@ -23,8 +23,12 @@ public:
     Piece(std::string file_name, int pos, Type type, bool team_white);
     std::vector<int> get_possible_moves(const Chessboard &chessboard);
     bool is_opposing_team(const std::optional<Piece> other);
+    Piece(const Piece &other);
+    Piece &operator=(const Piece &other);
+    Piece(Piece &&other) noexcept;
+    Piece &operator=(Piece &&other) noexcept;
 
-    const std::string file_name;
+    std::string file_name;
     int pos;
     Type type;
     bool team_white;

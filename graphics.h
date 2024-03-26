@@ -11,7 +11,10 @@ class Graphics
 {
 public:
     Graphics(const std::string &title);
+    Graphics(Graphics &&other);
+    Graphics &operator=(Graphics &&rhs);
     ~Graphics();
+
     void clear();
     void update();
     void initialize_graphics(const std::string title);
@@ -36,6 +39,9 @@ public:
 
 private:
     SDL_Window *window;
+    SDL_Texture *darkSquareTexture;
+    SDL_Texture *lightSquareTexture;
 
-    
+    Graphics(const Graphics &other); // copy constructor
+    Graphics &operator=(const Graphics &rhs); // copy assignment operator
 };

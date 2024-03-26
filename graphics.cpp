@@ -11,13 +11,32 @@
 Graphics::Graphics(const std::string &title)
 {
     initialize_graphics(title);
-    draw_board();
-    // draw_pieces();
+    darkSquareTexture = loadTexture(renderer, "../assets/dark_square.xcf");
+    lightSquareTexture = loadTexture(renderer, "../assets/light_square.xcf");
+}
+
+Graphics::Graphics(Graphics &&other)
+    : renderer{other.renderer}, window{other.window}, darkSquareTexture{other.darkSquareTexture}, lightSquareTexture{other.lightSquareTexture}, tiles_to_highlight{other.tiles_to_highlight}
+{
+    other.renderer = nullptr;
+    other.window = nullptr;
+    other.darkSquareTexture = nullptr;
+    other.lightSquareTexture = nullptr;
+}
+
+Graphics &Graphics::operator=(Graphics &&rhs){
+    std::swap(renderer, rhs.renderer);
+    std::swap(window, rhs.window);
+    std::swap(darkSquareTexture, rhs.darkSquareTexture);
+    std::swap(lightSquareTexture, rhs.lightSquareTexture);
+    return *this;
 }
 
 Graphics::~Graphics()
 {
     // clean up: release SDL resources
+    SDL_DestroyTexture(lightSquareTexture);
+    SDL_DestroyTexture(darkSquareTexture);
     IMG_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -44,8 +63,7 @@ void Graphics::initialize_graphics(const std::string title)
         std::cout << SDL_GetError() << "\n";
     }
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, screen_width, screen_height
-, 0);
+                              SDL_WINDOWPOS_CENTERED, screen_width, screen_height, 0);
     if (!window)
     {
         std::cout << SDL_GetError() << "\n";
@@ -70,8 +88,6 @@ void Graphics::initialize_graphics(const std::string title)
 }
 void Graphics::draw_board()
 {
-    SDL_Texture *darkSquareTexture = loadTexture(renderer, "../assets/dark_square.xcf");
-    SDL_Texture *lightSquareTexture = loadTexture(renderer, "../assets/light_square.xcf");
     if (!darkSquareTexture || !lightSquareTexture)
     {
         // Handle loading error
@@ -84,12 +100,16 @@ void Graphics::draw_board()
         for (int col = 0; col < 8; ++col)
         {
             SDL_Rect rectPos = {col * tile_size + left_bound, row * tile_size + upper_bound, tile_size, tile_size};
-            SDL_Texture *texture = (row + col) % 2 == 0 ? lightSquareTexture : darkSquareTexture;
-            draw_sprite(texture, rectPos);
+            if ((row + col) % 2 == 0)
+            {
+                draw_sprite(lightSquareTexture, rectPos);
+            }
+            else
+            {
+                draw_sprite(darkSquareTexture, rectPos);
+            }
         }
     }
-    SDL_DestroyTexture(darkSquareTexture);
-    SDL_DestroyTexture(lightSquareTexture);
 }
 
 void Graphics::draw_pieces(Chessboard &chessboard)
@@ -102,6 +122,8 @@ void Graphics::draw_pieces(Chessboard &chessboard)
             SDL_Rect rectPos = {pos.first, pos.second, tile_size, tile_size};
             SDL_Texture *texture = loadTexture(renderer, t.piece->file_name);
             draw_sprite(texture, rectPos);
+
+            SDL_DestroyTexture(texture);
         }
     }
 }
@@ -130,7 +152,8 @@ void Graphics::highlight_tiles(const Chessboard &chessboard, const Graphics &gra
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 100);
     for (const int &pos : tiles_to_highlight)
     {
-        if(pos == -1) {
+        if (pos == -1)
+        {
             break;
         }
         auto position = chessboard.board_to_pixel(pos, graphics);

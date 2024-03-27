@@ -23,8 +23,8 @@ Piece::Piece(Piece &&other) noexcept
 Piece &Piece::operator=(Piece &&other) noexcept
 {
     std::swap(file_name, other.file_name);
-    pos = other.pos;
     type = other.type;
+    std::swap(pos, other.pos);
     team_white = other.team_white;
     return *this;
 }

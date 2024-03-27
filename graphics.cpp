@@ -24,7 +24,8 @@ Graphics::Graphics(Graphics &&other)
     other.lightSquareTexture = nullptr;
 }
 
-Graphics &Graphics::operator=(Graphics &&rhs){
+Graphics &Graphics::operator=(Graphics &&rhs)
+{
     std::swap(renderer, rhs.renderer);
     std::swap(window, rhs.window);
     std::swap(darkSquareTexture, rhs.darkSquareTexture);
@@ -148,10 +149,22 @@ SDL_Texture *Graphics::loadTexture(SDL_Renderer *renderer, const std::string &pa
 
 void Graphics::highlight_tiles(const Chessboard &chessboard, const Graphics &graphics)
 {
-    //change to highlight previous move and currect selected tile, do not highlight all possible moves but keep that feature for testing
+    // change to highlight previous move and currect selected tile, do not highlight all possible moves but keep that feature for testing
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 100);
     for (const int &pos : tiles_to_highlight)
+    {
+        if (pos == -1)
+        {
+            break;
+        }
+        auto position = chessboard.board_to_pixel(pos, graphics);
+        SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};
+        SDL_RenderFillRect(renderer, &rectPos);
+    }
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, 0, 255, 255, 100);
+    for (const int &pos : previous_move)
     {
         if (pos == -1)
         {

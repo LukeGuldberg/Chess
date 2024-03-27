@@ -28,6 +28,7 @@ void Engine::run()
             graphics.draw_pieces(chessboard);
             graphics.highlight_tiles(chessboard, graphics);
             graphics.update();
+            std::cout << "Position: " << chessboard.chessboard.at(chessboard.selected_piece_index).piece->pos << "\nType: " << chessboard.chessboard.at(chessboard.selected_piece_index).piece->type << "\n\n";
         }
     }
 }
@@ -61,9 +62,6 @@ bool Engine::input()
                     chessboard.selected_piece_index = -1;
                     continue;
                 }
-                if (chessboard.selected_piece_index != -1)
-                { // if there is a piece selected
-                }
                 if (chessboard.chessboard.at(pos).piece && chessboard.chessboard.at(pos).piece->team_white)
                 { // if piece exists and piece is on team white
                     chessboard.selected_piece_index = pos;
@@ -71,18 +69,22 @@ bool Engine::input()
                 }
                 else if (chessboard.chessboard.at(chessboard.selected_piece_index).piece && chessboard.is_valid_move(pos))
                 { // if a white piece is selected, and the next spot clicked is a valid move
+                    // chessboard.chessboard.at(pos).piece->pos = pos;
+                    // chessboard.chessboard.at(chessboard.selected_piece_index).piece->pos = chessboard.selected_piece_index;
+                    // chessboard.chessboard.at(pos).piece = chessboard.chessboard.at(chessboard.selected_piece_index).piece;
+                    chessboard.chessboard.at(pos).piece.reset();
+                    chessboard.chessboard.at(chessboard.selected_piece_index)
+                        .piece.swap(chessboard.chessboard.at(pos).piece);
+                    chessboard.chessboard.at(pos).piece->pos = pos;
+                    chessboard.chessboard.at(chessboard.selected_piece_index).piece->pos = chessboard.selected_piece_index;
 
-                    chessboard.chessboard.at(pos).piece = chessboard.chessboard.at(chessboard.selected_piece_index).piece;
-                    chessboard.chessboard.at(chessboard.selected_piece_index).piece.reset();
-                    // chessboard.chessboard.at(chessboard.selected_piece_index)
-                    //     .piece.swap(chessboard.chessboard.at(pos).piece);
                     graphics.previous_move = {chessboard.selected_piece_index, pos}; // set previous move to be highlighted
                 }
 
-                // if (chessboard.chessboard.at(pos).piece)
-                //{
-                //     graphics.tiles_to_highlight = chessboard.chessboard.at(pos).piece->get_possible_moves(chessboard);
-                // }
+                if (chessboard.chessboard.at(chessboard.selected_piece_index).piece)
+                {
+                    graphics.tiles_to_highlight = chessboard.chessboard.at(chessboard.selected_piece_index).piece->get_possible_moves(chessboard);
+                }
                 // else
                 //{
                 //     graphics.tiles_to_highlight = {pos};

@@ -91,10 +91,19 @@ void Chessboard::place_starting_b_pieces()
 
 void Chessboard::place_starting_w_pieces()
 {
-    for (int i = 48; i < 56; ++i)
-    {
-        chessboard.push_back(Tile{Piece{"../assets/w_pawn.xcf", i, PAWN, true}});
-    }
+    // for (int i = 48; i < 56; ++i)
+    // {
+    //     chessboard.push_back(Tile{Piece{"../assets/w_pawn.xcf", i, PAWN, true}});
+    // }
+    chessboard.push_back(Tile{Piece{"../assets/w_rook.xcf", 48, ROOK, true}});
+    chessboard.push_back(Tile{Piece{"../assets/w_knight.xcf", 49, KNIGHT, true}});
+    chessboard.push_back(Tile{Piece{"../assets/w_bishop.xcf", 50, BISHOP, true}});
+    chessboard.push_back(Tile{Piece{"../assets/w_queen.xcf", 51, QUEEN, true}});
+    chessboard.push_back(Tile{Piece{"../assets/w_king.xcf", 52, KING, true}});
+    chessboard.push_back(Tile{Piece{"../assets/w_bishop.xcf", 53, BISHOP, true}});
+    chessboard.push_back(Tile{Piece{"../assets/w_knight.xcf", 54, KNIGHT, true}});
+    chessboard.push_back(Tile{Piece{"../assets/w_rook.xcf", 55, ROOK, true}});
+
     chessboard.push_back(Tile{Piece{"../assets/w_rook.xcf", 56, ROOK, true}});
     chessboard.push_back(Tile{Piece{"../assets/w_knight.xcf", 57, KNIGHT, true}});
     chessboard.push_back(Tile{Piece{"../assets/w_bishop.xcf", 58, BISHOP, true}});

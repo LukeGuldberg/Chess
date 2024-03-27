@@ -11,22 +11,30 @@ class Graphics
 {
 public:
     Graphics(const std::string &title);
-    Graphics(Graphics &&other);
-    Graphics &operator=(Graphics &&rhs);
+    Graphics(Graphics &&other); // move ctor
+    Graphics &operator=(Graphics &&rhs); // move assignment
     ~Graphics();
 
     void clear();
     void update();
     void initialize_graphics(const std::string title);
+
     void draw_sprite(SDL_Texture *spriteTexture, SDL_Rect rectPos);
     void draw_board();
     void draw_pieces(Chessboard &chessboard);
-    void highlight_tiles(const Chessboard &chessboard, const Graphics &graphics);
     SDL_Texture *loadTexture(SDL_Renderer *renderer, const std::string &path);
 
+    void highlight_tiles(const Chessboard &chessboard, const Graphics &graphics);
+    void highlight_previous_move(const Chessboard &chessboard, const Graphics &graphics);
+    void highlight_selected_tile(const Chessboard &chessboard, const Graphics &graphics);
+    void highlight_possible_moves(const Chessboard &chessboard, const Graphics &graphics);
+
     SDL_Renderer *renderer;
-    std::vector<int> tiles_to_highlight;
+    int selected_tile;
     std::vector<int> previous_move;
+    std::vector<int> possible_moves;
+
+    bool show_possible_moves = false;
 
     const int screen_width = 1600;
     const int screen_height = 900;
@@ -43,6 +51,8 @@ private:
     SDL_Texture *darkSquareTexture;
     SDL_Texture *lightSquareTexture;
 
-    Graphics(const Graphics &other) = delete; // copy constructor
+    
+
+    Graphics(const Graphics &other) = delete; // copy ctor
     Graphics &operator=(const Graphics &rhs) = delete; // copy assignment operator
 };

@@ -16,7 +16,7 @@ Graphics::Graphics(const std::string &title)
 }
 
 Graphics::Graphics(Graphics &&other)
-    : renderer{other.renderer}, window{other.window}, darkSquareTexture{other.darkSquareTexture}, lightSquareTexture{other.lightSquareTexture}, tiles_to_highlight{other.tiles_to_highlight}
+    : renderer{other.renderer}, selected_tile{other.selected_tile}, previous_move{other.previous_move}, possible_moves{other.possible_moves}, window{other.window}, darkSquareTexture{other.darkSquareTexture}, lightSquareTexture{other.lightSquareTexture}
 {
     other.renderer = nullptr;
     other.window = nullptr;
@@ -34,8 +34,7 @@ Graphics &Graphics::operator=(Graphics &&rhs)
 }
 
 Graphics::~Graphics()
-{
-    // clean up: release SDL resources
+{ // clean up: release SDL resources
     SDL_DestroyTexture(lightSquareTexture);
     SDL_DestroyTexture(darkSquareTexture);
     IMG_Quit();
@@ -45,8 +44,7 @@ Graphics::~Graphics()
 }
 
 void Graphics::clear()
-{
-    // clear the screen by painting it black
+{ // clear the screen by painting it black
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 }
@@ -69,11 +67,9 @@ void Graphics::initialize_graphics(const std::string title)
     {
         std::cout << SDL_GetError() << "\n";
     }
-    renderer = SDL_CreateRenderer(
-        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     // initialize SDL, create a window and renderer
-    // make sure to check all return values and throw exceptions when errors
-    // occur
+    // make sure to check all return values and throw exceptions when errors occur
 
     if (!renderer)
     {
@@ -90,8 +86,7 @@ void Graphics::initialize_graphics(const std::string title)
 void Graphics::draw_board()
 {
     if (!darkSquareTexture || !lightSquareTexture)
-    {
-        // Handle loading error
+    { // Handle loading error
         std::cerr << "Failed to load texture(s) for board squares!" << std::endl;
         return;
     }
@@ -149,19 +144,29 @@ SDL_Texture *Graphics::loadTexture(SDL_Renderer *renderer, const std::string &pa
 
 void Graphics::highlight_tiles(const Chessboard &chessboard, const Graphics &graphics)
 {
-    // change to highlight previous move and currect selected tile, do not highlight all possible moves but keep that feature for testing
+    highlight_selected_tile(chessboard, graphics);
+    highlight_previous_move(chessboard, graphics);
+    if (show_possible_moves)
+    {
+        highlight_possible_moves(chessboard, graphics);
+    }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+
+void Graphics::highlight_selected_tile(const Chessboard &chessboard, const Graphics &graphics)
+{
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 100);
-    for (const int &pos : tiles_to_highlight)
+    if (selected_tile != -1)
     {
-        if (pos == -1)
-        {
-            break;
-        }
-        auto position = chessboard.board_to_pixel(pos, graphics);
+        auto position = chessboard.board_to_pixel(selected_tile, graphics);
         SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};
         SDL_RenderFillRect(renderer, &rectPos);
     }
+}
+
+void Graphics::highlight_previous_move(const Chessboard &chessboard, const Graphics &graphics)
+{
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawColor(renderer, 0, 255, 255, 100);
     for (const int &pos : previous_move)
@@ -174,5 +179,19 @@ void Graphics::highlight_tiles(const Chessboard &chessboard, const Graphics &gra
         SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};
         SDL_RenderFillRect(renderer, &rectPos);
     }
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+void Graphics::highlight_possible_moves(const Chessboard &chessboard, const Graphics &graphics)
+{
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 100);
+    for (const int &pos : possible_moves)
+    {
+        if (pos == -1)
+        {
+            break;
+        }
+        auto position = chessboard.board_to_pixel(pos, graphics);
+        SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};
+        SDL_RenderFillRect(renderer, &rectPos);
+    }
 }

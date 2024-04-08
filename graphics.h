@@ -19,9 +19,11 @@ public:
     void update();
     void initialize_graphics(const std::string title);
 
-    void draw_sprite(SDL_Texture *spriteTexture, SDL_Rect rectPos);
+    void draw_background();
     void draw_board();
     void draw_pieces(Chessboard &chessboard);
+    void draw_taken_pieces(Chessboard &chessboard);
+    void draw_sprite(SDL_Texture *spriteTexture, SDL_Rect rectPos);
     SDL_Texture *loadTexture(SDL_Renderer *renderer, const std::string &path);
 
     void highlight_tiles(const Chessboard &chessboard, const Graphics &graphics);
@@ -34,7 +36,7 @@ public:
     std::vector<int> previous_move;
     std::vector<int> possible_moves;
 
-    bool show_possible_moves = false;
+    bool show_possible_moves = true;
 
     const int screen_width = 1600;
     const int screen_height = 900;

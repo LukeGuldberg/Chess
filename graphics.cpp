@@ -83,6 +83,14 @@ void Graphics::initialize_graphics(const std::string title)
         throw std::runtime_error(IMG_GetError());
     }
 }
+
+void Graphics::draw_background()
+{
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, 152, 118, 84, 255);
+    SDL_Rect rectPos = {0, 0, screen_width, screen_height};
+    SDL_RenderFillRect(renderer, &rectPos);
+}
 void Graphics::draw_board()
 {
     if (!darkSquareTexture || !lightSquareTexture)
@@ -121,6 +129,14 @@ void Graphics::draw_pieces(Chessboard &chessboard)
 
             SDL_DestroyTexture(texture);
         }
+    }
+}
+
+void Graphics::draw_taken_pieces(Chessboard &chessboard)
+{
+    for (const Piece &t : chessboard.taken_pieces)
+    {
+        //   if
     }
 }
 

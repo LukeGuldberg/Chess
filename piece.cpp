@@ -73,7 +73,7 @@ bool Piece::is_opposing_team(const std::optional<Piece> other)
 {
     if (!other)
     { // if other doesn't exist
-        return false;
+        return true;
     }
     return team_white == other->team_white;
 }
@@ -96,14 +96,14 @@ void Piece::test_white_pawn(std::vector<int> &possible_moves, const Chessboard &
 
     // check diagonal left attacking move
     int left_attack = pos - 9;
-    if (pos % 8 != 0 && is_opposing_team(chessboard.chessboard.at(left_attack).piece))
+    if (pos % 8 != 0 && !is_opposing_team(chessboard.chessboard.at(left_attack).piece))
     {
         possible_moves.push_back(left_attack);
     }
 
     // check diagonal right attacking move
     int right_attack = pos - 7;
-    if (pos % 8 != 7 && is_opposing_team(chessboard.chessboard.at(right_attack).piece))
+    if (pos % 8 != 7 && !is_opposing_team(chessboard.chessboard.at(right_attack).piece))
     {
         possible_moves.push_back(right_attack);
     }
@@ -128,14 +128,14 @@ void Piece::test_black_pawn(std::vector<int> &possible_moves, const Chessboard &
 
     // check diagonal left attacking move
     int left_attack = pos + 7;
-    if (pos % 8 != 0 && is_opposing_team(chessboard.chessboard.at(left_attack).piece))
+    if (pos % 8 != 0 && !is_opposing_team(chessboard.chessboard.at(left_attack).piece))
     {
         possible_moves.push_back(left_attack);
     }
 
     // check diagonal right attacking move
     int right_attack = pos + 9;
-    if (pos % 8 != 7 && is_opposing_team(chessboard.chessboard.at(right_attack).piece))
+    if (pos % 8 != 7 && !is_opposing_team(chessboard.chessboard.at(right_attack).piece))
     {
         possible_moves.push_back(right_attack);
     }

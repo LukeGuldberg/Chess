@@ -10,6 +10,7 @@ Engine::Engine(const std::string &title)
 
 void Engine::init()
 {
+    graphics.draw_background();
     graphics.draw_board();
     graphics.draw_pieces(chessboard);
     graphics.update();
@@ -24,6 +25,7 @@ void Engine::run()
         if (input())
         {
             graphics.clear();
+            graphics.draw_background();
             graphics.draw_board();
             graphics.draw_pieces(chessboard);
             graphics.highlight_tiles(chessboard, graphics);
@@ -68,7 +70,10 @@ bool Engine::input()
                 }
                 else if (chessboard.chessboard.at(chessboard.selected_piece_index).piece && chessboard.is_valid_move(pos))
                 {   // if a white piece is selected, and the next spot clicked is a valid move
-                    chessboard.chessboard.at(pos).piece.reset();
+                    if (chessboard.chessboard.at(pos).piece) {
+                        chessboard.taken_pieces.push_back(std::move(chessboard.chessboard.at(pos).piece.value()));
+                    }
+                        chessboard.chessboard.at(pos).piece.reset();
                     chessboard.chessboard.at(chessboard.selected_piece_index).piece.swap(chessboard.chessboard.at(pos).piece);
                     chessboard.chessboard.at(pos).piece->pos = pos;
                     chessboard.chessboard.at(chessboard.selected_piece_index).piece->pos = chessboard.selected_piece_index;

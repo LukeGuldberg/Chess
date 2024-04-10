@@ -63,6 +63,7 @@ bool Engine::input()
                     chessboard.selected_piece_index = -1;
                     continue;
                 }
+                
                 if (chessboard.chessboard.at(pos).piece && chessboard.chessboard.at(pos).piece->team_white)
                 {   // if piece exists and piece is on team white
                     chessboard.selected_piece_index = pos;
@@ -70,10 +71,11 @@ bool Engine::input()
                 }
                 else if (chessboard.chessboard.at(chessboard.selected_piece_index).piece && chessboard.is_valid_move(pos))
                 {   // if a white piece is selected, and the next spot clicked is a valid move
+                    
                     if (chessboard.chessboard.at(pos).piece) {
                         chessboard.taken_pieces.push_back(std::move(chessboard.chessboard.at(pos).piece.value()));
                     }
-                        chessboard.chessboard.at(pos).piece.reset();
+                    chessboard.chessboard.at(pos).piece.reset();
                     chessboard.chessboard.at(chessboard.selected_piece_index).piece.swap(chessboard.chessboard.at(pos).piece);
                     chessboard.chessboard.at(pos).piece->pos = pos;
                     chessboard.chessboard.at(chessboard.selected_piece_index).piece->pos = chessboard.selected_piece_index;

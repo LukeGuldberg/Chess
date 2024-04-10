@@ -2,14 +2,14 @@
 
 Agent::Agent(Chessboard initial_board)
 {
-    root = new Node(initial_board, NULL);
+    root = new Node(initial_board, std::pair<int, int>());
 }
 
 int Agent::minimax(Node *node, int depth, bool maximizingPlayer)
 {
     if (depth == 0 || /* game is over */)
     {
-        return evaluate(node->state);
+        return evaluate(node->board_state);
     }
 
     if (maximizingPlayer)
@@ -58,12 +58,12 @@ std::pair<int, int> Agent::find_best_move(int depth)
 
 void Agent::generate_tree(Node *node, int depth)
 {
-    if (depth == 0 || /* game is over */)
+    if (depth == 0) // game is over
     {
         return;
     }
 
-    std::vector<std::pair<int, int>> possible_moves = node->board_state generate_possible_moves(node->board_state);
+    std::vector<std::pair<int, int>> possible_moves = generate_possible_moves(node);
 
     for (std::pair<int, int> move : possible_moves)
     {
@@ -72,6 +72,36 @@ void Agent::generate_tree(Node *node, int depth)
         generate_tree(child, depth - 1);
         node->children.push_back(child);
     }
+}
+
+std::vector<std::pair<int, int>> Agent::generate_possible_moves(Node *node)
+{
+    std::vector<std::pair<int, int>> all_possible_moves;
+    for (Tile tile : node->board_state.chessboard)
+    {
+        std::vector<int> possible_moves;
+        if (tile.has_piece())
+        {
+            std::vector<int> possible_moves = tile.piece->get_possible_moves(node->board_state);
+        }
+        for (int i : possible_moves)
+        {
+            all_possible_moves.push_back({tile.piece->pos, i});
+        }
+    }
+    return all_possible_moves;
+}
+
+Chessboard Agent::apply_move(Chessboard board_state, std::pair<int, int> move)
+{
+    if (board_state.chessboard.at(move.second).piece)
+    {
+        board_state.taken_pieces.push_back(std::move(board_state.chessboard.at(move.second).piece.value()));
+    }
+    board_state.chessboard.at(move.second).piece.reset();
+    board_state.chessboard.at(move.first).piece.swap(board_state.chessboard.at(move.second).piece);
+    board_state.chessboard.at(move.second).piece->pos = move.second;
+    board_state.chessboard.at(move.first).piece->pos = move.first;
 }
 
 int Agent::evaluate(Chessboard state)

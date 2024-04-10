@@ -21,8 +21,9 @@ public:
 
     int minimax(Node *node, int depth, bool maximizingPlayer);
     std::pair<int, int> find_best_move(int depth);
-
+    Chessboard apply_move(Chessboard board_state, std::pair<int, int> move);
     void generate_tree(Node *node, int depth);
+    std::vector<std::pair<int, int>> Agent::generate_possible_moves(Node *node);
 
     int evaluate(Chessboard state);
 };

@@ -11,7 +11,7 @@ class Graphics
 {
 public:
     Graphics(const std::string &title);
-    Graphics(Graphics &&other); // move ctor
+    Graphics(Graphics &&other);          // move ctor
     Graphics &operator=(Graphics &&rhs); // move assignment
     ~Graphics();
 
@@ -36,7 +36,7 @@ public:
     std::vector<int> previous_move;
     std::vector<int> possible_moves;
 
-    bool show_possible_moves = true;
+    bool show_possible_moves = false;
 
     const int screen_width = 1600;
     const int screen_height = 900;
@@ -53,8 +53,6 @@ private:
     SDL_Texture *darkSquareTexture;
     SDL_Texture *lightSquareTexture;
 
-    
-
-    Graphics(const Graphics &other) = delete; // copy ctor
+    Graphics(const Graphics &other) = delete;          // copy ctor
     Graphics &operator=(const Graphics &rhs) = delete; // copy assignment operator
 };

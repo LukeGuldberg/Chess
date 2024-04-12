@@ -211,3 +211,4 @@ void Graphics::highlight_possible_moves(const Chessboard &chessboard, const Grap
         SDL_RenderFillRect(renderer, &rectPos);
     }
 }
+

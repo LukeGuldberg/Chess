@@ -1,5 +1,5 @@
 # Chess AI
-![alt text](image.png)
+![alt text](chessboard_screenshot.png)
 ## Building
 
 The game is written in C++ and uses features from the C++17

@@ -8,7 +8,6 @@ add_compile_options(-std=c++17 -g -Wall -Wextra)
 # find_package(SDL2_image REQUIRED)
 
 # project wide compilation settings
-add_compile_options(-std=c++17 -ggdb -O3)
 
 # divide project into src and testing folders
 add_subdirectory(src)

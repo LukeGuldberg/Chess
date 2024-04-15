@@ -1,12 +1,49 @@
 #include "agent.h"
+#include <climits>
+
+Node::Node(const Node &other) : board_state(other.board_state), move(other.move), score(other.score)
+{
+    // Perform deep copy of children
+    for (Node *child : other.children)
+    {
+        children.push_back(new Node(*child));
+    }
+}
+
+// Copy assignment operator
+Node &Node::operator=(const Node &other)
+{
+    if (this != &other)
+    {
+        // Perform deep copy of members
+        board_state = other.board_state;
+        move = other.move;
+        score = other.score;
+
+        // Delete existing children
+        for (Node *child : children)
+        {
+            delete child;
+        }
+        children.clear();
+
+        // Perform deep copy of children
+        for (Node *child : other.children)
+        {
+            children.push_back(new Node(*child));
+        }
+    }
+    return *this;
+}
 
 Agent::Agent(Chessboard initial_board)
 {
     initialize_opening_moves();
-    root = new Node(initial_board, std::pair<int, int>());
+    root = new Node(initial_board, std::pair<int, int>{0, 0});
 }
 
-void Agent::initialize_opening_moves(){
+void Agent::initialize_opening_moves()
+{
     opening_moves.push_back({11, 27});
     opening_moves.push_back({12, 20});
     opening_moves.push_back({5, 26});
@@ -147,6 +184,8 @@ int Agent::evaluate(Chessboard state)
         {
             score += get_piece_value(tile.piece->type);            // overall piece score comparison
             score += tile.piece->get_possible_moves(state).size(); // includes mobility into the score comparison
+            // score += total number of pieces attacking
+            // score -= total number of pieces being attacked (weigh based on what the pieces are?)
         }
     }
     if (state.white_to_move)
@@ -183,7 +222,8 @@ void Agent::reset_tree(Chessboard state)
     root = new Node(state, std::pair<int, int>());
 }
 
-void Agent::reset_tree_recursive(Node* node) {
+void Agent::reset_tree_recursive(Node *node)
+{
     if (!node)
         return;
     for (auto &child : node->children)

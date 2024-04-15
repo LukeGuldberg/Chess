@@ -15,7 +15,7 @@ Chessboard::Chessboard()
 Chessboard::~Chessboard() {}
 
 Chessboard::Chessboard(const Chessboard &other) // copy constructor
-    : chessboard(other.chessboard), taken_pieces(other.taken_pieces), selected_piece_index(other.selected_piece_index), white_to_move(other.white_to_move), white_can_castle_kingside(other.white_can_castle_kingside), white_can_castle_queenside(other.white_can_castle_queenside), black_can_castle_kingside(other.black_can_castle_kingside), black_can_castle_queenside(other.black_can_castle_queenside)
+    : chessboard{other.chessboard}, taken_pieces{other.taken_pieces}, selected_piece_index{other.selected_piece_index}, white_to_move{other.white_to_move}, white_can_castle_kingside{other.white_can_castle_kingside}, white_can_castle_queenside{other.white_can_castle_queenside}, black_can_castle_kingside{other.black_can_castle_kingside}, black_can_castle_queenside{other.black_can_castle_queenside}
 {
 }
 Chessboard &Chessboard::operator=(const Chessboard &other)

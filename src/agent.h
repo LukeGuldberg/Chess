@@ -4,11 +4,19 @@
 class Node
 {
 public:
-    Node(Chessboard state, std::pair<int, int> move) : board_state(board_state), move(move), score(0) {}
+    Node(Chessboard state, std::pair<int, int> move) : board_state(state), move(move), score(0) {}
+    Node(const Node &other);
+    Node &operator=(const Node &other);
+    
     Chessboard board_state;
     std::pair<int, int> move;
     int score;
     std::vector<Node *> children;
+    
+private:
+    
+    Node(Node &&other) = delete;
+    Node &operator=(Node &&other) = delete;
 };
 
 class Agent

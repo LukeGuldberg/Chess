@@ -131,7 +131,8 @@ void Engine::handle_agent_move(Chessboard &chessboard, std::pair<int, int> best_
         {
             chessboard.taken_pieces.push_back(std::move(chessboard.chessboard.at(best_move.second).piece.value()));
         }
-        chessboard.move_piece(best_move.first, best_move.second);
+
+                chessboard.move_piece(best_move.first, best_move.second);
     }
     agent.reset_tree(chessboard);
 }

@@ -23,7 +23,7 @@ public:
     bool is_valid_move(int start, int end);
 
     std::vector<Tile> chessboard;
-    std::vector<Piece> taken_pieces;
+    std::vector<Piece> taken_pieces; // nice to have -> show taken pieces next to board
     int selected_piece_index;
 
     void fill_starting_tiles();
@@ -46,5 +46,5 @@ public:
 
 private:
     bool check_pixel_bounds(int x, int y, const Graphics &graphics) const;
-    // bool test = false;
+    bool test = false;
 };

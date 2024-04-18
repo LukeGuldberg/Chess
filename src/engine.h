@@ -29,4 +29,4 @@ private:
     Engine &operator=(const Engine &rhs) = delete; // copy assignment
     Engine(Engine &&other) = delete;               // move constructor
     Engine &operator=(Engine &&rhs) = delete;      // move assignment
-    };
+};

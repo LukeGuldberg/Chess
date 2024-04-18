@@ -2,15 +2,18 @@
 #include "chessboard.h"
 #include <iostream>
 
-Piece::Piece(std::string file_name, int pos, Type type, bool team_white)
-    : file_name{file_name}, pos{pos}, type{type}, team_white{team_white} {}
+Piece::Piece(int pos, Type type, bool team_white)
+    : pos{pos},
+      type{type},
+      team_white{team_white} {}
 
 Piece::Piece(const Piece &other)
-    : file_name(other.file_name), pos(other.pos), type(other.type), team_white(other.team_white) {}
+    : pos(other.pos),
+      type(other.type),
+      team_white(other.team_white) {}
 
 Piece &Piece::operator=(const Piece &other)
 {
-    file_name = other.file_name;
     pos = other.pos;
     type = other.type;
     team_white = other.team_white;
@@ -18,11 +21,12 @@ Piece &Piece::operator=(const Piece &other)
 }
 
 Piece::Piece(Piece &&other) noexcept
-    : file_name(std::move(other.file_name)), pos(other.pos), type(other.type), team_white(other.team_white) {}
+    : pos(other.pos),
+      type(other.type),
+      team_white(other.team_white) {}
 
 Piece &Piece::operator=(Piece &&other) noexcept
 {
-    std::swap(file_name, other.file_name);
     type = other.type;
     std::swap(pos, other.pos);
     team_white = other.team_white;
@@ -75,7 +79,7 @@ bool Piece::is_opposing_team(const std::optional<Piece> other)
     { // if other doesn't exist
         return true;
     }
-    return !team_white == other->team_white;  // true if not same team
+    return !team_white == other->team_white; // true if not same team
 }
 
 void Piece::test_white_pawn(std::vector<int> &possible_moves, const Chessboard &chessboard)

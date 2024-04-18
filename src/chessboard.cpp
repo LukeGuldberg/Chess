@@ -7,15 +7,24 @@ Chessboard::Chessboard()
     fill_starting_tiles();
     turn_counter = 0;
     white_to_move = true;
-    white_can_castle_kingside, white_can_castle_queenside,
-        black_can_castle_kingside, black_can_castle_queenside = false;
+    white_can_castle_kingside = true;
+    white_can_castle_queenside = true;
+    black_can_castle_kingside = true;
+    black_can_castle_queenside = true;
 
     // create all tiles
 }
 Chessboard::~Chessboard() {}
 
 Chessboard::Chessboard(const Chessboard &other) // copy constructor
-    : chessboard{other.chessboard}, taken_pieces{other.taken_pieces}, selected_piece_index{other.selected_piece_index}, white_to_move{other.white_to_move}, white_can_castle_kingside{other.white_can_castle_kingside}, white_can_castle_queenside{other.white_can_castle_queenside}, black_can_castle_kingside{other.black_can_castle_kingside}, black_can_castle_queenside{other.black_can_castle_queenside}
+    : chessboard{other.chessboard},
+      taken_pieces{other.taken_pieces},
+      selected_piece_index{other.selected_piece_index},
+      white_to_move{other.white_to_move},
+      white_can_castle_kingside{other.white_can_castle_kingside},
+      white_can_castle_queenside{other.white_can_castle_queenside},
+      black_can_castle_kingside{other.black_can_castle_kingside},
+      black_can_castle_queenside{other.black_can_castle_queenside}
 {
 }
 Chessboard &Chessboard::operator=(const Chessboard &other)
@@ -127,18 +136,18 @@ void Chessboard::fill_starting_tiles()
 
 void Chessboard::place_starting_b_pieces()
 {
-    chessboard.push_back(Tile{Piece{"../assets/b_rook.xcf", 0, ROOK, false}});
-    chessboard.push_back(Tile{Piece{"../assets/b_knight.xcf", 1, KNIGHT, false}});
-    chessboard.push_back(Tile{Piece{"../assets/b_bishop.xcf", 2, BISHOP, false}});
-    chessboard.push_back(Tile{Piece{"../assets/b_queen.xcf", 3, QUEEN, false}});
-    chessboard.push_back(Tile{Piece{"../assets/b_king.xcf", 4, KING, false}});
-    chessboard.push_back(Tile{Piece{"../assets/b_bishop.xcf", 5, BISHOP, false}});
-    chessboard.push_back(Tile{Piece{"../assets/b_knight.xcf", 6, KNIGHT, false}});
-    chessboard.push_back(Tile{Piece{"../assets/b_rook.xcf", 7, ROOK, false}});
+    chessboard.push_back(Tile{Piece{0, ROOK, false}});
+    chessboard.push_back(Tile{Piece{1, KNIGHT, false}});
+    chessboard.push_back(Tile{Piece{2, BISHOP, false}});
+    chessboard.push_back(Tile{Piece{3, QUEEN, false}});
+    chessboard.push_back(Tile{Piece{4, KING, false}});
+    chessboard.push_back(Tile{Piece{5, BISHOP, false}});
+    chessboard.push_back(Tile{Piece{6, KNIGHT, false}});
+    chessboard.push_back(Tile{Piece{7, ROOK, false}});
 
     for (int i = 8; i < 16; ++i)
     {
-        chessboard.push_back(Tile{Piece{"../assets/b_pawn.xcf", i, PAWN, false}});
+        chessboard.push_back(Tile{Piece{i, PAWN, false}});
     }
 }
 
@@ -146,17 +155,17 @@ void Chessboard::place_starting_w_pieces()
 {
     for (int i = 48; i < 56; ++i)
     {
-        chessboard.push_back(Tile{Piece{"../assets/w_pawn.xcf", i, PAWN, true}});
+        chessboard.push_back(Tile{Piece{i, PAWN, true}});
     }
 
-    chessboard.push_back(Tile{Piece{"../assets/w_rook.xcf", 56, ROOK, true}});
-    chessboard.push_back(Tile{Piece{"../assets/w_knight.xcf", 57, KNIGHT, true}});
-    chessboard.push_back(Tile{Piece{"../assets/w_bishop.xcf", 58, BISHOP, true}});
-    chessboard.push_back(Tile{Piece{"../assets/w_queen.xcf", 59, QUEEN, true}});
-    chessboard.push_back(Tile{Piece{"../assets/w_king.xcf", 60, KING, true}});
-    chessboard.push_back(Tile{Piece{"../assets/w_bishop.xcf", 61, BISHOP, true}});
-    chessboard.push_back(Tile{Piece{"../assets/w_knight.xcf", 62, KNIGHT, true}});
-    chessboard.push_back(Tile{Piece{"../assets/w_rook.xcf", 63, ROOK, true}});
+    chessboard.push_back(Tile{Piece{56, ROOK, true}});
+    chessboard.push_back(Tile{Piece{57, KNIGHT, true}});
+    chessboard.push_back(Tile{Piece{58, BISHOP, true}});
+    chessboard.push_back(Tile{Piece{59, QUEEN, true}});
+    chessboard.push_back(Tile{Piece{60, KING, true}});
+    chessboard.push_back(Tile{Piece{61, BISHOP, true}});
+    chessboard.push_back(Tile{Piece{62, KNIGHT, true}});
+    chessboard.push_back(Tile{Piece{63, ROOK, true}});
 }
 
 bool Tile::has_piece() const
@@ -170,7 +179,6 @@ bool Tile::has_piece() const
     {
         return false;
     }
-    // return true ? piece: false;
 }
 
 void Chessboard::move_piece(int start, int end)
@@ -187,7 +195,7 @@ void Chessboard::move_piece(int start, int end)
 
 void Chessboard::fill_test_tiles()
 {
-    // chessboard.clear();
+    chessboard.clear();
 
     // Place black pieces
     place_starting_b_pieces();
@@ -205,38 +213,38 @@ void Chessboard::fill_test_tiles()
     // Move white pawns forward
     for (int i = 48; i < 56; ++i)
     {
-        chessboard[i - 32].piece = Piece{"../assets/w_pawn.xcf", i, PAWN, true};
+        chessboard[i - 32].piece = Piece{i, PAWN, true};
     }
 
     // Move black pawns forward
     for (int i = 8; i < 16; ++i)
     {
-        chessboard[i + 32].piece = Piece{"../assets/b_pawn.xcf", i, PAWN, false};
+        chessboard[i + 32].piece = Piece{i, PAWN, false};
     }
 
     // Move knights out
-    chessboard[1].piece = Piece{"../assets/b_knight.xcf", 1, KNIGHT, false};
-    chessboard[6].piece = Piece{"../assets/b_knight.xcf", 6, KNIGHT, false};
-    chessboard[57].piece = Piece{"../assets/w_knight.xcf", 57, KNIGHT, true};
-    chessboard[62].piece = Piece{"../assets/w_knight.xcf", 62, KNIGHT, true};
+    chessboard.at(1).piece = Piece{1, KNIGHT, false};
+    chessboard.at(6).piece = Piece{6, KNIGHT, false};
+    chessboard.at(57).piece = Piece{57, KNIGHT, true};
+    chessboard.at(62).piece = Piece{62, KNIGHT, true};
 
     // Move bishops out
-    chessboard[2].piece = Piece{"../assets/b_bishop.xcf", 2, BISHOP, false};
-    chessboard[5].piece = Piece{"../assets/b_bishop.xcf", 5, BISHOP, false};
-    chessboard[58].piece = Piece{"../assets/w_bishop.xcf", 58, BISHOP, true};
-    chessboard[61].piece = Piece{"../assets/w_bishop.xcf", 61, BISHOP, true};
+    chessboard.at(2).piece = Piece{2, BISHOP, false};
+    chessboard.at(5).piece = Piece{5, BISHOP, false};
+    chessboard.at(58).piece = Piece{58, BISHOP, true};
+    chessboard.at(61).piece = Piece{61, BISHOP, true};
 
     // Move rooks to corners
-    chessboard[0].piece = Piece{"../assets/b_rook.xcf", 0, ROOK, false};
-    chessboard[7].piece = Piece{"../assets/b_rook.xcf", 7, ROOK, false};
-    chessboard[56].piece = Piece{"../assets/w_rook.xcf", 56, ROOK, true};
-    chessboard[63].piece = Piece{"../assets/w_rook.xcf", 63, ROOK, true};
+    chessboard.at(0).piece = Piece{0, ROOK, false};
+    chessboard.at(7).piece = Piece{7, ROOK, false};
+    chessboard.at(56).piece = Piece{56, ROOK, true};
+    chessboard.at(63).piece = Piece{63, ROOK, true};
 
     // Place queens
-    chessboard[3].piece = Piece{"../assets/b_queen.xcf", 3, QUEEN, false};
-    chessboard[59].piece = Piece{"../assets/w_queen.xcf", 59, QUEEN, true};
+    chessboard.at(3).piece = Piece{3, QUEEN, false};
+    chessboard.at(59).piece = Piece{59, QUEEN, true};
 
     // Place kings
-    chessboard[4].piece = Piece{"../assets/b_king.xcf", 4, KING, false};
-    chessboard[60].piece = Piece{"../assets/w_king.xcf", 60, KING, true};
+    chessboard.at(4).piece = Piece{4, KING, false};
+    chessboard.at(60).piece = Piece{60, KING, true};
 }

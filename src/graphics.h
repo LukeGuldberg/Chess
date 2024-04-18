@@ -4,7 +4,8 @@
 #include <string>
 #include <memory>
 #include <vector>
-
+#include <optional>
+class Piece;
 class Chessboard;
 
 class Graphics
@@ -14,10 +15,14 @@ public:
     Graphics(Graphics &&other);          // move ctor
     Graphics &operator=(Graphics &&rhs); // move assignment
     ~Graphics();
+    void destroy_textures();
 
     void clear();
     void update();
+    void load_sprites();
     void initialize_graphics(const std::string title);
+
+    SDL_Texture *find_texture(std::optional<Piece> piece);
 
     void draw_background();
     void draw_board();
@@ -50,8 +55,22 @@ public:
 
 private:
     SDL_Window *window;
-    SDL_Texture *darkSquareTexture;
-    SDL_Texture *lightSquareTexture;
+    SDL_Texture *dark_square_texture;
+    SDL_Texture *light_square_texture;
+
+    SDL_Texture *w_pawn_texture;
+    SDL_Texture *w_bishop_texture;
+    SDL_Texture *w_rook_texture;
+    SDL_Texture *w_knight_texture;
+    SDL_Texture *w_king_texture;
+    SDL_Texture *w_queen_texture;
+
+    SDL_Texture *b_pawn_texture;
+    SDL_Texture *b_bishop_texture;
+    SDL_Texture *b_rook_texture;
+    SDL_Texture *b_knight_texture;
+    SDL_Texture *b_king_texture;
+    SDL_Texture *b_queen_texture;
 
     Graphics(const Graphics &other) = delete;          // copy ctor
     Graphics &operator=(const Graphics &rhs) = delete; // copy assignment operator

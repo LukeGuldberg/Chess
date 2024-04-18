@@ -20,7 +20,7 @@ enum Type
 class Piece
 {
 public:
-    Piece(std::string file_name, int pos, Type type, bool team_white);
+    Piece(int pos, Type type, bool team_white);
     std::vector<int> get_possible_moves(const Chessboard &chessboard);
     bool is_opposing_team(const std::optional<Piece> other);
     Piece(const Piece &other);
@@ -28,7 +28,6 @@ public:
     Piece(Piece &&other) noexcept;
     Piece &operator=(Piece &&other) noexcept;
 
-    std::string file_name;
     int pos;
     Type type;
     bool team_white;

@@ -1,33 +1,27 @@
 #include "agent.h"
 #include <climits>
 
-Node::Node(const Node &other) : board_state(other.board_state), move(other.move), score(other.score)
+Node::Node(const Node &other)
+    : board_state(other.board_state), move(other.move), score(other.score)
 {
-    // Perform deep copy of children
+    // deep copy
     for (Node *child : other.children)
     {
         children.push_back(new Node(*child));
     }
 }
 
-// Copy assignment operator
-Node &Node::operator=(const Node &other)
+Node &Node::operator=(const Node &other) // copy assignment
 {
     if (this != &other)
     {
-        // Perform deep copy of members
+        // deep copy
         board_state = other.board_state;
         move = other.move;
         score = other.score;
 
-        // Delete existing children
-        for (Node *child : children)
-        {
-            delete child;
-        }
-        children.clear();
+        reset_tree_recursive();
 
-        // Perform deep copy of children
         for (Node *child : other.children)
         {
             children.push_back(new Node(*child));
@@ -52,7 +46,7 @@ void Agent::initialize_opening_moves()
 
 int Agent::minimax(Node *node, int depth, int alpha, int beta, bool maximizingPlayer)
 {
-    if (depth == 0) // || game is over
+    if (depth == 0 || is_terminal(node->board_state)) // || game is over
     {
         return evaluate(node->board_state);
     }
@@ -99,10 +93,16 @@ int Agent::max(int a, int b)
     return (a > b) ? a : b;
 }
 
+bool Agent::is_terminal(Chessboard chessboard)
+{
+    // check for checkmate or stalemate
+}
+
 std::pair<int, int> Agent::find_best_move(int depth)
 {
     // Generate the tree of game states up to the specified depth
-    generate_tree(root, depth);
+    bool b_team = true;
+    generate_tree(root, depth, b_team);
 
     int best_score = INT_MIN;
     std::pair<int, int> best_move;
@@ -124,34 +124,43 @@ std::pair<int, int> Agent::find_best_move(int depth)
     return best_move;
 }
 
-void Agent::generate_tree(Node *node, int depth)
+void Agent::generate_tree(Node *node, int depth, bool b_team)
 {
     if (depth == 0) // or game is over
     {
         return;
     }
 
-    std::vector<std::pair<int, int>> possible_moves = generate_possible_moves(node);
+    std::vector<std::pair<int, int>> possible_moves = generate_possible_moves(node, b_team);
 
     for (std::pair<int, int> move : possible_moves)
     {
         Chessboard nextState = apply_move(node->board_state, move);
         Node *child = new Node(nextState, move);
-        generate_tree(child, depth - 1);
+        generate_tree(child, depth - 1, !b_team);
         node->children.push_back(child);
     }
 }
 
-std::vector<std::pair<int, int>> Agent::generate_possible_moves(Node *node)
+std::vector<std::pair<int, int>> Agent::generate_possible_moves(Node *node, bool b_team)
 {
     std::vector<std::pair<int, int>> all_possible_moves;
     for (Tile tile : node->board_state.chessboard)
     {
         std::vector<int> possible_moves;
-        if (tile.has_piece())
+        if (b_team)
         {
-            possible_moves = tile.piece->get_possible_moves(node->board_state);
+            if (tile.has_piece() && !tile.piece->team_white)
+            {
+                possible_moves = tile.piece->get_possible_moves(node->board_state);
+            }
+        } else {
+            if (tile.has_piece() && tile.piece->team_white)
+            {
+                possible_moves = tile.piece->get_possible_moves(node->board_state);
+            }
         }
+
         for (int i : possible_moves)
         {
             all_possible_moves.push_back({tile.piece->pos, i});
@@ -217,18 +226,20 @@ int Agent::get_piece_value(Type type)
 
 void Agent::reset_tree(Chessboard state)
 {
-    reset_tree_recursive(root);
+    root->reset_tree_recursive();
 
     root = new Node(state, std::pair<int, int>());
 }
 
-void Agent::reset_tree_recursive(Node *node)
+void Node::reset_tree_recursive()
 {
-    if (!node)
-        return;
-    for (auto &child : node->children)
+    for (auto &child : children)
     {
-        reset_tree_recursive(child);
+        if (!child)
+        {
+            return;
+        }
+        child->reset_tree_recursive();
     }
-    delete node;
+    delete this;
 }

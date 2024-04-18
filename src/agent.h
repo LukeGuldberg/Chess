@@ -7,14 +7,15 @@ public:
     Node(Chessboard state, std::pair<int, int> move) : board_state(state), move(move), score(0) {}
     Node(const Node &other);
     Node &operator=(const Node &other);
-    
+
+    void reset_tree_recursive();
+
     Chessboard board_state;
     std::pair<int, int> move;
     int score;
     std::vector<Node *> children;
-    
+
 private:
-    
     Node(Node &&other) = delete;
     Node &operator=(Node &&other) = delete;
 };
@@ -34,10 +35,12 @@ public:
     int min(int a, int b);
     int max(int a, int b);
 
+    bool is_terminal(Chessboard chessboard);
+
     std::pair<int, int> find_best_move(int depth);
     Chessboard apply_move(Chessboard board_state, std::pair<int, int> move);
-    void generate_tree(Node *node, int depth);
-    std::vector<std::pair<int, int>> generate_possible_moves(Node *node);
+    void generate_tree(Node *node, int depth, bool b_team);
+    std::vector<std::pair<int, int>> generate_possible_moves(Node *node, bool b_team);
 
     void reset_tree(Chessboard state);
     void reset_tree_recursive(Node *node);

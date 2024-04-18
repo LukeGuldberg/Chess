@@ -21,30 +21,12 @@ Graphics::Graphics(Graphics &&other)
       possible_moves{other.possible_moves},
       window{other.window},
       dark_square_texture{other.dark_square_texture},
-      light_square_texture{other.light_square_texture},
-      w_pawn_texture{other.w_pawn_texture},
-      w_bishop_texture{other.w_bishop_texture},
-      w_rook_texture{other.w_rook_texture},
-      w_knight_texture{other.w_knight_texture},
-      w_king_texture{other.w_king_texture},
-      w_queen_texture{other.w_queen_texture},
-      b_pawn_texture{other.b_pawn_texture},
-      b_bishop_texture{other.b_bishop_texture},
-      b_rook_texture{other.b_rook_texture},
-      b_knight_texture{other.b_knight_texture},
-      b_king_texture{other.b_knight_texture},
-      b_queen_texture{other.b_queen_texture}
+      light_square_texture{other.light_square_texture}
 {
     other.renderer = nullptr;
     other.window = nullptr;
     other.dark_square_texture = nullptr;
     other.light_square_texture = nullptr;
-    other.b_pawn_texture = nullptr;
-    other.b_bishop_texture = nullptr;
-    other.b_knight_texture = nullptr;
-    other.b_rook_texture = nullptr;
-    other.b_king_texture = nullptr;
-    other.b_queen_texture = nullptr;
 }
 
 Graphics &Graphics::operator=(Graphics &&rhs)
@@ -68,19 +50,10 @@ void Graphics::destroy_textures()
     SDL_DestroyTexture(light_square_texture);
     SDL_DestroyTexture(dark_square_texture);
 
-    SDL_DestroyTexture(w_pawn_texture);
-    SDL_DestroyTexture(w_bishop_texture);
-    SDL_DestroyTexture(w_knight_texture);
-    SDL_DestroyTexture(w_rook_texture);
-    SDL_DestroyTexture(w_king_texture);
-    SDL_DestroyTexture(w_queen_texture);
-
-    SDL_DestroyTexture(b_pawn_texture);
-    SDL_DestroyTexture(b_bishop_texture);
-    SDL_DestroyTexture(b_knight_texture);
-    SDL_DestroyTexture(b_rook_texture);
-    SDL_DestroyTexture(b_king_texture);
-    SDL_DestroyTexture(b_queen_texture);
+    for (auto &t : piece_textures)
+    {
+        SDL_DestroyTexture(t);
+    }
 }
 
 void Graphics::clear()
@@ -127,104 +100,23 @@ void Graphics::load_sprites()
 {
     dark_square_texture = loadTexture(renderer, "../assets/dark_square.xcf");
     light_square_texture = loadTexture(renderer, "../assets/light_square.xcf");
-
-    // w_pawn_texture = loadTexture(renderer, "../assets/w_pawn.xcf");
-    // w_bishop_texture = loadTexture(renderer, "../assets/w_bishop.xcf");
-    // w_knight_texture = loadTexture(renderer, "../assets/w_knight.xcf");
-    // w_rook_texture = loadTexture(renderer, "../assets/w_rook.xcf");
-    // w_king_texture = loadTexture(renderer, "../assets/w_king.xcf");
-    // w_queen_texture = loadTexture(renderer, "../assets/w_queen.xcf");
-
-    // b_pawn_texture = loadTexture(renderer, "../assets/b_pawn.xcf");
-    // b_bishop_texture = loadTexture(renderer, "../assets/b_bishop.xcf");
-    // b_knight_texture = loadTexture(renderer, "../assets/b_knight.xcf");
-    // b_rook_texture = loadTexture(renderer, "../assets/b_rook.xcf");
-    // b_king_texture = loadTexture(renderer, "../assets/b_king.xcf");
-    // b_queen_texture = loadTexture(renderer, "../assets/b_queen.xcf");
-
-    sdl_textures.push_back(loadTexture(renderer, "../assets/b_pawn.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/b_knight.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/b_bishop.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/b_rook.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/b_king.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/b_queen.xcf"));
-
-    sdl_textures.push_back(loadTexture(renderer, "../assets/w_pawn.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/w_knight.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/w_bishop.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/w_rook.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/w_king.xcf"));
-    sdl_textures.push_back(loadTexture(renderer, "../assets/w_queen.xcf"));
+    piece_textures = {loadTexture(renderer, "../assets/b_pawn.xcf"),
+                      loadTexture(renderer, "../assets/b_knight.xcf"),
+                      loadTexture(renderer, "../assets/b_bishop.xcf"),
+                      loadTexture(renderer, "../assets/b_rook.xcf"),
+                      loadTexture(renderer, "../assets/b_king.xcf"),
+                      loadTexture(renderer, "../assets/b_queen.xcf"),
+                      loadTexture(renderer, "../assets/w_pawn.xcf"),
+                      loadTexture(renderer, "../assets/w_knight.xcf"),
+                      loadTexture(renderer, "../assets/w_bishop.xcf"),
+                      loadTexture(renderer, "../assets/w_rook.xcf"),
+                      loadTexture(renderer, "../assets/w_king.xcf"),
+                      loadTexture(renderer, "../assets/w_queen.xcf")};
 }
 
 SDL_Texture *Graphics::find_texture(std::optional<Piece> piece)
 {
-    return sdl_textures.at(piece->type + piece->team_white * 6);
-
-    // switch (piece->type)
-    // {
-    // case PAWN:
-    //     if (piece->team_white)
-    //     {
-    //         return w_pawn_texture;
-    //     }
-    //     else
-    //     {
-    //         return b_pawn_texture;
-    //     }
-    //     break;
-    // case BISHOP:
-    //     if (piece->team_white)
-    //     {
-    //         return w_bishop_texture;
-    //     }
-    //     else
-    //     {
-    //         return b_bishop_texture;
-    //     }
-    //     break;
-    // case ROOK:
-    //     if (piece->team_white)
-    //     {
-    //         return w_rook_texture;
-    //     }
-    //     else
-    //     {
-    //         return b_rook_texture;
-    //     }
-    //     break;
-    // case KNIGHT:
-    //     if (piece->team_white)
-    //     {
-    //         return w_knight_texture;
-    //     }
-    //     else
-    //     {
-    //         return b_knight_texture;
-    //     }
-    //     break;
-    // case KING:
-    //     if (piece->team_white)
-    //     {
-    //         return w_king_texture;
-    //     }
-    //     else
-    //     {
-    //         return b_king_texture;
-    //     }
-    //     break;
-    // case QUEEN:
-    //     if (piece->team_white)
-    //     {
-    //         return w_queen_texture;
-    //     }
-    //     else
-    //     {
-    //         return b_queen_texture;
-    //     }
-    //     break;
-    // }
-    // return nullptr;
+    return piece_textures.at(piece->type + piece->team_white * 6);
 }
 
 void Graphics::draw_background()

@@ -56,23 +56,9 @@ public:
 private:
     SDL_Window *window;
 
-    std::vector<SDL_Texture *> sdl_textures;
+    std::vector<SDL_Texture *> piece_textures;
     SDL_Texture *dark_square_texture;
     SDL_Texture *light_square_texture;
-
-    SDL_Texture *w_pawn_texture;
-    SDL_Texture *w_bishop_texture;
-    SDL_Texture *w_rook_texture;
-    SDL_Texture *w_knight_texture;
-    SDL_Texture *w_king_texture;
-    SDL_Texture *w_queen_texture;
-
-    SDL_Texture *b_pawn_texture;
-    SDL_Texture *b_bishop_texture;
-    SDL_Texture *b_rook_texture;
-    SDL_Texture *b_knight_texture;
-    SDL_Texture *b_king_texture;
-    SDL_Texture *b_queen_texture;
 
     Graphics(const Graphics &other) = delete;          // copy ctor
     Graphics &operator=(const Graphics &rhs) = delete; // copy assignment operator

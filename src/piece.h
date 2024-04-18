@@ -6,6 +6,9 @@
 #include <optional>
 
 class Chessboard;
+class Piece;
+
+using FuncPtr = void (*)(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
 
 enum Type
 {
@@ -21,24 +24,26 @@ class Piece
 {
 public:
     Piece(int pos, Type type, bool team_white);
-    std::vector<int> get_possible_moves(const Chessboard &chessboard);
-    bool is_opposing_team(const std::optional<Piece> other);
     Piece(const Piece &other);
     Piece &operator=(const Piece &other);
     Piece(Piece &&other) noexcept;
     Piece &operator=(Piece &&other) noexcept;
 
+    std::vector<int> get_possible_moves(const Chessboard &chessboard);
+    bool is_opposing_team(std::optional<Piece> other) const;
+
     int pos;
     Type type;
     bool team_white;
 
-
 private:
-    void test_white_pawn(std::vector<int> &possible_moves, const Chessboard &chessboard);
-    void test_black_pawn(std::vector<int> &possible_moves, const Chessboard &chessboard);
-    void test_rook(std::vector<int> &possible_moves, const Chessboard &chessboard);
-    void test_bishop(std::vector<int> &possible_moves, const Chessboard &chessboard);
-    void test_knight(std::vector<int> &possible_moves, const Chessboard &chessboard);
-    void test_queen(std::vector<int> &possible_moves, const Chessboard &chessboard);
-    void test_king(std::vector<int> &possible_moves, const Chessboard &chessboard);
+    std::vector<FuncPtr> find_move_functions;
 };
+void test_pawn(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
+void test_white_pawn(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
+void test_black_pawn(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
+void test_rook(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
+void test_bishop(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
+void test_knight(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
+void test_queen(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
+void test_king(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);

@@ -5,31 +5,41 @@
 Piece::Piece(int pos, Type type, bool team_white)
     : pos{pos},
       type{type},
-      team_white{team_white} {}
+      team_white{team_white}
+{
+    find_move_functions = {&test_pawn, &test_knight,
+                           &test_bishop, &test_rook,
+                           &test_king, &test_queen};
+}
+
 
 Piece::Piece(const Piece &other)
-    : pos(other.pos),
-      type(other.type),
-      team_white(other.team_white) {}
+    : pos{other.pos},
+      type{other.type},
+      team_white{other.team_white},
+      find_move_functions{other.find_move_functions} {}
 
 Piece &Piece::operator=(const Piece &other)
 {
     pos = other.pos;
     type = other.type;
     team_white = other.team_white;
+    find_move_functions = other.find_move_functions;
     return *this;
 }
 
 Piece::Piece(Piece &&other) noexcept
     : pos(other.pos),
       type(other.type),
-      team_white(other.team_white) {}
+      team_white(other.team_white),
+      find_move_functions{other.find_move_functions} {}
 
 Piece &Piece::operator=(Piece &&other) noexcept
 {
     type = other.type;
     std::swap(pos, other.pos);
     team_white = other.team_white;
+    find_move_functions = other.find_move_functions;
     return *this;
 }
 
@@ -37,43 +47,12 @@ std::vector<int> Piece::get_possible_moves(const Chessboard &chessboard)
 {
     std::vector<int> possible_moves;
     possible_moves.push_back(pos);
-    switch (type)
-    {
-    case PAWN:
-        if (team_white)
-        {
-            test_white_pawn(possible_moves, chessboard);
-        }
-        else
-        {
-            test_black_pawn(possible_moves, chessboard);
-        }
-        break;
-
-    case BISHOP:
-        test_bishop(possible_moves, chessboard);
-        break;
-
-    case ROOK:
-        test_rook(possible_moves, chessboard);
-        break;
-
-    case KNIGHT:
-        test_knight(possible_moves, chessboard);
-        break;
-
-    case KING:
-        test_king(possible_moves, chessboard);
-        break;
-
-    case QUEEN:
-        test_queen(possible_moves, chessboard);
-        break;
-    }
+    auto func = find_move_functions.at(type);
+    func(*this, possible_moves, chessboard);
     return possible_moves;
 }
 
-bool Piece::is_opposing_team(const std::optional<Piece> other)
+bool Piece::is_opposing_team(std::optional<Piece> other) const
 {
     if (!other)
     { // if other doesn't exist
@@ -82,41 +61,53 @@ bool Piece::is_opposing_team(const std::optional<Piece> other)
     return !team_white == other->team_white; // true if not same team
 }
 
-void Piece::test_white_pawn(std::vector<int> &possible_moves, const Chessboard &chessboard)
+void test_pawn(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard)
 {
-    int forward_one = pos - 8;
-    int forward_two = pos - 16;
+    if (piece.team_white)
+    {
+        test_white_pawn(piece, possible_moves, chessboard);
+    }
+    else
+    {
+        test_black_pawn(piece, possible_moves, chessboard);
+    }
+}
+
+void test_white_pawn(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard)
+{
+    int forward_one = piece.pos - 8;
+    int forward_two = piece.pos - 16;
 
     if (!chessboard.chessboard.at(forward_one).has_piece())
     { // check one square forward
         possible_moves.push_back(forward_one);
 
         // check two squares forward from starting position
-        if ((pos < 56 && pos > 47) && !chessboard.chessboard.at(forward_two).has_piece())
+        if ((piece.pos < 56 && piece.pos > 47) && !chessboard.chessboard.at(forward_two).has_piece())
         {
             possible_moves.push_back(forward_two);
         }
     }
 
     // check diagonal left attacking move
-    int left_attack = pos - 9;
-    if (pos % 8 != 0 && is_opposing_team(chessboard.chessboard.at(left_attack).piece))
+    int left_attack = piece.pos - 9;
+    if (piece.pos % 8 != 0 && piece.is_opposing_team(chessboard.chessboard.at(left_attack).piece))
     {
         possible_moves.push_back(left_attack);
     }
 
     // check diagonal right attacking move
-    int right_attack = pos - 7;
-    if (pos % 8 != 7 && is_opposing_team(chessboard.chessboard.at(right_attack).piece))
+    int right_attack = piece.pos - 7;
+    if (piece.pos % 8 != 7 && piece.is_opposing_team(chessboard.chessboard.at(right_attack).piece))
     {
         possible_moves.push_back(right_attack);
     }
 }
 
-void Piece::test_black_pawn(std::vector<int> &possible_moves, const Chessboard &chessboard)
+void test_black_pawn(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard)
 {
-    int forward_one = pos + 8;
-    int forward_two = pos + 16;
+    int forward_one = piece.pos + 8;
+    int forward_two = piece.pos + 16;
 
     // check one square forward
     if (!chessboard.chessboard.at(forward_one).has_piece())
@@ -124,31 +115,31 @@ void Piece::test_black_pawn(std::vector<int> &possible_moves, const Chessboard &
         possible_moves.push_back(forward_one);
 
         // check two squares forward from starting position
-        if ((pos < 16 && pos > 7) && !chessboard.chessboard.at(forward_two).has_piece())
+        if ((piece.pos < 16 && piece.pos > 7) && !chessboard.chessboard.at(forward_two).has_piece())
         {
             possible_moves.push_back(forward_two);
         }
     }
 
     // check diagonal left attacking move
-    int left_attack = pos + 7;
-    if (pos % 8 != 0 && is_opposing_team(chessboard.chessboard.at(left_attack).piece))
+    int left_attack = piece.pos + 7;
+    if (piece.pos % 8 != 0 && piece.is_opposing_team(chessboard.chessboard.at(left_attack).piece))
     {
         possible_moves.push_back(left_attack);
     }
 
     // check diagonal right attacking move
-    int right_attack = pos + 9;
-    if (pos % 8 != 7 && is_opposing_team(chessboard.chessboard.at(right_attack).piece))
+    int right_attack = piece.pos + 9;
+    if (piece.pos % 8 != 7 && piece.is_opposing_team(chessboard.chessboard.at(right_attack).piece))
     {
         possible_moves.push_back(right_attack);
     }
 }
 
-void Piece::test_rook(std::vector<int> &possible_moves, const Chessboard &chessboard)
+void test_rook(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard)
 {
-    int row = pos % 8;
-    int col = pos / 8;
+    int row = piece.pos % 8;
+    int col = piece.pos / 8;
 
     // check upward
     for (int c = col + 1; c < 8; ++c)
@@ -158,7 +149,7 @@ void Piece::test_rook(std::vector<int> &possible_moves, const Chessboard &chessb
         {
             possible_moves.push_back(new_pos);
         }
-        else if (is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+        else if (piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
         {
             possible_moves.push_back(new_pos);
             break;
@@ -177,7 +168,7 @@ void Piece::test_rook(std::vector<int> &possible_moves, const Chessboard &chessb
         {
             possible_moves.push_back(new_pos);
         }
-        else if (is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+        else if (piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
         {
             possible_moves.push_back(new_pos);
             break;
@@ -196,7 +187,7 @@ void Piece::test_rook(std::vector<int> &possible_moves, const Chessboard &chessb
         {
             possible_moves.push_back(new_pos);
         }
-        else if (is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+        else if (piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
         {
             possible_moves.push_back(new_pos);
             break;
@@ -215,7 +206,7 @@ void Piece::test_rook(std::vector<int> &possible_moves, const Chessboard &chessb
         {
             possible_moves.push_back(new_pos);
         }
-        else if (is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+        else if (piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
         {
             possible_moves.push_back(new_pos);
             break;
@@ -227,10 +218,10 @@ void Piece::test_rook(std::vector<int> &possible_moves, const Chessboard &chessb
     }
 }
 
-void Piece::test_bishop(std::vector<int> &possible_moves, const Chessboard &chessboard)
+void test_bishop(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard)
 {
-    int row = pos % 8;
-    int col = pos / 8;
+    int row = piece.pos % 8;
+    int col = piece.pos / 8;
 
     // check up right
     for (int c = col + 1, r = row + 1; c < 8 && r < 8; ++c, ++r)
@@ -240,7 +231,7 @@ void Piece::test_bishop(std::vector<int> &possible_moves, const Chessboard &ches
         {
             possible_moves.push_back(new_pos);
         }
-        else if (is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+        else if (piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
         {
             possible_moves.push_back(new_pos);
             break;
@@ -259,7 +250,7 @@ void Piece::test_bishop(std::vector<int> &possible_moves, const Chessboard &ches
         {
             possible_moves.push_back(new_pos);
         }
-        else if (is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+        else if (piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
         {
             possible_moves.push_back(new_pos);
             break;
@@ -278,7 +269,7 @@ void Piece::test_bishop(std::vector<int> &possible_moves, const Chessboard &ches
         {
             possible_moves.push_back(new_pos);
         }
-        else if (is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+        else if (piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
         {
             possible_moves.push_back(new_pos);
             break;
@@ -297,7 +288,7 @@ void Piece::test_bishop(std::vector<int> &possible_moves, const Chessboard &ches
         {
             possible_moves.push_back(new_pos);
         }
-        else if (is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+        else if (piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
         {
             possible_moves.push_back(new_pos);
             break;
@@ -309,10 +300,10 @@ void Piece::test_bishop(std::vector<int> &possible_moves, const Chessboard &ches
     }
 }
 
-void Piece::test_knight(std::vector<int> &possible_moves, const Chessboard &chessboard)
+void test_knight(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard)
 {
-    int row = pos % 8;
-    int col = pos / 8;
+    int row = piece.pos % 8;
+    int col = piece.pos / 8;
     // all possible moves
     int knight_moves[8][2] = {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {2, -1}, {2, 1}};
 
@@ -323,7 +314,7 @@ void Piece::test_knight(std::vector<int> &possible_moves, const Chessboard &ches
         if (new_row >= 0 && new_row < 8 && new_col >= 0 && new_col < 8)
         {
             int new_pos = new_col * 8 + new_row;
-            if (!chessboard.chessboard.at(new_pos).has_piece() || is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+            if (!chessboard.chessboard.at(new_pos).has_piece() || piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
             {
                 possible_moves.push_back(new_pos);
             }
@@ -331,16 +322,16 @@ void Piece::test_knight(std::vector<int> &possible_moves, const Chessboard &ches
     }
 }
 
-void Piece::test_queen(std::vector<int> &possible_moves, const Chessboard &chessboard)
+void test_queen(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard)
 {
-    test_rook(possible_moves, chessboard);
-    test_bishop(possible_moves, chessboard);
+    test_rook(piece, possible_moves, chessboard);
+    test_bishop(piece, possible_moves, chessboard);
 }
 
-void Piece::test_king(std::vector<int> &possible_moves, const Chessboard &chessboard)
+void test_king(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard)
 {
-    int row = pos % 8;
-    int col = pos / 8;
+    int row = piece.pos % 8;
+    int col = piece.pos / 8;
     // all possible moves
     int king_moves[8][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
@@ -352,7 +343,7 @@ void Piece::test_king(std::vector<int> &possible_moves, const Chessboard &chessb
         {
             int new_pos = new_col * 8 + new_row;
             if (!chessboard.chessboard.at(new_pos).has_piece() ||
-                is_opposing_team(chessboard.chessboard.at(new_pos).piece))
+                piece.is_opposing_team(chessboard.chessboard.at(new_pos).piece))
             {
                 possible_moves.push_back(new_pos);
             }

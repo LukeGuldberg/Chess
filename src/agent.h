@@ -54,7 +54,7 @@ private:
     int bishop_value = 3;
     int rook_value = 5;
     int queen_value = 9;
-    int king_value = 200;
+    int king_value = 10;
 
     Agent(const Agent &other) = delete;
     Agent &operator=(const Agent &other) = delete;

@@ -18,7 +18,6 @@ public:
     void handle_agent_move(Chessboard &, std::pair<int, int>);
     void set_possible_moves(Chessboard &);
 
-    SDL_Renderer *renderer;
     Graphics graphics;
     Chessboard chessboard;
     Agent agent;

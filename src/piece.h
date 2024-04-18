@@ -32,6 +32,7 @@ public:
     Type type;
     bool team_white;
 
+
 private:
     void test_white_pawn(std::vector<int> &possible_moves, const Chessboard &chessboard);
     void test_black_pawn(std::vector<int> &possible_moves, const Chessboard &chessboard);

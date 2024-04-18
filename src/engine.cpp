@@ -5,7 +5,6 @@
 Engine::Engine(const std::string &title)
     : graphics{title}, chessboard{}, agent{chessboard} /**/
 {
-    renderer = graphics.renderer;
 }
 
 void Engine::init()

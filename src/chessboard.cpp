@@ -193,6 +193,24 @@ void Chessboard::move_piece(int start, int end)
     }
 }
 
+bool Chessboard::in_bounds(int pos)
+{
+    if (pos < 64 && pos >= 0)
+    {
+        return true;
+    }
+    return false;
+}
+bool Chessboard::in_bounds(int row, int col)
+{
+    int pos = col + row * 8;
+    if (pos < 64 && pos >= 0)
+    {
+        return true;
+    }
+    return false;
+}
+
 void Chessboard::fill_test_tiles()
 {
     chessboard.clear();

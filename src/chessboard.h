@@ -36,6 +36,9 @@ public:
     int pixel_to_board(const int &x, const int &y, const Graphics &graphics) const;
     std::pair<int, int> board_to_pixel(const int &i, const Graphics &graphics) const;
 
+    bool in_bounds(int pos);
+    bool in_bounds(int row, int col);
+
     int turn_counter;
 
     bool white_to_move = true;

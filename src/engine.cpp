@@ -49,54 +49,56 @@ bool Engine::input()
             break;
         }
 
+        int pos = get_mouse_click(event, chessboard);
         if (chessboard.white_to_move)
-        {
-            if (event.type == SDL_MOUSEBUTTONDOWN)
-            {
-                if (SDL_BUTTON_LEFT == event.button.button)
-                {
-                    graphics.selected_tile = -1;
-                    int a, b;
-                    SDL_GetMouseState(&a, &b);
-                    int pos = chessboard.pixel_to_board(a, b, graphics);
-
-                    if (pos == -1)
-                    { // if mouse click is off of the board
-                        chessboard.selected_piece_index = -1;
-                        continue;
-                    }
-                    handle_mouse_click(chessboard, pos);
-
-                    if (graphics.show_possible_moves)
-                    { // if show possible moves is turned on
-                        set_possible_moves(chessboard);
-                    }
-                }
-                return true;
-            }
+        { // pos clicked in bounds and whites turn
+            handle_mouse_click(chessboard, pos);
+            return true;
         }
         else
-        {
-            std::pair<int, int> best_move;
-            if (chessboard.turn_counter / 2 < agent.opening_moves.size())
-            {
-                best_move = agent.opening_moves.at(chessboard.turn_counter / 2);
-            }
-            else
-            {
-                best_move = agent.find_best_move(3);
-            }
-            std::cout << best_move.first << ", " << best_move.second << "\n";
-            handle_agent_move(chessboard, best_move);
-            chessboard.turn_counter++;
-            return true;
+        { // pos clicked is out of bounds
+            call_agent();
         }
     }
     return false;
 }
 
+void Engine::call_agent()
+{
+    std::pair<int, int> best_move;
+    if (chessboard.turn_counter / 2 < agent.opening_moves.size())
+    {
+        best_move = agent.opening_moves.at(chessboard.turn_counter / 2);
+    }
+    else
+    {
+        best_move = agent.find_best_move(2);
+    }
+    std::cout << best_move.first << ", " << best_move.second << "\n";
+    handle_agent_move(chessboard, best_move);
+    chessboard.turn_counter++;
+}
+
+int Engine::get_mouse_click(SDL_Event event, Chessboard &chessboard)
+{
+    if (event.type == SDL_MOUSEBUTTONDOWN)
+    {
+        if (SDL_BUTTON_LEFT == event.button.button)
+        {
+            graphics.selected_tile = -1;
+            int a, b;
+            SDL_GetMouseState(&a, &b);
+            return chessboard.pixel_to_board(a, b, graphics);
+        }
+    }
+    return -1;
+}
+
 void Engine::handle_mouse_click(Chessboard &chessboard, int pos)
 {
+    if(pos == -1) {
+        return;
+    }
     if (chessboard.chessboard.at(pos).piece && chessboard.chessboard.at(pos).piece->team_white)
     { // if piece exists and piece is on team white
         chessboard.selected_piece_index = pos;
@@ -111,6 +113,10 @@ void Engine::handle_mouse_click(Chessboard &chessboard, int pos)
         }
         chessboard.move_piece(chessboard.selected_piece_index, pos);
         graphics.previous_move = {chessboard.selected_piece_index, pos}; // set previous move to be highlighted
+    }
+    if (graphics.show_possible_moves)
+    { // if show possible moves is turned on
+        set_possible_moves(chessboard);
     }
 }
 

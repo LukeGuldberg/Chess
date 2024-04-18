@@ -14,7 +14,9 @@ public:
     void stop();
     bool input();
 
+    int get_mouse_click(SDL_Event, Chessboard &);
     void handle_mouse_click(Chessboard &, int);
+    void call_agent();
     void handle_agent_move(Chessboard &, std::pair<int, int>);
     void set_possible_moves(Chessboard &);
 

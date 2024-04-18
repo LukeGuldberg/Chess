@@ -55,6 +55,8 @@ public:
 
 private:
     SDL_Window *window;
+
+    std::vector<SDL_Texture *> sdl_textures;
     SDL_Texture *dark_square_texture;
     SDL_Texture *light_square_texture;
 

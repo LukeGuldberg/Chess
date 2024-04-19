@@ -1,9 +1,9 @@
-#include "chessboard.h"
 #include <vector>
 
-class Node
-{
-public:
+#include "chessboard.h"
+
+class Node {
+   public:
     Node(Chessboard state, std::pair<int, int> move) : board_state(state), move(move), score(0) {}
     Node(const Node &other);
     Node &operator=(const Node &other);
@@ -15,16 +15,16 @@ public:
     int score;
     std::vector<Node *> children;
 
-private:
+   private:
     Node(Node &&other) = delete;
     Node &operator=(Node &&other) = delete;
 };
 
-class Agent
-{
-public:
+class Agent {
+   public:
     Agent(Chessboard initial_board);
     void initialize_opening_moves();
+    void initialize_piece_structure_bonus();
 
     Node *root;
 
@@ -46,15 +46,27 @@ public:
     void reset_tree_recursive(Node *node);
 
     int evaluate(Chessboard state);
+    int pawn_structure_bonus_white(int pawnPos);
+    int pawn_structure_bonus_black(int pawnPos);
+    std::vector<int> get_piece_structure(Piece piece);
     int get_piece_value(Type type);
 
-private:
-    int pawn_value = 1;
-    int knight_value = 3;
-    int bishop_value = 3;
-    int rook_value = 5;
-    int queen_value = 9;
-    int king_value = 10;
+   private:
+    std::vector<int> piece_values;
+
+    std::vector<std::vector<int>> piece_structures;
+    std::vector<int> pawn_structure_white;
+    std::vector<int> pawn_structure_black;
+    std::vector<int> knight_structure_white;
+    std::vector<int> knight_structure_black;
+    std::vector<int> bishop_structure_white;
+    std::vector<int> bishop_structure_black;
+    std::vector<int> rook_structure_white;
+    std::vector<int> rook_structure_black;
+    std::vector<int> king_structure_white;
+    std::vector<int> king_structure_black;
+    std::vector<int> queen_structure_white;
+    std::vector<int> queen_structure_black;
 
     Agent(const Agent &other) = delete;
     Agent &operator=(const Agent &other) = delete;

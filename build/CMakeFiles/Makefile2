@@ -198,9 +198,9 @@ src/CMakeFiles/main.dir/clean:
 # Target rules for target test/CMakeFiles/tests.dir
 
 # All Build rule for target.
-test/CMakeFiles/tests.dir/all: src/CMakeFiles/gamelib.dir/all
 test/CMakeFiles/tests.dir/all: _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/all
 test/CMakeFiles/tests.dir/all: _deps/catch2-build/src/CMakeFiles/Catch2.dir/all
+test/CMakeFiles/tests.dir/all: src/CMakeFiles/gamelib.dir/all
 	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\tests.dir\build.make test/CMakeFiles/tests.dir/depend
 	$(MAKE) $(MAKESILENT) -f test\CMakeFiles\tests.dir\build.make test/CMakeFiles/tests.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles --progress-num=99,100 "Built target tests"

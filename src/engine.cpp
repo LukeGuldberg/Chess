@@ -49,17 +49,18 @@ bool Engine::input() {
             return true;
         } else {  // pos clicked is out of bounds
             call_agent();
+            return true;
         }
+        // running = !chessboard.win_condition_reached();
     }
     return false;
 }
 
 void Engine::call_agent() {
     std::pair<int, int> best_move;
-    best_move = agent.find_best_move(2);
+    best_move = agent.find_best_move(3);  // pass in depth
     std::cout << best_move.first << ", " << best_move.second << "\n";
     handle_agent_move(chessboard, best_move);
-    chessboard.turn_counter++;
 }
 
 int Engine::get_mouse_click(SDL_Event event, Chessboard &chessboard) {
@@ -89,6 +90,7 @@ void Engine::handle_mouse_click(Chessboard &chessboard, int pos) {
         chessboard.move_piece(chessboard.selected_piece_index, pos);
         graphics.previous_move = {chessboard.selected_piece_index, pos};  // set previous move to be highlighted
     }
+
     if (graphics.show_possible_moves) {  // if show possible moves is turned on
         set_possible_moves(chessboard);
     }

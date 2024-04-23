@@ -1,19 +1,19 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include <string>
+
 #include <memory>
-#include <vector>
 #include <optional>
+#include <string>
+#include <vector>
 class Piece;
 class Chessboard;
 
-class Graphics
-{
-public:
+class Graphics {
+   public:
     Graphics(const std::string &title);
-    Graphics(Graphics &&other);          // move ctor
-    Graphics &operator=(Graphics &&rhs); // move assignment
+    Graphics(Graphics &&other);           // move ctor
+    Graphics &operator=(Graphics &&rhs);  // move assignment
     ~Graphics();
     void destroy_textures();
 
@@ -47,19 +47,19 @@ public:
     const int screen_height = 900;
     const int board_width = 728;
     const int grid_size = 8;
-    const int upper_bound = 86; // upper bound
-    const int left_bound = 436; // left bound
+    const int upper_bound = 86;  // upper bound
+    const int left_bound = 436;  // left bound
     const int bottom_bound = 814;
     const int right_bound = 1164;
     const int tile_size = board_width / grid_size;
 
-private:
+   private:
     SDL_Window *window;
 
     std::vector<SDL_Texture *> piece_textures;
     SDL_Texture *dark_square_texture;
     SDL_Texture *light_square_texture;
 
-    Graphics(const Graphics &other) = delete;          // copy ctor
-    Graphics &operator=(const Graphics &rhs) = delete; // copy assignment operator
+    Graphics(const Graphics &other) = delete;           // copy ctor
+    Graphics &operator=(const Graphics &rhs) = delete;  // copy assignment operator
 };

@@ -1,17 +1,17 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL_image.h>
+
+#include <optional>
 #include <string>
 #include <vector>
-#include <optional>
 
 class Chessboard;
 class Piece;
 
 using FuncPtr = void (*)(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
 
-enum Type
-{
+enum Type {
     PAWN,
     KNIGHT,
     BISHOP,
@@ -20,9 +20,8 @@ enum Type
     QUEEN
 };
 
-class Piece
-{
-public:
+class Piece {
+   public:
     Piece(int pos, Type type, bool team_white);
     Piece(const Piece &other);
     Piece &operator=(const Piece &other);
@@ -36,7 +35,7 @@ public:
     Type type;
     bool team_white;
 
-private:
+   private:
     std::vector<FuncPtr> find_move_functions;
 };
 void test_pawn(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);

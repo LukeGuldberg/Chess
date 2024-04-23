@@ -23,14 +23,12 @@ class Node {
 class Agent {
    public:
     Agent(Chessboard initial_board);
-    void initialize_opening_moves();
     void initialize_piece_structure_bonus();
 
     Node *root;
 
     std::vector<std::pair<int, int>> opening_moves;
 
-    // int minimax(Node *node, int depth, bool maximizingPlayer);
     int minimax(Node *node, int depth, int alpha, int beta, bool maximizingPlayer);
     int min(int a, int b);
     int max(int a, int b);

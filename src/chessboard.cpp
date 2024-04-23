@@ -1,11 +1,10 @@
 #include "chessboard.h"
-#include <string>
-#include <iostream>
 
-Chessboard::Chessboard()
-{
+#include <iostream>
+#include <string>
+
+Chessboard::Chessboard() {
     fill_starting_tiles();
-    turn_counter = 0;
     white_to_move = true;
     white_can_castle_kingside = true;
     white_can_castle_queenside = true;
@@ -16,7 +15,7 @@ Chessboard::Chessboard()
 }
 Chessboard::~Chessboard() {}
 
-Chessboard::Chessboard(const Chessboard &other) // copy constructor
+Chessboard::Chessboard(const Chessboard &other)  // copy constructor
     : chessboard{other.chessboard},
       taken_pieces{other.taken_pieces},
       selected_piece_index{other.selected_piece_index},
@@ -24,11 +23,9 @@ Chessboard::Chessboard(const Chessboard &other) // copy constructor
       white_can_castle_kingside{other.white_can_castle_kingside},
       white_can_castle_queenside{other.white_can_castle_queenside},
       black_can_castle_kingside{other.black_can_castle_kingside},
-      black_can_castle_queenside{other.black_can_castle_queenside}
-{
+      black_can_castle_queenside{other.black_can_castle_queenside} {
 }
-Chessboard &Chessboard::operator=(const Chessboard &other)
-{
+Chessboard &Chessboard::operator=(const Chessboard &other) {
     chessboard = other.chessboard;
     taken_pieces = other.taken_pieces;
     selected_piece_index = other.selected_piece_index;
@@ -40,7 +37,7 @@ Chessboard &Chessboard::operator=(const Chessboard &other)
     return *this;
 }
 
-Chessboard::Chessboard(Chessboard &&other) // move constructor
+Chessboard::Chessboard(Chessboard &&other)  // move constructor
     : chessboard(std::move(other.chessboard)),
       taken_pieces(std::move(other.taken_pieces)),
       selected_piece_index(other.selected_piece_index),
@@ -48,8 +45,7 @@ Chessboard::Chessboard(Chessboard &&other) // move constructor
       white_can_castle_kingside(other.white_can_castle_kingside),
       white_can_castle_queenside(other.white_can_castle_queenside),
       black_can_castle_kingside(other.black_can_castle_kingside),
-      black_can_castle_queenside(other.black_can_castle_queenside)
-{
+      black_can_castle_queenside(other.black_can_castle_queenside) {
     other.selected_piece_index = -1;
     other.white_to_move = true;
     other.white_can_castle_kingside = true;
@@ -58,10 +54,9 @@ Chessboard::Chessboard(Chessboard &&other) // move constructor
     other.black_can_castle_queenside = true;
 }
 
-Chessboard &Chessboard::operator=(Chessboard &&other) // move assignment operator
+Chessboard &Chessboard::operator=(Chessboard &&other)  // move assignment operator
 {
-    if (this != &other)
-    {
+    if (this != &other) {
         chessboard = std::move(other.chessboard);
         taken_pieces = std::move(other.taken_pieces);
         selected_piece_index = other.selected_piece_index;
@@ -81,32 +76,41 @@ Chessboard &Chessboard::operator=(Chessboard &&other) // move assignment operato
     return *this;
 }
 
-bool Chessboard::is_valid_move(int start, int end)
-{
+bool Chessboard::is_valid_move(int start, int end) {
     std::vector<int> possible_moves = chessboard.at(start).piece->get_possible_moves(*this);
-    for (int move : possible_moves)
-    {
-        if (end == move)
-        {
+    for (int move : possible_moves) {
+        if (end == move) {
             return true;
         }
     }
     return false;
 }
 
-bool Chessboard::check_pixel_bounds(int x, int y, const Graphics &graphics) const
-{
-    if (x < graphics.left_bound || y < graphics.upper_bound || x > graphics.right_bound || y > graphics.bottom_bound)
-    {
+bool Chessboard::is_check() {
+}
+bool Chessboard::is_checkmate() {
+}
+
+bool Chessboard::win_condition_reached() {
+    if (is_check()) {
+        if (is_checkmate()) {
+            std::cout << "Checkmate! Game Over.\n";
+        } else {
+            std::cout << "Check!\n";
+            // Handle the fact that the opponent's king is in check
+        }
+    }
+}
+
+bool Chessboard::check_pixel_bounds(int x, int y, const Graphics &graphics) const {
+    if (x < graphics.left_bound || y < graphics.upper_bound || x > graphics.right_bound || y > graphics.bottom_bound) {
         return false;
     }
     return true;
 }
 
-int Chessboard::pixel_to_board(const int &x, const int &y, const Graphics &graphics) const
-{
-    if (check_pixel_bounds(x, y, graphics))
-    {
+int Chessboard::pixel_to_board(const int &x, const int &y, const Graphics &graphics) const {
+    if (check_pixel_bounds(x, y, graphics)) {
         int index_y = ((y - graphics.upper_bound) / graphics.tile_size) * graphics.grid_size;
         int index_x = (x - graphics.left_bound) / graphics.tile_size;
         return index_x + index_y;
@@ -114,8 +118,7 @@ int Chessboard::pixel_to_board(const int &x, const int &y, const Graphics &graph
     return -1;
 }
 
-std::pair<int, int> Chessboard::board_to_pixel(const int &i, const Graphics &graphics) const
-{
+std::pair<int, int> Chessboard::board_to_pixel(const int &i, const Graphics &graphics) const {
     int x = ((i % graphics.grid_size) * graphics.tile_size) + graphics.left_bound;
     int y = ((i / graphics.grid_size) * graphics.tile_size) + graphics.upper_bound;
 
@@ -123,38 +126,33 @@ std::pair<int, int> Chessboard::board_to_pixel(const int &i, const Graphics &gra
     return coordinate;
 }
 
-void Chessboard::fill_starting_tiles()
-{
+void Chessboard::fill_starting_tiles() {
     place_starting_b_pieces();
     // create tiles w/o pieces
-    for (int i = 16; i < 48; ++i)
-    {
+    for (int i = 16; i < 48; ++i) {
         chessboard.push_back(Tile{});
     }
     place_starting_w_pieces();
 }
 
-void Chessboard::place_starting_b_pieces()
-{
+void Chessboard::place_starting_b_pieces() {
     chessboard.push_back(Tile{Piece{0, ROOK, false}});
     chessboard.push_back(Tile{Piece{1, KNIGHT, false}});
     chessboard.push_back(Tile{Piece{2, BISHOP, false}});
     chessboard.push_back(Tile{Piece{3, QUEEN, false}});
     chessboard.push_back(Tile{Piece{4, KING, false}});
+    b_king_index = 4;
     chessboard.push_back(Tile{Piece{5, BISHOP, false}});
     chessboard.push_back(Tile{Piece{6, KNIGHT, false}});
     chessboard.push_back(Tile{Piece{7, ROOK, false}});
 
-    for (int i = 8; i < 16; ++i)
-    {
+    for (int i = 8; i < 16; ++i) {
         chessboard.push_back(Tile{Piece{i, PAWN, false}});
     }
 }
 
-void Chessboard::place_starting_w_pieces()
-{
-    for (int i = 48; i < 56; ++i)
-    {
+void Chessboard::place_starting_w_pieces() {
+    for (int i = 48; i < 56; ++i) {
         chessboard.push_back(Tile{Piece{i, PAWN, true}});
     }
 
@@ -163,28 +161,29 @@ void Chessboard::place_starting_w_pieces()
     chessboard.push_back(Tile{Piece{58, BISHOP, true}});
     chessboard.push_back(Tile{Piece{59, QUEEN, true}});
     chessboard.push_back(Tile{Piece{60, KING, true}});
+    w_king_index = 60;
     chessboard.push_back(Tile{Piece{61, BISHOP, true}});
     chessboard.push_back(Tile{Piece{62, KNIGHT, true}});
     chessboard.push_back(Tile{Piece{63, ROOK, true}});
 }
 
-bool Tile::has_piece() const
-{
-
-    if (piece)
-    {
+bool Tile::has_piece() const {
+    if (piece) {
         return true;
-    }
-    else
-    {
+    } else {
         return false;
     }
 }
 
-void Chessboard::move_piece(int start, int end)
-{
-    if (is_valid_move(start, end))
-    {
+void Chessboard::move_piece(int start, int end) {
+    if (is_valid_move(start, end)) {
+        if (chessboard.at(start).piece->type == KING) {
+            if (chessboard.at(start).piece->team_white) {
+                w_king_index = end;
+            } else {
+                b_king_index = end;
+            }
+        }
         chessboard.at(end).piece.reset();
         chessboard.at(start).piece.swap(chessboard.at(end).piece);
         chessboard.at(end).piece->pos = end;
@@ -193,34 +192,28 @@ void Chessboard::move_piece(int start, int end)
     }
 }
 
-bool Chessboard::in_bounds(int pos)
-{
-    if (pos < 64 && pos >= 0)
-    {
+bool Chessboard::in_bounds(int pos) {
+    if (pos < 64 && pos >= 0) {
         return true;
     }
     return false;
 }
-bool Chessboard::in_bounds(int row, int col)
-{
+bool Chessboard::in_bounds(int row, int col) {
     int pos = col + row * 8;
-    if (pos < 64 && pos >= 0)
-    {
+    if (pos < 64 && pos >= 0) {
         return true;
     }
     return false;
 }
 
-void Chessboard::fill_test_tiles()
-{
+void Chessboard::fill_test_tiles() {
     chessboard.clear();
 
     // Place black pieces
     place_starting_b_pieces();
 
     // Fill empty tiles for the middle of the board
-    for (int i = 16; i < 48; ++i)
-    {
+    for (int i = 16; i < 48; ++i) {
         chessboard.push_back(Tile{});
     }
 
@@ -229,14 +222,12 @@ void Chessboard::fill_test_tiles()
 
     // Additional moves to show a developed game
     // Move white pawns forward
-    for (int i = 48; i < 56; ++i)
-    {
+    for (int i = 48; i < 56; ++i) {
         chessboard[i - 32].piece = Piece{i, PAWN, true};
     }
 
     // Move black pawns forward
-    for (int i = 8; i < 16; ++i)
-    {
+    for (int i = 8; i < 16; ++i) {
         chessboard[i + 32].piece = Piece{i, PAWN, false};
     }
 

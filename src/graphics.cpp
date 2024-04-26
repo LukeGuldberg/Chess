@@ -160,46 +160,62 @@ SDL_Texture *Graphics::loadTexture(SDL_Renderer *renderer, const std::string &pa
     return texture;
 }
 
-void Graphics::highlight_tiles(const Chessboard &chessboard, const Graphics &graphics) {
-    highlight_selected_tile(chessboard, graphics);
-    highlight_previous_move(chessboard, graphics);
+void Graphics::highlight_tiles(const Chessboard &chessboard) {
+    highlight_selected_tile(chessboard);
+    highlight_previous_move(chessboard);
+    highlight_king_in_check(chessboard);
     if (show_possible_moves) {
-        highlight_possible_moves(chessboard, graphics);
+        highlight_possible_moves(chessboard);
     }
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
-void Graphics::highlight_selected_tile(const Chessboard &chessboard, const Graphics &graphics) {
+void Graphics::highlight_selected_tile(const Chessboard &chessboard) {
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 100);
     if (selected_tile != -1) {
-        auto position = chessboard.board_to_pixel(selected_tile, graphics);
+        auto position = chessboard.board_to_pixel(selected_tile, *this);
         SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};
         SDL_RenderFillRect(renderer, &rectPos);
     }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
-void Graphics::highlight_previous_move(const Chessboard &chessboard, const Graphics &graphics) {
+void Graphics::highlight_previous_move(const Chessboard &chessboard) {
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawColor(renderer, 0, 255, 255, 100);
     for (const int &pos : previous_move) {
         if (pos == -1) {
             break;
         }
-        auto position = chessboard.board_to_pixel(pos, graphics);
+        auto position = chessboard.board_to_pixel(pos, *this);
         SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};
         SDL_RenderFillRect(renderer, &rectPos);
     }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
-void Graphics::highlight_possible_moves(const Chessboard &chessboard, const Graphics &graphics) {
+void Graphics::highlight_possible_moves(const Chessboard &chessboard) {
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 100);
     for (const int &pos : possible_moves) {
         if (pos == -1) {
             break;
         }
-        auto position = chessboard.board_to_pixel(pos, graphics);
+        auto position = chessboard.board_to_pixel(pos, *this);
         SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};
         SDL_RenderFillRect(renderer, &rectPos);
     }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+
+void Graphics::highlight_king_in_check(const Chessboard &chessboard) {
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 150);
+
+    if (king_in_check > -1) {
+        auto position = chessboard.board_to_pixel(king_in_check, *this);
+        SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};
+        SDL_RenderFillRect(renderer, &rectPos);
+    }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }

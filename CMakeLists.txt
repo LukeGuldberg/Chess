@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 project(chess)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-add_compile_options(-std=c++17 -g -Wall -Wextra)
+add_compile_options(-std=c++17 -g -Wall -Wextra -O2)
 
 # find_package(SDL2 REQUIRED)
 # find_package(SDL2_image REQUIRED)
@@ -12,3 +12,5 @@ add_compile_options(-std=c++17 -g -Wall -Wextra)
 # divide project into src and testing folders
 add_subdirectory(src)
 add_subdirectory(test)
+
+# link time optimizations

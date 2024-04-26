@@ -11,15 +11,14 @@ class Engine {
     void init();
     void run();
     void stop();
-    void draw_screen();
-    void take_turn();
     bool input();
 
-    int get_mouse_click(SDL_Event, Chessboard &);
-    void handle_mouse_click(Chessboard &, int);
+    int get_mouse_click(SDL_Event);
+    void handle_mouse_click(int);
     void call_agent();
-    void handle_agent_move(Chessboard &, std::pair<int, int>);
-    void set_possible_moves(Chessboard &);
+    void handle_agent_move(std::pair<int, int>);
+    void set_possible_moves();
+    void test_for_checks();
 
     Graphics graphics;
     Chessboard chessboard;

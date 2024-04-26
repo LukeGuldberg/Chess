@@ -3,8 +3,11 @@
 #include <iostream>
 #include <string>
 
+#include "piece.h"
+
 Chessboard::Chessboard() {
     fill_starting_tiles();
+    selected_piece_index = -1;
     white_to_move = true;
     white_can_castle_kingside = true;
     white_can_castle_queenside = true;
@@ -77,6 +80,10 @@ Chessboard &Chessboard::operator=(Chessboard &&other)  // move assignment operat
 }
 
 bool Chessboard::is_valid_move(int start, int end) {
+    /* if in check
+        add test that uses agent code to go one depth
+        into the minimax algorithm and tests to see if the move
+        gets the king taken... only allow moves that prevent the king from being in check */
     std::vector<int> possible_moves = chessboard.at(start).piece->get_possible_moves(*this);
     for (int move : possible_moves) {
         if (end == move) {
@@ -87,8 +94,25 @@ bool Chessboard::is_valid_move(int start, int end) {
 }
 
 bool Chessboard::is_check() {
+    // if (white_to_move) {
+    for (int i : attackable_by_white) {
+        if (i == b_king_index) {
+            std::cout << "Black king at " << b_king_index << " under attack\n";
+            return true;
+        }
+    }
+    // } else {
+    for (int i : attackable_by_black) {
+        if (i == w_king_index) {
+            std::cout << "White king at " << w_king_index << " under attack\n";
+            return true;
+        }
+    }
+    // }
+    return false;
 }
 bool Chessboard::is_checkmate() {
+    // end game
 }
 
 bool Chessboard::win_condition_reached() {
@@ -98,6 +122,25 @@ bool Chessboard::win_condition_reached() {
         } else {
             std::cout << "Check!\n";
             // Handle the fact that the opponent's king is in check
+        }
+    }
+}
+
+void Chessboard::recalculate_attackable_tiles() {
+    attackable_by_black.clear();
+    attackable_by_white.clear();
+    for (Tile &t : chessboard) {
+        if (t.has_piece()) {
+            std::vector<int> possible_moves = t.piece->get_possible_moves(*this);
+            if (t.piece->team_white) {
+                for (int i : possible_moves) {
+                    attackable_by_white.insert(i);
+                }
+            } else {
+                for (int i : possible_moves) {
+                    attackable_by_black.insert(i);
+                }
+            }
         }
     }
 }
@@ -189,6 +232,8 @@ void Chessboard::move_piece(int start, int end) {
         chessboard.at(end).piece->pos = end;
         chessboard.at(start).piece->pos = start;
         white_to_move = !white_to_move;
+        recalculate_attackable_tiles();
+        // is_check();
     }
 }
 

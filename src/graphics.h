@@ -31,13 +31,15 @@ class Graphics {
     void draw_sprite(SDL_Texture *spriteTexture, SDL_Rect rectPos);
     SDL_Texture *loadTexture(SDL_Renderer *renderer, const std::string &path);
 
-    void highlight_tiles(const Chessboard &chessboard, const Graphics &graphics);
-    void highlight_previous_move(const Chessboard &chessboard, const Graphics &graphics);
-    void highlight_selected_tile(const Chessboard &chessboard, const Graphics &graphics);
-    void highlight_possible_moves(const Chessboard &chessboard, const Graphics &graphics);
+    void highlight_tiles(const Chessboard &chessboard);
+    void highlight_previous_move(const Chessboard &chessboard);
+    void highlight_selected_tile(const Chessboard &chessboard);
+    void highlight_possible_moves(const Chessboard &chessboard);
+    void highlight_king_in_check(const Chessboard &chessboard);
 
     SDL_Renderer *renderer;
-    int selected_tile;
+    int selected_tile = -1;
+    int king_in_check = -1;
     std::vector<int> previous_move;
     std::vector<int> possible_moves;
 

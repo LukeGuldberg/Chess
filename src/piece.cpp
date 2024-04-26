@@ -43,7 +43,6 @@ Piece &Piece::operator=(Piece &&other) noexcept {
 
 std::vector<int> Piece::get_possible_moves(const Chessboard &chessboard) {
     std::vector<int> possible_moves;
-    possible_moves.push_back(pos);
     auto func = find_move_functions.at(type);
     func(*this, possible_moves, chessboard);
     return possible_moves;

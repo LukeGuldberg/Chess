@@ -239,6 +239,7 @@ void Agent::generate_tree(Node *node, int depth, bool b_team) {
     for (std::pair<int, int> move : possible_moves) {
         Chessboard nextState = apply_move(node->board_state, move);
         Node *child = new Node(nextState, move);
+
         generate_tree(child, depth - 1, !b_team);
         node->children.push_back(child);
     }
@@ -277,10 +278,11 @@ Chessboard Agent::apply_move(Chessboard board_state, std::pair<int, int> move) {
         }
     }
     board_state.chessboard.at(move.second).piece.reset();
-    board_state.chessboard.at(move.first)
-        .piece.swap(board_state.chessboard.at(move.second).piece);
+    board_state.chessboard.at(move.first).piece.swap(board_state.chessboard.at(move.second).piece);
     board_state.chessboard.at(move.second).piece->pos = move.second;
     board_state.chessboard.at(move.first).piece->pos = move.first;
+    board_state.recalculate_attackable_tiles();  // call because a move was made
+    // board_state.is_check();
     return board_state;
 }
 

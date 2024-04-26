@@ -28,12 +28,14 @@ class Chessboard {
     std::vector<Tile> chessboard;
     std::vector<Piece> taken_pieces;  // nice to have -> show taken pieces next to board
 
-    std::set<Tile> attackable_by_white;  // all tiles that can be attacked by white
-    std::set<Tile> attackable_by_black;
+    void recalculate_attackable_tiles();  // MUST BE CALLED AFTER EVERY MOVE
+    std::set<int> attackable_by_white;    // all tiles that can be attacked by white
+    std::set<int> attackable_by_black;
+
     std::vector<Piece> white_pinned_pieces;  // if piece is moved, would reveal check
     std::vector<Piece> black_pinned_pieces;
 
-    int selected_piece_index = -1;  // store for highlighting
+    int selected_piece_index;  // store for highlighting
 
     int w_king_index;  // store for a fast way to test for checks/mate
     int b_king_index;  // store for a fast way to test for checks/mate

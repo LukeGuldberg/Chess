@@ -86,7 +86,7 @@ bool Chessboard::is_valid_move(int start, int end) {
         gets the king taken... only allow moves that prevent the king from being in check */
     std::vector<int> possible_moves = chessboard.at(start).piece->get_possible_moves(*this);
     for (int move : possible_moves) {
-        if (end == move) {
+        if (end == move && in_bounds(move)) {
             return true;
         }
     }
@@ -233,7 +233,6 @@ void Chessboard::move_piece(int start, int end) {
         chessboard.at(start).piece->pos = start;
         white_to_move = !white_to_move;
         recalculate_attackable_tiles();
-        // is_check();
     }
 }
 

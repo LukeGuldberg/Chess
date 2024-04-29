@@ -46,14 +46,10 @@ bool Engine::input() {
         int pos = get_mouse_click(event);
         if (chessboard.white_to_move && pos != -1) {  // pos clicked in bounds and white's turn
             handle_mouse_click(pos);
-            // chessboard.recalculate_attackable_tiles();  // call because a move was made
-            // chessboard.is_check();
             test_for_checks();
             return true;
         } else if (!chessboard.white_to_move) {  // agent's/black's turn
             call_agent();
-            // chessboard.recalculate_attackable_tiles();  // call because a move was made
-            // chessboard.is_check();
             test_for_checks();
             return true;
         }
@@ -76,26 +72,31 @@ int Engine::get_mouse_click(SDL_Event event) {
             graphics.selected_tile = -1;
             int a, b;
             SDL_GetMouseState(&a, &b);
-            return chessboard.pixel_to_board(a, b, graphics);
+            if (chessboard.in_bounds(chessboard.pixel_to_board(a, b, graphics))) {
+                return chessboard.pixel_to_board(a, b, graphics);
+            }
         }
     }
     return -1;
 }
 
 void Engine::handle_mouse_click(int pos) {
-    if (pos == -1) {
+    if (pos < 0) {
+        std::cout << "You clicked out of bounds";
         return;
     }
-    if (chessboard.chessboard.at(pos).piece && chessboard.chessboard.at(pos).piece->team_white) {  // if piece exists and piece is on team white
+    if (chessboard.chessboard.at(pos).has_piece() && chessboard.chessboard.at(pos).piece->team_white) {  // if piece exists and piece is on team white
         chessboard.selected_piece_index = pos;
         graphics.selected_tile = pos;
-    } else if (chessboard.chessboard.at(chessboard.selected_piece_index).piece && chessboard.is_valid_move(chessboard.selected_piece_index, pos)) {  // if a white piece is selected, and the next spot clicked is a valid move
+    } else if (chessboard.chessboard.at(chessboard.selected_piece_index).has_piece() && chessboard.is_valid_move(chessboard.selected_piece_index, pos)) {  // if a white piece is selected, and the next spot clicked is a valid move
 
         if (chessboard.chessboard.at(pos).piece) {
             chessboard.taken_pieces.push_back(std::move(chessboard.chessboard.at(pos).piece.value()));
         }
         chessboard.move_piece(chessboard.selected_piece_index, pos);
         graphics.previous_move = {chessboard.selected_piece_index, pos};  // set previous move to be highlighted
+    } else {
+        std::cout << "Select one of your pieces\n";
     }
 
     if (graphics.show_possible_moves) {  // if show possible moves is turned on

@@ -222,7 +222,6 @@ std::pair<int, int> Agent::find_best_move(int depth) {
             best_move = child->move;
         }
     }
-
     return best_move;  // best move can't be the same position twice, that
                        // causes a bug that makes pieces disappear
 }
@@ -237,11 +236,12 @@ void Agent::generate_tree(Node *node, int depth, bool b_team) {
         generate_possible_moves(node, b_team);
 
     for (std::pair<int, int> move : possible_moves) {
-        Chessboard nextState = apply_move(node->board_state, move);
-        Node *child = new Node(nextState, move);
-
-        generate_tree(child, depth - 1, !b_team);
-        node->children.push_back(child);
+        if (node->board_state.in_bounds(move.first) && node->board_state.in_bounds(move.second)) {
+            Chessboard nextState = apply_move(node->board_state, move);
+            Node *child = new Node(nextState, move);
+            generate_tree(child, depth - 1, !b_team);
+            node->children.push_back(child);
+        }        
     }
 }
 

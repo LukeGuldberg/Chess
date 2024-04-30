@@ -60,6 +60,7 @@ bool Engine::input() {
 }
 
 void Engine::call_agent() {
+    agent.reset_tree(chessboard);
     std::pair<int, int> best_move;
     best_move = agent.find_best_move(3);  // pass in depth
     std::cout << best_move.first << ", " << best_move.second << "\n";
@@ -81,10 +82,6 @@ int Engine::get_mouse_click(SDL_Event event) {
 }
 
 void Engine::handle_mouse_click(int pos) {
-    if (pos < 0) {
-        std::cout << "You clicked out of bounds";
-        return;
-    }
     if (chessboard.chessboard.at(pos).has_piece() && chessboard.chessboard.at(pos).piece->team_white) {  // if piece exists and piece is on team white
         chessboard.selected_piece_index = pos;
         graphics.selected_tile = pos;
@@ -94,6 +91,8 @@ void Engine::handle_mouse_click(int pos) {
             chessboard.taken_pieces.push_back(std::move(chessboard.chessboard.at(pos).piece.value()));
         }
         chessboard.move_piece(chessboard.selected_piece_index, pos);
+        chessboard.white_to_move = !chessboard.white_to_move;
+
         graphics.previous_move = {chessboard.selected_piece_index, pos};  // set previous move to be highlighted
     } else {
         std::cout << "Select one of your pieces\n";
@@ -129,6 +128,6 @@ void Engine::handle_agent_move(std::pair<int, int> best_move) {
         }
 
         chessboard.move_piece(best_move.first, best_move.second);
+        chessboard.white_to_move = !chessboard.white_to_move;
     }
-    agent.reset_tree(chessboard);
 }

@@ -217,7 +217,7 @@ std::pair<int, int> Agent::find_best_move(int depth) {
     // Use minimax to find the best move
     for (Node *child : root->children) {
         int score = minimax(child, depth - 1, alpha, beta, false);
-        if (score > best_score) {
+        if (score > best_score && root->board_state.is_valid_move(child->move.first, child->move.second)) {
             best_score = score;
             best_move = child->move;
         }
@@ -236,12 +236,13 @@ void Agent::generate_tree(Node *node, int depth, bool b_team) {
         generate_possible_moves(node, b_team);
 
     for (std::pair<int, int> move : possible_moves) {
-        if (node->board_state.in_bounds(move.first) && node->board_state.in_bounds(move.second)) {
+        if (node->board_state.is_valid_move(move.first, move.second)) {
             Chessboard nextState = apply_move(node->board_state, move);
+            nextState.white_to_move = !nextState.white_to_move;
             Node *child = new Node(nextState, move);
             generate_tree(child, depth - 1, !b_team);
             node->children.push_back(child);
-        }        
+        }
     }
 }
 
@@ -281,7 +282,7 @@ Chessboard Agent::apply_move(Chessboard board_state, std::pair<int, int> move) {
     board_state.chessboard.at(move.first).piece.swap(board_state.chessboard.at(move.second).piece);
     board_state.chessboard.at(move.second).piece->pos = move.second;
     board_state.chessboard.at(move.first).piece->pos = move.first;
-    board_state.recalculate_attackable_tiles();  // call because a move was made
+    // board_state.recalculate_attackable_tiles();  // call because a move was made
     // board_state.is_check();
     return board_state;
 }

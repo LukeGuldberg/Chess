@@ -86,7 +86,7 @@ bool Chessboard::is_valid_move(int start, int end) {
         gets the king taken... only allow moves that prevent the king from being in check */
     std::vector<int> possible_moves = chessboard.at(start).piece->get_possible_moves(*this);
     for (int move : possible_moves) {
-        if (end == move && in_bounds(move)) {
+        if (end == move && in_bounds(move)) {  // && start is not within pinned pieces
             return true;
         }
     }
@@ -94,25 +94,69 @@ bool Chessboard::is_valid_move(int start, int end) {
 }
 
 bool Chessboard::is_check() {
-    // if (white_to_move) {
-    for (int i : attackable_by_white) {
-        if (i == b_king_index) {
-            std::cout << "Black king at " << b_king_index << " under attack\n";
-            return true;
+    if (!white_to_move) {
+        for (int i : attackable_by_white) {
+            if (i == b_king_index) {
+                std::cout << "Black king at " << b_king_index << " under attack\n";
+                return true;
+            }
+        }
+    } else {
+        for (int i : attackable_by_black) {
+            if (i == w_king_index) {
+                std::cout << "White king at " << w_king_index << " under attack\n";
+                return true;
+            }
         }
     }
-    // } else {
-    for (int i : attackable_by_black) {
-        if (i == w_king_index) {
-            std::cout << "White king at " << w_king_index << " under attack\n";
-            return true;
-        }
-    }
-    // }
     return false;
 }
 bool Chessboard::is_checkmate() {
-    // end game
+    // Get all pseudo-legal moves for the current player
+    std::vector<std::pair<int, int>> possible_moves;
+    for (Tile &t : chessboard) {
+        if (t.has_piece() && t.piece->team_white == white_to_move) {
+            std::vector<int> moves = t.piece->get_possible_moves(*this);
+            for (int move : moves) {
+                possible_moves.push_back({t.piece->pos, move});  // Store move as start*100 + end
+            }
+        }
+    }
+
+    // For each move, check if opponent's king is still in checkmate after the move
+    for (auto move : possible_moves) {
+        // Apply the move to a temporary board
+        Chessboard temp_board(*this);
+        temp_board.move_piece(move.first, move.second);
+
+        // Check if the opponent's king is still in check
+        if (!temp_board.is_check()) {
+            return false;  // Move prevents checkmate, so it's not checkmate
+        }
+    }
+
+    // Check for pinned pieces
+    for (int i = 0; i < 64; ++i) {
+        if (chessboard[i].has_piece() && chessboard[i].piece->team_white == white_to_move) {
+            std::vector<int> moves = chessboard[i].piece->get_possible_moves(*this);
+            for (int move : moves) {
+                if (is_valid_move(i, move)) {
+                    // Check if moving this piece would expose the king to check
+                    Chessboard temp_board(*this);
+                    temp_board.move_piece(i, move);
+                    if (temp_board.is_check()) {
+                        // This piece is pinned; it cannot move to prevent checkmate
+                        // Handle this case as needed (possibly by keeping the piece in place)
+                        // You can also mark the piece as pinned for further analysis if needed
+                        // For simplicity, let's return false assuming it's not checkmate
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;  // If no move or pinned piece prevents checkmate, it's a checkmate
 }
 
 bool Chessboard::win_condition_reached() {
@@ -231,7 +275,6 @@ void Chessboard::move_piece(int start, int end) {
         chessboard.at(start).piece.swap(chessboard.at(end).piece);
         chessboard.at(end).piece->pos = end;
         chessboard.at(start).piece->pos = start;
-        white_to_move = !white_to_move;
         recalculate_attackable_tiles();
     }
 }

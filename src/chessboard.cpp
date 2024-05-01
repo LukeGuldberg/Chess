@@ -59,26 +59,12 @@ Chessboard &Chessboard::operator=(Chessboard &&other)  // move assignment operat
 }
 
 bool Chessboard::is_valid_move(int start, int end) {
-    /* if in check
-        add test that uses agent code to go one depth
-        into the minimax algorithm and tests to see if the move
-        gets the king taken... only allow moves that prevent the king from being in check */
     std::vector<int> possible_moves = chessboard.at(start).piece->get_possible_moves(*this);
-    if (in_check) {
-        for (int pseudo : possible_moves) {
-            if (end == pseudo && in_bounds(pseudo)) {  // && start is not within pinned pieces
-                for (auto legal : legal_moves) {
-                    if (legal.first == start && legal.second == pseudo) {
-                        return true;
-                    }
-                }
-            }
-        }
-    } else {
-        for (int move : possible_moves) {
-            if (end == move && in_bounds(move)) {  // && start is not within pinned pieces
-                return true;
-            }
+    std::vector<std::pair<int, int>> pseudo_legal = reshape_vector(possible_moves, start);
+    std::vector<std::pair<int, int>> legal = get_all_legal_moves(pseudo_legal);
+    for (auto move : legal) {
+        if (end == move.second && in_bounds(move.second)) {
+            return true;
         }
     }
 
@@ -86,11 +72,9 @@ bool Chessboard::is_valid_move(int start, int end) {
 }
 
 bool Chessboard::is_check() {
-    // calculate pinned pieces here
     if (!white_to_move) {
         for (int i : attackable_by_white) {
             if (i == b_king_index) {
-                // std::cout << "Black king at " << b_king_index << " under attack\n";
                 in_check = true;
                 return true;
             }
@@ -98,7 +82,6 @@ bool Chessboard::is_check() {
     } else {
         for (int i : attackable_by_black) {
             if (i == w_king_index) {
-                // std::cout << "White king at " << w_king_index << " under attack\n";
                 in_check = true;
                 return true;
             }
@@ -109,44 +92,36 @@ bool Chessboard::is_check() {
 }
 
 bool Chessboard::is_checkmate() {
+    std::vector<std::pair<int, int>> pseudo_legal = get_all_pseudo_moves();
+    legal_moves = get_all_legal_moves(pseudo_legal);
+    return legal_moves.empty();  // If no move could be found to prevent mate, then it is a mate
+}
+
+std::vector<std::pair<int, int>> Chessboard::get_all_pseudo_moves() {
     // Get all pseudo-legal moves for the current player
-    legal_moves = {};
     std::vector<std::pair<int, int>> pseudo_legal;
     for (Tile &t : chessboard) {
         if (t.has_piece() && t.piece->team_white == white_to_move) {
             std::vector<int> moves = t.piece->get_possible_moves(*this);
             for (int move : moves) {
                 pseudo_legal.push_back({t.piece->pos, move});
-                std::cout << "(" << t.piece->pos << ", " << move << "), ";
             }
         }
     }
-    std::cout << "\n";
+    return pseudo_legal;
+}
+
+std::vector<std::pair<int, int>> Chessboard::get_all_legal_moves(std::vector<std::pair<int, int>> pseudo_legal) {
+    std::vector<std::pair<int, int>> legal;
     // For each move, check if opponent's king is still in checkmate after the move
     for (auto move : pseudo_legal) {
-        // Apply the move to a temporary board
         Chessboard temp_board(*this);
-
-        if (chessboard.at(move.first).piece->type == KING) {
-            if (chessboard.at(move.first).piece->team_white) {
-                temp_board.w_king_index = move.second;
-            } else {
-                temp_board.b_king_index = move.second;
-            }
-        }
-
-        temp_board.chessboard.at(move.second).piece.reset();
-        temp_board.chessboard.at(move.first).piece.swap(temp_board.chessboard.at(move.second).piece);
-        temp_board.chessboard.at(move.second).piece->pos = move.second;
-        temp_board.chessboard.at(move.first).piece->pos = move.first;
-        temp_board.recalculate_attackable_tiles();
-        // bool val = !temp_board.is_check();
-        // std::cout << std::boolalpha << val << "\n";
-        if (!temp_board.is_check()) {     // Check if the king is still in check
-            legal_moves.push_back(move);  // Move prevents checkmate, so save as legal move
+        temp_board.move_piece_temp(move.first, move.second);  // Apply the move to a temporary board
+        if (!temp_board.is_check()) {                         // Check if the king is still in check
+            legal.push_back(move);                            // Move prevents checkmate, so save as legal move
         }
     }
-    return legal_moves.empty();  // If no move could be found to prevent mate, then it is a mate
+    return legal;
 }
 
 void Chessboard::recalculate_attackable_tiles() {
@@ -258,6 +233,22 @@ void Chessboard::move_piece(int start, int end) {
     }
 }
 
+void Chessboard::move_piece_temp(int start, int end) {
+    if (chessboard.at(start).piece->type == KING) {
+        if (chessboard.at(start).piece->team_white) {
+            w_king_index = end;
+        } else {
+            b_king_index = end;
+        }
+    }
+
+    chessboard.at(end).piece.reset();
+    chessboard.at(start).piece.swap(chessboard.at(end).piece);
+    chessboard.at(end).piece->pos = end;
+    chessboard.at(start).piece->pos = start;
+    recalculate_attackable_tiles();
+}
+
 bool Chessboard::in_bounds(int pos) {
     if (pos < 64 && pos >= 0) {
         return true;
@@ -270,6 +261,14 @@ bool Chessboard::in_bounds(int row, int col) {
         return true;
     }
     return false;
+}
+
+std::vector<std::pair<int, int>> Chessboard::reshape_vector(std::vector<int> &possible_moves, int start) {
+    std::vector<std::pair<int, int>> new_moves;
+    for (int i : possible_moves) {
+        new_moves.push_back({start, i});
+    }
+    return new_moves;
 }
 
 void Chessboard::fill_test_tiles() {

@@ -27,6 +27,9 @@ class Chessboard {
     std::vector<Tile> chessboard;
     std::vector<Piece> taken_pieces;  // nice to have -> show taken pieces next to board
 
+    std::vector<std::pair<int, int>> get_all_pseudo_moves();
+    std::vector<std::pair<int, int>> get_all_legal_moves(std::vector<std::pair<int, int>> pseudo_legal);
+
     void recalculate_attackable_tiles();  // MUST BE CALLED AFTER EVERY MOVE
     std::set<int> attackable_by_white;    // all tiles that can be attacked by white
     std::set<int> attackable_by_black;
@@ -43,7 +46,7 @@ class Chessboard {
     int b_king_index;  // store for a fast way to test for checks/mate
 
     void move_piece(int start, int end);
-
+    void move_piece_temp(int start, int end);
     int pixel_to_board(const int &x, const int &y, const Graphics &graphics) const;
     std::pair<int, int> board_to_pixel(const int &i, const Graphics &graphics) const;
 
@@ -60,4 +63,6 @@ class Chessboard {
 
     bool check_pixel_bounds(int x, int y, const Graphics &graphics) const;
     bool test = false;
+
+    std::vector<std::pair<int, int>> reshape_vector(std::vector<int> &possible_moves, int start);
 };

@@ -54,7 +54,6 @@ bool Engine::input() {
             return true;
         }
 
-        // running = !chessboard.win_condition_reached();
     }
     return false;
 }
@@ -62,8 +61,7 @@ bool Engine::input() {
 void Engine::call_agent() {
     agent.reset_tree(chessboard);
     std::pair<int, int> best_move;
-    best_move = agent.find_best_move(3);  // pass in depth
-    // std::cout << best_move.first << ", " << best_move.second << "\n";
+    best_move = agent.find_best_move(3);  // depth is the param here
     handle_agent_move(best_move);
 }
 
@@ -112,25 +110,18 @@ void Engine::set_possible_moves() {
 
 void Engine::test_for_checks() {
     if (chessboard.is_check()) {
-        // chessboard.in_check = true;
         if (chessboard.white_to_move) {
             graphics.king_in_check = chessboard.w_king_index;
         } else {
             graphics.king_in_check = chessboard.b_king_index;
         }
-        // chessboard.is_checkmate();
         if (chessboard.is_checkmate()) {
             std::cout << "Checkmate!\n";
         } else {
             std::cout << "Check!\n";
         }
-        for (auto a : chessboard.legal_moves) {
-            std::cout << "(" << a.first << ", " << a.second << "), ";
-        }
-        std::cout << "\n";
 
     } else {
-        // chessboard.in_check = false;
         graphics.king_in_check = -1;
     }
 }

@@ -23,7 +23,6 @@ class Chessboard {
     bool is_valid_move(int start, int end);
     bool is_check();
     bool is_checkmate();
-    bool win_condition_reached();
 
     std::vector<Tile> chessboard;
     std::vector<Piece> taken_pieces;  // nice to have -> show taken pieces next to board
@@ -34,6 +33,9 @@ class Chessboard {
 
     std::vector<Piece> white_pinned_pieces;  // if piece is moved, would reveal check
     std::vector<Piece> black_pinned_pieces;
+
+    std::vector<std::pair<int, int>> legal_moves;
+    bool in_check = false;
 
     int selected_piece_index;  // store for highlighting
 
@@ -49,10 +51,6 @@ class Chessboard {
     bool in_bounds(int row, int col);
 
     bool white_to_move = true;
-    bool white_can_castle_kingside;
-    bool white_can_castle_queenside;
-    bool black_can_castle_kingside;
-    bool black_can_castle_queenside;
 
    private:
     void fill_starting_tiles();

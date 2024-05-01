@@ -9,10 +9,6 @@ Chessboard::Chessboard() {
     fill_starting_tiles();
     selected_piece_index = -1;
     white_to_move = true;
-    white_can_castle_kingside = true;
-    white_can_castle_queenside = true;
-    black_can_castle_kingside = true;
-    black_can_castle_queenside = true;
 
     // create all tiles
 }
@@ -23,59 +19,42 @@ Chessboard::Chessboard(const Chessboard &other)  // copy constructor
       taken_pieces{other.taken_pieces},
       selected_piece_index{other.selected_piece_index},
       white_to_move{other.white_to_move},
-      white_can_castle_kingside{other.white_can_castle_kingside},
-      white_can_castle_queenside{other.white_can_castle_queenside},
-      black_can_castle_kingside{other.black_can_castle_kingside},
-      black_can_castle_queenside{other.black_can_castle_queenside} {
-}
+      w_king_index{other.w_king_index},
+      b_king_index{b_king_index} {}
 Chessboard &Chessboard::operator=(const Chessboard &other) {
     chessboard = other.chessboard;
     taken_pieces = other.taken_pieces;
     selected_piece_index = other.selected_piece_index;
     white_to_move = other.white_to_move;
-    white_can_castle_kingside = other.white_can_castle_kingside;
-    white_can_castle_queenside = other.white_can_castle_queenside;
-    black_can_castle_kingside = other.black_can_castle_kingside;
-    black_can_castle_queenside = other.black_can_castle_queenside;
+    b_king_index = other.b_king_index;
+    w_king_index = other.w_king_index;
+
     return *this;
 }
 
 Chessboard::Chessboard(Chessboard &&other)  // move constructor
-    : chessboard(std::move(other.chessboard)),
-      taken_pieces(std::move(other.taken_pieces)),
-      selected_piece_index(other.selected_piece_index),
-      white_to_move(other.white_to_move),
-      white_can_castle_kingside(other.white_can_castle_kingside),
-      white_can_castle_queenside(other.white_can_castle_queenside),
-      black_can_castle_kingside(other.black_can_castle_kingside),
-      black_can_castle_queenside(other.black_can_castle_queenside) {
+    : chessboard{std::move(other.chessboard)},
+      taken_pieces{std::move(other.taken_pieces)},
+      selected_piece_index{other.selected_piece_index},
+      white_to_move{other.white_to_move},
+      w_king_index{other.w_king_index},
+      b_king_index{b_king_index} {
     other.selected_piece_index = -1;
     other.white_to_move = true;
-    other.white_can_castle_kingside = true;
-    other.white_can_castle_queenside = true;
-    other.black_can_castle_kingside = true;
-    other.black_can_castle_queenside = true;
 }
 
 Chessboard &Chessboard::operator=(Chessboard &&other)  // move assignment operator
 {
-    if (this != &other) {
-        chessboard = std::move(other.chessboard);
-        taken_pieces = std::move(other.taken_pieces);
-        selected_piece_index = other.selected_piece_index;
-        white_to_move = other.white_to_move;
-        white_can_castle_kingside = other.white_can_castle_kingside;
-        white_can_castle_queenside = other.white_can_castle_queenside;
-        black_can_castle_kingside = other.black_can_castle_kingside;
-        black_can_castle_queenside = other.black_can_castle_queenside;
+    chessboard = std::move(other.chessboard);
+    taken_pieces = std::move(other.taken_pieces);
+    selected_piece_index = other.selected_piece_index;
+    white_to_move = other.white_to_move;
+    b_king_index = other.b_king_index;
+    w_king_index = other.w_king_index;
 
-        other.selected_piece_index = -1;
-        other.white_to_move = true;
-        other.white_can_castle_kingside = true;
-        other.white_can_castle_queenside = true;
-        other.black_can_castle_kingside = true;
-        other.black_can_castle_queenside = true;
-    }
+    other.selected_piece_index = -1;
+    other.white_to_move = true;
+
     return *this;
 }
 
@@ -85,89 +64,89 @@ bool Chessboard::is_valid_move(int start, int end) {
         into the minimax algorithm and tests to see if the move
         gets the king taken... only allow moves that prevent the king from being in check */
     std::vector<int> possible_moves = chessboard.at(start).piece->get_possible_moves(*this);
-    for (int move : possible_moves) {
-        if (end == move && in_bounds(move)) {  // && start is not within pinned pieces
-            return true;
+    if (in_check) {
+        for (int pseudo : possible_moves) {
+            if (end == pseudo && in_bounds(pseudo)) {  // && start is not within pinned pieces
+                for (auto legal : legal_moves) {
+                    if (legal.first == start && legal.second == pseudo) {
+                        return true;
+                    }
+                }
+            }
+        }
+    } else {
+        for (int move : possible_moves) {
+            if (end == move && in_bounds(move)) {  // && start is not within pinned pieces
+                return true;
+            }
         }
     }
+
     return false;
 }
 
 bool Chessboard::is_check() {
+    // calculate pinned pieces here
     if (!white_to_move) {
         for (int i : attackable_by_white) {
             if (i == b_king_index) {
-                std::cout << "Black king at " << b_king_index << " under attack\n";
+                // std::cout << "Black king at " << b_king_index << " under attack\n";
+                in_check = true;
                 return true;
             }
         }
     } else {
         for (int i : attackable_by_black) {
             if (i == w_king_index) {
-                std::cout << "White king at " << w_king_index << " under attack\n";
+                // std::cout << "White king at " << w_king_index << " under attack\n";
+                in_check = true;
                 return true;
             }
         }
     }
+    in_check = false;
     return false;
 }
+
 bool Chessboard::is_checkmate() {
     // Get all pseudo-legal moves for the current player
-    std::vector<std::pair<int, int>> possible_moves;
+    legal_moves = {};
+    std::vector<std::pair<int, int>> pseudo_legal;
     for (Tile &t : chessboard) {
         if (t.has_piece() && t.piece->team_white == white_to_move) {
             std::vector<int> moves = t.piece->get_possible_moves(*this);
             for (int move : moves) {
-                possible_moves.push_back({t.piece->pos, move});  // Store move as start*100 + end
+                pseudo_legal.push_back({t.piece->pos, move});
+                std::cout << "(" << t.piece->pos << ", " << move << "), ";
             }
         }
     }
-
+    std::cout << "\n";
     // For each move, check if opponent's king is still in checkmate after the move
-    for (auto move : possible_moves) {
+    for (auto move : pseudo_legal) {
         // Apply the move to a temporary board
         Chessboard temp_board(*this);
-        temp_board.move_piece(move.first, move.second);
 
-        // Check if the opponent's king is still in check
-        if (!temp_board.is_check()) {
-            return false;  // Move prevents checkmate, so it's not checkmate
-        }
-    }
-
-    // Check for pinned pieces
-    for (int i = 0; i < 64; ++i) {
-        if (chessboard[i].has_piece() && chessboard[i].piece->team_white == white_to_move) {
-            std::vector<int> moves = chessboard[i].piece->get_possible_moves(*this);
-            for (int move : moves) {
-                if (is_valid_move(i, move)) {
-                    // Check if moving this piece would expose the king to check
-                    Chessboard temp_board(*this);
-                    temp_board.move_piece(i, move);
-                    if (temp_board.is_check()) {
-                        // This piece is pinned; it cannot move to prevent checkmate
-                        // Handle this case as needed (possibly by keeping the piece in place)
-                        // You can also mark the piece as pinned for further analysis if needed
-                        // For simplicity, let's return false assuming it's not checkmate
-                        return false;
-                    }
-                }
+        if (chessboard.at(move.first).piece->type == KING) {
+            if (chessboard.at(move.first).piece->team_white) {
+                temp_board.w_king_index = move.second;
+            } else {
+                temp_board.b_king_index = move.second;
             }
         }
-    }
 
-    return true;  // If no move or pinned piece prevents checkmate, it's a checkmate
-}
-
-bool Chessboard::win_condition_reached() {
-    if (is_check()) {
-        if (is_checkmate()) {
-            std::cout << "Checkmate! Game Over.\n";
-        } else {
-            std::cout << "Check!\n";
-            // Handle the fact that the opponent's king is in check
+        temp_board.chessboard.at(move.second).piece.reset();
+        temp_board.chessboard.at(move.first).piece.swap(temp_board.chessboard.at(move.second).piece);
+        temp_board.chessboard.at(move.second).piece->pos = move.second;
+        temp_board.chessboard.at(move.first).piece->pos = move.first;
+        temp_board.recalculate_attackable_tiles();
+        // bool val = !temp_board.is_check();
+        // std::cout << std::boolalpha << val << "\n";
+        if (!temp_board.is_check()) {     // Check if the king is still in check
+            legal_moves.push_back(move);  // Move prevents checkmate, so save as legal move
         }
     }
+    return legal_moves.empty();  // If no move could be found to prevent mate, then it is a mate
 }
 
 void Chessboard::recalculate_attackable_tiles() {

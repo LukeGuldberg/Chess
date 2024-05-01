@@ -127,8 +127,11 @@ std::vector<std::pair<int, int>> Chessboard::get_all_legal_moves(std::vector<std
 void Chessboard::recalculate_attackable_tiles() {
     attackable_by_black.clear();
     attackable_by_white.clear();
+    w_num_pieces = 0;
+    b_num_pieces = 0;
     for (Tile &t : chessboard) {
         if (t.has_piece()) {
+            update_piece_counts(t);
             std::vector<int> possible_moves = t.piece->get_possible_moves(*this);
             if (t.piece->team_white) {
                 for (int i : possible_moves) {
@@ -140,6 +143,14 @@ void Chessboard::recalculate_attackable_tiles() {
                 }
             }
         }
+    }
+}
+
+void Chessboard::update_piece_counts(const Tile& t) {
+    if(t.piece->team_white) {
+        w_num_pieces++;
+    } else {
+        b_num_pieces++;
     }
 }
 

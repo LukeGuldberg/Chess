@@ -92,6 +92,16 @@ void Agent::initialize_piece_structure_bonus() {
                                    -30, -40, -40, -50, -50, -40, -40, -30,
                                    -30, -40, -40, -50, -50, -40, -40, -30});
 
+    piece_structures.push_back(end_king_structure_black = {
+                                   -50, -30, -30, -30, -30, -30, -30, -50,
+                                   -30, -30, 0, 0, 0, 0, -30, -30,
+                                   -30, -10, 20, 30, 30, 20, -10, -30,
+                                   -30, -10, 30, 40, 40, 30, -10, -30,
+                                   -30, -10, 30, 40, 40, 30, -10, -30,
+                                   -30, -10, 20, 30, 30, 20, -10, -30,
+                                   -30, -20, -10, 0, 0, -10, -20, -30,
+                                   -50, -40, -30, -20, -20, -30, -40, -50});
+
     piece_structures.push_back(queen_structure_black = {
                                    -20, -10, -10, -5, -5, -10, -10, -20,
                                    -10, 0, 5, 0, 0, 0, 0, -10,
@@ -151,6 +161,16 @@ void Agent::initialize_piece_structure_bonus() {
                                    -10, -20, -20, -20, -20, -20, -20, -10,
                                    20, 20, 0, 0, 0, 0, 20, 20,
                                    20, 30, 10, 0, 0, 10, 30, 20});
+
+    piece_structures.push_back(end_king_structure_white = {
+                                   -50, -40, -30, -20, -20, -30, -40, -50,
+                                   -30, -20, -10, 0, 0, -10, -20, -30,
+                                   -30, -10, 20, 30, 30, 20, -10, -30,
+                                   -30, -10, 30, 40, 40, 30, -10, -30,
+                                   -30, -10, 30, 40, 40, 30, -10, -30,
+                                   -30, -10, 20, 30, 30, 20, -10, -30,
+                                   -30, -30, 0, 0, 0, 0, -30, -30,
+                                   -50, -30, -30, -30, -30, -30, -30, -50});
 
     piece_structures.push_back(queen_structure_white = {
                                    -20, -10, -10, -5, -5, -10, -10, -20,
@@ -271,23 +291,30 @@ std::vector<std::pair<int, int>> Agent::generate_possible_moves(Node *node,
 
 Chessboard Agent::apply_move(Chessboard board_state, std::pair<int, int> move) {
     Chessboard new_board_state = board_state;
-    if (board_state.chessboard.at(move.first).piece->type == KING) {
-        if (board_state.chessboard.at(move.first).piece->team_white) {
-            board_state.w_king_index = move.second;
-        } else {
-            board_state.b_king_index = move.second;
+    if (new_board_state.is_valid_move(move.first, move.second)) {
+        if (board_state.chessboard.at(move.first).piece->type == KING) {
+            if (board_state.chessboard.at(move.first).piece->team_white) {
+                board_state.w_king_index = move.second;
+            } else {
+                board_state.b_king_index = move.second;
+            }
         }
+        board_state.chessboard.at(move.second).piece.reset();
+        board_state.chessboard.at(move.first).piece.swap(board_state.chessboard.at(move.second).piece);
+        board_state.chessboard.at(move.second).piece->pos = move.second;
+        board_state.chessboard.at(move.first).piece->pos = move.first;
+        board_state.recalculate_attackable_tiles();  // call because a move was made
     }
-    board_state.chessboard.at(move.second).piece.reset();
-    board_state.chessboard.at(move.first).piece.swap(board_state.chessboard.at(move.second).piece);
-    board_state.chessboard.at(move.second).piece->pos = move.second;
-    board_state.chessboard.at(move.first).piece->pos = move.first;
-    // board_state.recalculate_attackable_tiles();  // call because a move was made
-    // board_state.is_check();
     return board_state;
 }
 
 int Agent::evaluate(Chessboard state) {
+    if (state.w_num_pieces < 5) {
+        king_structure_white = end_king_structure_white;
+    }
+    if(state.b_num_pieces < 5) {
+        king_structure_black = end_king_structure_black;
+    }    
     int score = 0;
 
     for (auto &tile : state.chessboard) {

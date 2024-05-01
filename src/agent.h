@@ -63,6 +63,8 @@ class Agent {
     std::vector<int> rook_structure_black;
     std::vector<int> king_structure_white;
     std::vector<int> king_structure_black;
+    std::vector<int> end_king_structure_white;
+    std::vector<int> end_king_structure_black;
     std::vector<int> queen_structure_white;
     std::vector<int> queen_structure_black;
 

@@ -30,6 +30,7 @@ class Chessboard {
     std::vector<std::pair<int, int>> get_all_pseudo_moves();
     std::vector<std::pair<int, int>> get_all_legal_moves(std::vector<std::pair<int, int>> pseudo_legal);
 
+    void update_piece_counts(const Tile& t);
     void recalculate_attackable_tiles();  // MUST BE CALLED AFTER EVERY MOVE
     std::set<int> attackable_by_white;    // all tiles that can be attacked by white
     std::set<int> attackable_by_black;
@@ -41,6 +42,9 @@ class Chessboard {
     bool in_check = false;
 
     int selected_piece_index;  // store for highlighting
+
+    int w_num_pieces = 16;
+    int b_num_pieces = 16;
 
     int w_king_index;  // store for a fast way to test for checks/mate
     int b_king_index;  // store for a fast way to test for checks/mate

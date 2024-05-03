@@ -2,33 +2,8 @@
 
 #include <climits>
 
-Node::Node(const Node &other)
-    : board_state(other.board_state), move(other.move), score(other.score) {
-    // deep copy
-    for (Node *child : other.children) {
-        children.push_back(new Node(*child));
-    }
-}
-
-Node &Node::operator=(const Node &other)  // copy assignment
-{
-    if (this != &other) {
-        // deep copy
-        board_state = other.board_state;
-        move = other.move;
-        score = other.score;
-
-        reset_tree_recursive();
-
-        for (Node *child : other.children) {
-            children.push_back(new Node(*child));
-        }
-    }
-    return *this;
-}
-
 Agent::Agent(Chessboard initial_board) {
-    initialize_piece_structure_bonus();
+    initialize_piece_structure_bonus();  // set all values of the piece structure vectors
     root = new Node(initial_board, std::pair<int, int>{0, 0});
 
     int pawn_value = 100;
@@ -37,8 +12,7 @@ Agent::Agent(Chessboard initial_board) {
     int rook_value = 500;
     int queen_value = 900;
     int king_value = 1500;
-    piece_values = {pawn_value, knight_value, bishop_value,
-                    rook_value, king_value, queen_value};
+    piece_values = {pawn_value, knight_value, bishop_value, rook_value, king_value, queen_value};
 }
 
 void Agent::initialize_piece_structure_bonus() {
@@ -183,10 +157,10 @@ void Agent::initialize_piece_structure_bonus() {
                                    -20, -10, -10, -5, -5, -10, -10, -20});
 }
 
-int Agent::minimax(Node *node, int depth, int alpha, int beta,
-                   bool maximizingPlayer) {
-    if (depth == 0 || is_terminal(node->board_state))  // || game is over
-    {
+int Agent::minimax(Node *node, int depth, int alpha, int beta, bool maximizingPlayer) {
+    // recursively traverse the tree of moves calculating the score for each,
+    // then returning either the best or worst score depending on whose move it is
+    if (depth == 0) {
         return evaluate(node->board_state);
     }
 
@@ -219,10 +193,6 @@ int Agent::min(int a, int b) { return (a < b) ? a : b; }
 
 int Agent::max(int a, int b) { return (a > b) ? a : b; }
 
-bool Agent::is_terminal(Chessboard chessboard) {
-    return false;
-}
-
 std::pair<int, int> Agent::find_best_move(int depth) {
     // Generate the tree of game states up to the specified depth
     bool b_team = true;
@@ -247,27 +217,26 @@ std::pair<int, int> Agent::find_best_move(int depth) {
 }
 
 void Agent::generate_tree(Node *node, int depth, bool b_team) {
-    if (depth == 0)  // or game is over
-    {
+    if (depth == 0) {
         return;
     }
 
-    std::vector<std::pair<int, int>> possible_moves =
-        generate_possible_moves(node, b_team);
+    std::vector<std::pair<int, int>> possible_moves = generate_possible_moves(node, b_team);
 
     for (std::pair<int, int> move : possible_moves) {
         if (node->board_state.is_valid_move(move.first, move.second)) {
-            Chessboard nextState = apply_move(node->board_state, move);
-            nextState.white_to_move = !nextState.white_to_move;
-            Node *child = new Node(nextState, move);
-            generate_tree(child, depth - 1, !b_team);
-            node->children.push_back(child);
+            Chessboard nextState = node->board_state;  // make copy for the next child
+            if (nextState.move_piece(move.first, move.second)) {
+                // if the move was valid
+                Node *child = new Node(nextState, move);
+                generate_tree(child, depth - 1, !b_team);
+                node->children.push_back(child);
+            }
         }
     }
 }
 
-std::vector<std::pair<int, int>> Agent::generate_possible_moves(Node *node,
-                                                                bool b_team) {
+std::vector<std::pair<int, int>> Agent::generate_possible_moves(Node *node, bool b_team) {
     std::vector<std::pair<int, int>> all_possible_moves;
     for (Tile tile : node->board_state.chessboard) {
         std::vector<int> possible_moves;
@@ -289,32 +258,14 @@ std::vector<std::pair<int, int>> Agent::generate_possible_moves(Node *node,
     return all_possible_moves;
 }
 
-Chessboard Agent::apply_move(Chessboard board_state, std::pair<int, int> move) {
-    Chessboard new_board_state = board_state;
-    if (new_board_state.is_valid_move(move.first, move.second)) {
-        if (board_state.chessboard.at(move.first).piece->type == KING) {
-            if (board_state.chessboard.at(move.first).piece->team_white) {
-                board_state.w_king_index = move.second;
-            } else {
-                board_state.b_king_index = move.second;
-            }
-        }
-        board_state.chessboard.at(move.second).piece.reset();
-        board_state.chessboard.at(move.first).piece.swap(board_state.chessboard.at(move.second).piece);
-        board_state.chessboard.at(move.second).piece->pos = move.second;
-        board_state.chessboard.at(move.first).piece->pos = move.first;
-        board_state.recalculate_attackable_tiles();  // call because a move was made
-    }
-    return board_state;
-}
-
 int Agent::evaluate(Chessboard state) {
+    // calculates a given game state based on all piece values, the mobility of said pieces, and the structure of their formation
     if (state.w_num_pieces < 5) {
         king_structure_white = end_king_structure_white;
     }
-    if(state.b_num_pieces < 5) {
+    if (state.b_num_pieces < 5) {
         king_structure_black = end_king_structure_black;
-    }    
+    }
     int score = 0;
 
     for (auto &tile : state.chessboard) {
@@ -325,7 +276,7 @@ int Agent::evaluate(Chessboard state) {
             std::vector<int> possibleMoves = tile.piece->get_possible_moves(state);  // Mobility
             score += possibleMoves.size() * (tile.piece->team_white ? -1 : 1);
 
-            if (tile.piece->team_white) {  // bonus for piece structure
+            if (tile.piece->team_white) {  // Piece structure
                 score -= get_piece_structure(tile.piece.value()).at(tile.piece->pos);
             } else {
                 score += get_piece_structure(tile.piece.value()).at(tile.piece->pos);
@@ -335,7 +286,7 @@ int Agent::evaluate(Chessboard state) {
 
     return score;
 }
-std::vector<int> Agent::get_piece_structure(Piece piece) {
+std::vector<int> Agent::get_piece_structure(Piece piece) {  // piece structure constant time lookup
     return piece_structures.at(piece.type + piece.team_white * 6);
 }
 

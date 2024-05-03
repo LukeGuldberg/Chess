@@ -1,3 +1,4 @@
+/* The Piece class is used to store data like the pos and type of each piece. It is also used to find the possible moves for a piece. Each piece has a different function for this, and the pointers to these functions are stored in a vector to allow for constant time lookup. */
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL_image.h>
@@ -36,7 +37,8 @@ class Piece {
     bool team_white;
 
    private:
-    std::vector<FuncPtr> find_move_functions;
+    std::vector<FuncPtr> find_move_functions;  // vector of functions that have corresponding possible_move functions,
+                                               // ordered to allow constant time lookups
 };
 void test_pawn(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);
 void test_white_pawn(const Piece &piece, std::vector<int> &possible_moves, const Chessboard &chessboard);

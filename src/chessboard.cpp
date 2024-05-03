@@ -9,65 +9,62 @@ Chessboard::Chessboard() {
     fill_starting_tiles();
     selected_piece_index = -1;
     white_to_move = true;
-
-    // create all tiles
 }
 Chessboard::~Chessboard() {}
 
 Chessboard::Chessboard(const Chessboard &other)  // copy constructor
-    : chessboard{other.chessboard},
-      taken_pieces{other.taken_pieces},
+    : chessboard{std::move(other.chessboard)},
       selected_piece_index{other.selected_piece_index},
       white_to_move{other.white_to_move},
       w_king_index{other.w_king_index},
-      b_king_index{b_king_index} {}
+      b_king_index{other.b_king_index},
+      w_num_pieces{other.w_num_pieces},
+      b_num_pieces{other.b_num_pieces} {}
+
 Chessboard &Chessboard::operator=(const Chessboard &other) {
-    chessboard = other.chessboard;
-    taken_pieces = other.taken_pieces;
+    chessboard = std::move(other.chessboard);
     selected_piece_index = other.selected_piece_index;
     white_to_move = other.white_to_move;
-    b_king_index = other.b_king_index;
     w_king_index = other.w_king_index;
-
+    b_king_index = other.b_king_index;
+    w_num_pieces = other.w_num_pieces;
+    b_num_pieces = other.b_num_pieces;
     return *this;
 }
 
 Chessboard::Chessboard(Chessboard &&other)  // move constructor
     : chessboard{std::move(other.chessboard)},
-      taken_pieces{std::move(other.taken_pieces)},
       selected_piece_index{other.selected_piece_index},
       white_to_move{other.white_to_move},
       w_king_index{other.w_king_index},
-      b_king_index{b_king_index} {
+      b_king_index{b_king_index},
+      w_num_pieces{other.w_num_pieces},
+      b_num_pieces{other.b_num_pieces} {
     other.selected_piece_index = -1;
-    other.white_to_move = true;
 }
 
-Chessboard &Chessboard::operator=(Chessboard &&other)  // move assignment operator
-{
+Chessboard &Chessboard::operator=(Chessboard &&other) {  // move assignment operator
     chessboard = std::move(other.chessboard);
-    taken_pieces = std::move(other.taken_pieces);
     selected_piece_index = other.selected_piece_index;
     white_to_move = other.white_to_move;
     b_king_index = other.b_king_index;
     w_king_index = other.w_king_index;
-
-    other.selected_piece_index = -1;
-    other.white_to_move = true;
-
+    w_num_pieces = other.w_num_pieces;
+    b_num_pieces = other.b_num_pieces;
     return *this;
 }
 
 bool Chessboard::is_valid_move(int start, int end) {
-    std::vector<int> possible_moves = chessboard.at(start).piece->get_possible_moves(*this);
-    std::vector<std::pair<int, int>> pseudo_legal = reshape_vector(possible_moves, start);
-    std::vector<std::pair<int, int>> legal = get_all_legal_moves(pseudo_legal);
-    for (auto move : legal) {
-        if (end == move.second && in_bounds(move.second)) {
-            return true;
+    if (in_bounds(start) && in_bounds(end)) {
+        std::vector<int> possible_moves = chessboard.at(start).piece->get_possible_moves(*this);
+        std::vector<std::pair<int, int>> pseudo_legal = reshape_vector(possible_moves, start);  // format to be a vector of pairs
+        std::vector<std::pair<int, int>> legal = get_all_legal_moves(pseudo_legal);
+        for (auto move : legal) {
+            if (end == move.second && in_bounds(move.second)) {
+                return true;
+            }
         }
     }
-
     return false;
 }
 
@@ -75,25 +72,22 @@ bool Chessboard::is_check() {
     if (!white_to_move) {
         for (int i : attackable_by_white) {
             if (i == b_king_index) {
-                in_check = true;
                 return true;
             }
         }
     } else {
         for (int i : attackable_by_black) {
             if (i == w_king_index) {
-                in_check = true;
                 return true;
             }
         }
     }
-    in_check = false;
     return false;
 }
 
 bool Chessboard::is_checkmate() {
     std::vector<std::pair<int, int>> pseudo_legal = get_all_pseudo_moves();
-    legal_moves = get_all_legal_moves(pseudo_legal);
+    std::vector<std::pair<int, int>> legal_moves = get_all_legal_moves(pseudo_legal);
     return legal_moves.empty();  // If no move could be found to prevent mate, then it is a mate
 }
 
@@ -125,6 +119,7 @@ std::vector<std::pair<int, int>> Chessboard::get_all_legal_moves(std::vector<std
 }
 
 void Chessboard::recalculate_attackable_tiles() {
+    // clear out data that is being recalculated
     attackable_by_black.clear();
     attackable_by_white.clear();
     w_num_pieces = 0;
@@ -146,8 +141,8 @@ void Chessboard::recalculate_attackable_tiles() {
     }
 }
 
-void Chessboard::update_piece_counts(const Tile& t) {
-    if(t.piece->team_white) {
+void Chessboard::update_piece_counts(const Tile &t) {
+    if (t.piece->team_white) {
         w_num_pieces++;
     } else {
         b_num_pieces++;
@@ -180,8 +175,7 @@ std::pair<int, int> Chessboard::board_to_pixel(const int &i, const Graphics &gra
 
 void Chessboard::fill_starting_tiles() {
     place_starting_b_pieces();
-    // create tiles w/o pieces
-    for (int i = 16; i < 48; ++i) {
+    for (int i = 16; i < 48; ++i) {  // create tiles w/o pieces
         chessboard.push_back(Tile{});
     }
     place_starting_w_pieces();
@@ -227,24 +221,31 @@ bool Tile::has_piece() const {
     }
 }
 
-void Chessboard::move_piece(int start, int end) {
+void Chessboard::swap_turn() {
+    white_to_move = !white_to_move;
+}
+
+bool Chessboard::move_piece(int start, int end) {
     if (is_valid_move(start, end)) {
-        if (chessboard.at(start).piece->type == KING) {
+        if (chessboard.at(start).piece->type == KING) {  // if King, update the position stored
             if (chessboard.at(start).piece->team_white) {
                 w_king_index = end;
             } else {
                 b_king_index = end;
             }
         }
-        chessboard.at(end).piece.reset();
-        chessboard.at(start).piece.swap(chessboard.at(end).piece);
-        chessboard.at(end).piece->pos = end;
-        chessboard.at(start).piece->pos = start;
+        chessboard.at(end).piece.reset();                           // clear Tile the Piece is moving to
+        chessboard.at(start).piece.swap(chessboard.at(end).piece);  // swap the two Tiles
+        chessboard.at(end).piece->pos = end;                        // reset the indices after swap
+        chessboard.at(start).piece->pos = start;                    // to preserve the order of the board
         recalculate_attackable_tiles();
+        swap_turn();
+        return true;
     }
+    return false;
 }
 
-void Chessboard::move_piece_temp(int start, int end) {
+void Chessboard::move_piece_temp(int start, int end) {  // excludes a test of is_valid_move(), used when looking for checkmates to save on runtime
     if (chessboard.at(start).piece->type == KING) {
         if (chessboard.at(start).piece->team_white) {
             w_king_index = end;
@@ -252,7 +253,6 @@ void Chessboard::move_piece_temp(int start, int end) {
             b_king_index = end;
         }
     }
-
     chessboard.at(end).piece.reset();
     chessboard.at(start).piece.swap(chessboard.at(end).piece);
     chessboard.at(end).piece->pos = end;

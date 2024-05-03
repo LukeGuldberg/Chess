@@ -8,9 +8,7 @@ Piece::Piece(int pos, Type type, bool team_white)
     : pos{pos},
       type{type},
       team_white{team_white} {
-    find_move_functions = {&test_pawn, &test_knight,
-                           &test_bishop, &test_rook,
-                           &test_king, &test_queen};
+    find_move_functions = {&test_pawn, &test_knight, &test_bishop, &test_rook, &test_king, &test_queen};
 }
 
 Piece::Piece(const Piece &other)

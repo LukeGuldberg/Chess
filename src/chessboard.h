@@ -1,3 +1,4 @@
+/* The chessboard files are used to create, store, and make changes to data for a game state. Each game state is comprised of Tiles, and each Tile is able to have a Piece. It also has member functions that handle possible moves calculated in the piece files. The Chessboard class also differentiates between pseudo-legal moves and legal moves. This is done inside the is_valid_move() for testing one Piece's moves, and also in the is_checkmate() function which finds all legal moves for a given side. */
 #pragma once
 #include <memory>
 #include <optional>
@@ -24,40 +25,32 @@ class Chessboard {
     bool is_check();
     bool is_checkmate();
 
-    std::vector<Tile> chessboard;
-    std::vector<Piece> taken_pieces;  // nice to have -> show taken pieces next to board
+    std::vector<Tile> chessboard;  // game state
 
     std::vector<std::pair<int, int>> get_all_pseudo_moves();
     std::vector<std::pair<int, int>> get_all_legal_moves(std::vector<std::pair<int, int>> pseudo_legal);
 
-    void update_piece_counts(const Tile& t);
+    void update_piece_counts(const Tile &t);
     void recalculate_attackable_tiles();  // MUST BE CALLED AFTER EVERY MOVE
-    std::set<int> attackable_by_white;    // all tiles that can be attacked by white
-    std::set<int> attackable_by_black;
+    std::set<int> attackable_by_white;    // all tiles attackable by white, duplicates thrown out
+    std::set<int> attackable_by_black;    // all tiles attackable by black
 
-    std::vector<Piece> white_pinned_pieces;  // if piece is moved, would reveal check
-    std::vector<Piece> black_pinned_pieces;
+    int selected_piece_index;  // store for highlighting and piece moves
 
-    std::vector<std::pair<int, int>> legal_moves;
-    bool in_check = false;
-
-    int selected_piece_index;  // store for highlighting
-
+    bool white_to_move;
+    int w_king_index;  // store for a fast way to test for checks/mate
+    int b_king_index;  // store for a fast way to test for checks/mate
     int w_num_pieces = 16;
     int b_num_pieces = 16;
 
-    int w_king_index;  // store for a fast way to test for checks/mate
-    int b_king_index;  // store for a fast way to test for checks/mate
-
-    void move_piece(int start, int end);
+    void swap_turn();
+    bool move_piece(int start, int end);
     void move_piece_temp(int start, int end);
-    int pixel_to_board(const int &x, const int &y, const Graphics &graphics) const;
-    std::pair<int, int> board_to_pixel(const int &i, const Graphics &graphics) const;
+    int pixel_to_board(const int &x, const int &y, const Graphics &graphics) const;    // conversions used to go between board
+    std::pair<int, int> board_to_pixel(const int &i, const Graphics &graphics) const;  // coordinates and screen pixel coordinates
 
     bool in_bounds(int pos);
     bool in_bounds(int row, int col);
-
-    bool white_to_move = true;
 
    private:
     void fill_starting_tiles();

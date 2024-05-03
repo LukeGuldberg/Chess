@@ -1,3 +1,4 @@
+/**/
 #include "graphics.h"
 
 #include <SDL_image.h>
@@ -12,27 +13,6 @@
 Graphics::Graphics(const std::string &title) {
     initialize_graphics(title);
     load_sprites();
-}
-
-Graphics::Graphics(Graphics &&other)
-    : renderer{other.renderer},
-      selected_tile{other.selected_tile},
-      previous_move{other.previous_move},
-      possible_moves{other.possible_moves},
-      window{other.window},
-      dark_square_texture{other.dark_square_texture},
-      light_square_texture{other.light_square_texture} {
-    other.renderer = nullptr;
-    other.window = nullptr;
-    other.dark_square_texture = nullptr;
-    other.light_square_texture = nullptr;
-}
-
-Graphics &Graphics::operator=(Graphics &&rhs) {
-    std::swap(renderer, rhs.renderer);
-    std::swap(window, rhs.window);
-
-    return *this;
 }
 
 Graphics::~Graphics() {  // clean up: release SDL resources
@@ -65,19 +45,14 @@ void Graphics::initialize_graphics(const std::string title) {
     if (result < 0) {
         std::cout << SDL_GetError() << "\n";
     }
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, screen_width, screen_height, 0);
+    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, 0);
     if (!window) {
         std::cout << SDL_GetError() << "\n";
     }
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    // initialize SDL, create a window and renderer
-    // make sure to check all return values and throw exceptions when errors occur
-
     if (!renderer) {
         throw std::runtime_error(SDL_GetError());
     }
-
     // SDL2 image
     int img_flags = IMG_INIT_PNG;
     if (!(IMG_Init(img_flags) & img_flags)) {
@@ -102,6 +77,7 @@ void Graphics::load_sprites() {
 }
 
 SDL_Texture *Graphics::find_texture(std::optional<Piece> piece) {
+    // constant time lookup
     return piece_textures.at(piece->type + piece->team_white * 6);
 }
 
@@ -136,12 +112,6 @@ void Graphics::draw_pieces(Chessboard &chessboard) {
             SDL_Rect rectPos = {pos.first, pos.second, tile_size, tile_size};
             draw_sprite(find_texture(t.piece), rectPos);
         }
-    }
-}
-
-void Graphics::draw_taken_pieces(Chessboard &chessboard) {
-    for (const Piece &t : chessboard.taken_pieces) {
-        // this is a nice to have
     }
 }
 
@@ -211,7 +181,6 @@ void Graphics::highlight_possible_moves(const Chessboard &chessboard) {
 void Graphics::highlight_king_in_check(const Chessboard &chessboard) {
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 150);
-
     if (king_in_check > -1) {
         auto position = chessboard.board_to_pixel(king_in_check, *this);
         SDL_Rect rectPos = {position.first, position.second, tile_size, tile_size};

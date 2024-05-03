@@ -1,7 +1,6 @@
-# Chess AI
+# Chess Engine
 ![alt text](chessboard_screenshot.png)
 ## Building
-
 The game is written in C++ and uses features from the C++17
 standard. [CMake](https://cmake.org/) is used to build all components.
 and works well with the
@@ -46,4 +45,13 @@ The datastructure used to store all of the data required is a one dimmensional v
 
 ## Game Flow
 The game is run using the `Engine` loop that I created. It alternates who's turn it is, allowing either the player to move, or for the AI to decide on its best move and take it. When selecting a move to take, the `Piece` class regulates what moves can be made by doing checks on what piece is selected by the player. The `Agent` class handles all checking for the AI's movement.
+
+## Agent
+...
+### Where To Improve
+Late Game<br>
+Run Time<br>
+Castling<br>
+En Pessant<br>
+Optimization - allowing deeper tree<br>
 

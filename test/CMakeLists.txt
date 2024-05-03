@@ -1,4 +1,3 @@
-# CMake can download content from github
 Include(FetchContent)
 
 FetchContent_Declare(
@@ -9,7 +8,5 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-
-# test code for library
 add_executable(tests test.cpp)
 target_link_libraries(tests PUBLIC Catch2::Catch2WithMain gamelib)

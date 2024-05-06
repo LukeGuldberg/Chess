@@ -8,6 +8,8 @@ and works well with the
 [CMakeTools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
 extension in VSCode.
 
+Documentation: https://codedocs.xyz/LukeGuldberg/Chess/md_README.html 
+
 To configure it manually, type
 
 ```

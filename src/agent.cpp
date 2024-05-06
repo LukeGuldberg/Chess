@@ -1,3 +1,10 @@
+/**
+ * @file agent.cpp
+ * @brief How the Agent finds its move.
+ *
+ * The agent files are used to produce the best move for the black team. Finding the best move requires looking at how a move affects mobility, structuring of pieces, and whether or not you take or lose pieces. This is all calculated in the function evaluate(). This function is called on every move that the minimax algorithm (with alpha beta pruning) passes it. The minimax algorithm is used to allow the agent to search X moves ahead and figure out which produces the best possible outcome for itself, and the worst possible outcome for the other player. Each move/new gamestate is represented within a Node, and each Node hold a vector of other Nodes.
+ *
+ */
 #include "agent.h"
 
 #include <climits>
@@ -220,9 +227,7 @@ void Agent::generate_tree(Node *node, int depth, bool b_team) {
     if (depth == 0) {
         return;
     }
-
     std::vector<std::pair<int, int>> possible_moves = generate_possible_moves(node, b_team);
-
     for (std::pair<int, int> move : possible_moves) {
         if (node->board_state.is_valid_move(move.first, move.second)) {
             Chessboard nextState = node->board_state;  // make copy for the next child

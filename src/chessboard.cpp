@@ -1,3 +1,10 @@
+/**
+ * @file chessboard.cpp
+ *
+ * @brief Creates, stores, and makes changes to data for a game state.
+ *
+ * The chessboard files are used to create, store, and make changes to data for a game state. Each game state is comprised of Tiles, and each Tile is able to have a Piece. It also has member functions that handle possible moves calculated in the piece files. The Chessboard class also differentiates between pseudo-legal moves and legal moves. This is done inside the is_valid_move() for testing one Piece's moves, and also in the is_checkmate() function which finds all legal moves for a given side.
+ */
 #include "chessboard.h"
 
 #include <iostream>
@@ -147,30 +154,6 @@ void Chessboard::update_piece_counts(const Tile &t) {
     } else {
         b_num_pieces++;
     }
-}
-
-bool Chessboard::check_pixel_bounds(int x, int y, const Graphics &graphics) const {
-    if (x < graphics.left_bound || y < graphics.upper_bound || x > graphics.right_bound || y > graphics.bottom_bound) {
-        return false;
-    }
-    return true;
-}
-
-int Chessboard::pixel_to_board(const int &x, const int &y, const Graphics &graphics) const {
-    if (check_pixel_bounds(x, y, graphics)) {
-        int index_y = ((y - graphics.upper_bound) / graphics.tile_size) * graphics.grid_size;
-        int index_x = (x - graphics.left_bound) / graphics.tile_size;
-        return index_x + index_y;
-    }
-    return -1;
-}
-
-std::pair<int, int> Chessboard::board_to_pixel(const int &i, const Graphics &graphics) const {
-    int x = ((i % graphics.grid_size) * graphics.tile_size) + graphics.left_bound;
-    int y = ((i / graphics.grid_size) * graphics.tile_size) + graphics.upper_bound;
-
-    std::pair<int, int> coordinate = {x, y};
-    return coordinate;
 }
 
 void Chessboard::fill_starting_tiles() {

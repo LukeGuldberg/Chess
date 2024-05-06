@@ -62,6 +62,7 @@ CMAKE_BINARY_DIR = C:\Users\lukeg\code\Capstone\CHESS\Chess\build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: CMakeFiles/doc_doxygen.dir/all
 all: src/all
 all: test/all
 .PHONY : all
@@ -72,6 +73,7 @@ preinstall: test/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: CMakeFiles/doc_doxygen.dir/clean
 clean: src/clean
 clean: test/clean
 .PHONY : clean
@@ -143,6 +145,32 @@ test/clean: _deps/catch2-build/clean
 .PHONY : test/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/doc_doxygen.dir
+
+# All Build rule for target.
+CMakeFiles/doc_doxygen.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\doc_doxygen.dir\build.make CMakeFiles/doc_doxygen.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\doc_doxygen.dir\build.make CMakeFiles/doc_doxygen.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles --progress-num=91 "Built target doc_doxygen"
+.PHONY : CMakeFiles/doc_doxygen.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/doc_doxygen.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles 1
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/doc_doxygen.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles 0
+.PHONY : CMakeFiles/doc_doxygen.dir/rule
+
+# Convenience name for target.
+doc_doxygen: CMakeFiles/doc_doxygen.dir/rule
+.PHONY : doc_doxygen
+
+# clean rule for target.
+CMakeFiles/doc_doxygen.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\doc_doxygen.dir\build.make CMakeFiles/doc_doxygen.dir/clean
+.PHONY : CMakeFiles/doc_doxygen.dir/clean
+
+#=============================================================================
 # Target rules for target src/CMakeFiles/gamelib.dir
 
 # All Build rule for target.
@@ -208,7 +236,7 @@ test/CMakeFiles/tests.dir/all: _deps/catch2-build/src/CMakeFiles/Catch2.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/tests.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles 98
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles 97
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test/CMakeFiles/tests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles 0
 .PHONY : test/CMakeFiles/tests.dir/rule
@@ -255,12 +283,12 @@ _deps/catch2-build/src/CMakeFiles/Catch2.dir/clean:
 _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/all: _deps/catch2-build/src/CMakeFiles/Catch2.dir/all
 	$(MAKE) $(MAKESILENT) -f _deps\catch2-build\src\CMakeFiles\Catch2WithMain.dir\build.make _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/depend
 	$(MAKE) $(MAKESILENT) -f _deps\catch2-build\src\CMakeFiles\Catch2WithMain.dir\build.make _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles --progress-num=90,91 "Built target Catch2WithMain"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles --progress-num=90 "Built target Catch2WithMain"
 .PHONY : _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/all
 
 # Build rule for subdir invocation for target.
 _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles 91
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles 90
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\lukeg\code\Capstone\CHESS\Chess\build\CMakeFiles 0
 .PHONY : _deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir/rule

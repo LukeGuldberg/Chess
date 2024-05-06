@@ -1,3 +1,9 @@
+/**
+ * @file engine.cpp
+ * @brief Contains main game loop and turn handling.
+ *
+ * The engine class holds the game loop. This is what controls who moves what piece, where they move it to, and when they are able to move it. This is done by ither calling agent.find_best_move() to get the AI's best move, or allowing the user to make a move by handling an SDLMouseEvent (mouse click on the screen). This class also controls what is drawn to the screen using member functions within the Graphics class. The chessboard is redrawn every time a valid move or click is made.
+ */
 #include "engine.h"
 
 #include <iostream>
@@ -8,7 +14,6 @@ Engine::Engine(const std::string &title)
     : graphics{title}, chessboard{}, agent{chessboard} {}
 
 void Engine::init() {
-    graphics.load_sprites();
     graphics.draw_background();
     graphics.draw_board();
     graphics.draw_pieces(chessboard);
@@ -69,8 +74,8 @@ int Engine::get_mouse_click(SDL_Event event) {
             graphics.selected_tile = -1;
             int a, b;
             SDL_GetMouseState(&a, &b);
-            if (chessboard.in_bounds(chessboard.pixel_to_board(a, b, graphics))) {
-                return chessboard.pixel_to_board(a, b, graphics);
+            if (chessboard.in_bounds(graphics.pixel_to_board(a, b))) {
+                return graphics.pixel_to_board(a, b);
             }
         }
     }
@@ -84,8 +89,9 @@ void Engine::handle_mouse_click(int pos) {
         graphics.selected_tile = pos;
     } else if (chessboard.chessboard.at(chessboard.selected_piece_index).has_piece()) {
         // if a white piece is selected, and the next spot clicked is a valid move
-        chessboard.move_piece(chessboard.selected_piece_index, pos);
-        graphics.previous_move = {chessboard.selected_piece_index, pos};  // set previous move to be highlighted
+        if (chessboard.move_piece(chessboard.selected_piece_index, pos)) {
+            graphics.previous_move = {chessboard.selected_piece_index, pos};  // set previous move to be highlighted
+        }
     } else {
         // invalid click
         std::cout << "Select one of your pieces\n";

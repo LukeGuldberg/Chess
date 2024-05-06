@@ -1,3 +1,9 @@
+/**
+ * @file piece.cpp
+ * @brief Finds possible moves given a Piece.
+ *
+ * The Piece class is used to store data like the pos and type of each piece. It is also used to find the possible moves for a piece. Each piece has a different function for this, and the pointers to these functions are stored in a vector to allow for constant time lookup.
+ */
 #include "piece.h"
 
 #include <iostream>
